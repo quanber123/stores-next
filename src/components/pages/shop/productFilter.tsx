@@ -1,0 +1,227 @@
+import useQueryString from '@/lib/hooks/useQueryString';
+import { Category, Tag } from '@/types/types';
+import { useSearchParams } from 'next/navigation';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Icons } from '@/enum/enum';
+type Props = {
+  categories: Category[];
+  tags: Tag[];
+};
+const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
+  const searchQuery = useSearchParams();
+  const [createQueryString, deleteQueryString] = useQueryString();
+  const [dropdown, setDropdown] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const searchRef = useRef(null);
+  const sortButtons = [
+    {
+      name: 'Newness',
+      value: 'date',
+      type: 'sort',
+    },
+    {
+      name: 'Oldness',
+      value: '-date',
+      type: 'sort',
+    },
+    {
+      name: 'Price: Low to High',
+      value: '-price',
+      type: 'sort',
+    },
+    {
+      name: 'Price: High to Low',
+      value: 'price',
+      type: 'sort',
+    },
+  ];
+  const renderedCategories = useMemo(() => {
+    return categories?.map((c) => {
+      return (
+        <li key={c._id} className='relative py-2 font-medium'>
+          <button
+            className={`capitalize ${
+              searchQuery.get('category') === c.name && 'text-violet-500'
+            }`}
+            onClick={() => {
+              createQueryString('category', c.name);
+            }}
+          >
+            {c.name}
+          </button>
+          <span
+            style={{ transition: 'width 0.3s ease' }}
+            className={`absolute left-1/2 bottom-0 -translate-x-1/2 ${
+              searchQuery.get('category') === c.name ? 'w-full' : 'w-0'
+            } h-[2px] bg-violet-500`}
+          ></span>
+        </li>
+      );
+    });
+  }, [categories, searchQuery]);
+  const renderedTags = useMemo(() => {
+    return tags?.map((t) => {
+      return (
+        <li className='w-full' key={t._id}>
+          <button
+            className={`w-full border rounded-2xl px-2 py-1 ${
+              searchQuery.get('tag') === t.name
+                ? 'border-violet-500 text-violet-500'
+                : 'border-gray-400'
+            } capitalize`}
+            onClick={() => {
+              createQueryString('tag', t.name);
+            }}
+          >
+            {t.name}
+          </button>
+        </li>
+      );
+    });
+  }, [searchQuery, tags]);
+  const renderedSortBtn = useMemo(() => {
+    return sortButtons.map((b) => {
+      return (
+        <li className='w-max' key={b.value}>
+          <button
+            className={`capitalize ${
+              searchQuery.get('sort') === b.value && 'text-violet-500'
+            }`}
+            onClick={() => {
+              createQueryString('sort', b?.value);
+            }}
+          >
+            {b.name}
+          </button>
+        </li>
+      );
+    });
+  }, [sortButtons, searchQuery]);
+  const handleDropdown = useCallback(
+    (dropdown: string) => {
+      setDropdown((prevState) => {
+        if (prevState === dropdown) return '';
+        return dropdown;
+      });
+    },
+    [dropdown]
+  );
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(event.target.value);
+    },
+    [inputValue]
+  );
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        inputValue && createQueryString('search', inputValue);
+        inputValue === '' && deleteQueryString();
+      }
+    },
+    [inputValue]
+  );
+  return (
+    <section className='container text-gray-500 flex flex-col'>
+      <div className='flex flex-col md:flex-row justify-between items-center gap-[20px]'>
+        <ul className='py-4 max-w-[320px] sm:w-full flex justify-center md:justify-start items-center gap-[24px] text-lg overflow-auto'>
+          <li className='relative py-2 font-medium'>
+            <button
+              className={`${
+                searchQuery.get('category') === null && 'text-violet-500'
+              } ?`}
+              onClick={deleteQueryString}
+            >
+              All
+            </button>
+            <span
+              style={{ transition: 'width 0.3s ease' }}
+              className={`absolute left-1/2 bottom-0 -translate-x-1/2 ${
+                searchQuery.get('category') === null ? 'w-full' : 'w-0'
+              } h-[2px] bg-violet-500`}
+            ></span>
+          </li>
+          {renderedCategories}
+        </ul>
+        <div className='flex items-center gap-4'>
+          <button
+            style={{ transition: 'all 0.2s ease' }}
+            className='flex items-center gap-2 border border-gray-200 rounded px-8 py-3 hover:text-violet-500 hover:border-violet-500'
+            onClick={() => handleDropdown('filterDropdown')}
+          >
+            <span
+              dangerouslySetInnerHTML={{ __html: Icons.bars_down_icon }}
+            ></span>
+            <p>Filter</p>
+          </button>
+          <button
+            style={{ transition: 'all 0.2s ease' }}
+            className='flex items-center gap-2 border border-gray-200 rounded px-8 py-3 hover:text-violet-500 hover:border-violet-500'
+            onClick={() => handleDropdown('searchDropdown')}
+          >
+            <span
+              dangerouslySetInnerHTML={{ __html: Icons.search_icon }}
+            ></span>
+            <p>Search</p>
+          </button>
+        </div>
+      </div>
+      <div
+        style={{ transition: 'all 0.2s linear' }}
+        className={`w-full my-4 ${
+          dropdown === 'filterDropdown' ? 'h-[218px]' : 'h-0'
+        } bg-neutral-200 rounded overflow-y-auto flex flex-col sm:flex-row justify-between`}
+      >
+        <div className='p-6 flex flex-col gap-2'>
+          <p className='font-bold text-lg text-gray-700'>Sort By</p>
+          <ul className='flex flex-col gap-1'>
+            <li>
+              <button
+                className={`capitalize ${
+                  searchQuery.get('sort') === null && 'text-violet-500'
+                } ?`}
+                onClick={deleteQueryString}
+              >
+                Default
+              </button>
+            </li>
+            {renderedSortBtn}
+          </ul>
+        </div>
+        <div className='p-6 flex flex-col gap-2'>
+          <p className='font-bold text-lg text-gray-700'>Tags</p>
+          <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3'>
+            {renderedTags}
+          </ul>
+        </div>
+      </div>
+      <div
+        ref={searchRef}
+        style={{ transition: 'height 0.3s ease' }}
+        className={`relative my-4 ${
+          dropdown === 'searchDropdown'
+            ? 'h-[64px] border border-gray-300'
+            : 'h-0'
+        } rounded overflow-hidden`}
+      >
+        <button
+          className='absolute top-1/2 -translate-y-1/2 left-[24px] z-10 text-md hover:text-purple cursor-pointer'
+          dangerouslySetInnerHTML={{ __html: Icons.search_icon }}
+          aria-label='search-btn'
+          onClick={() => createQueryString('search', inputValue)}
+        />
+        <input
+          className='px-16 h-full w-full'
+          type='text'
+          placeholder='Search...'
+          aria-label='search-product'
+          value={inputValue}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+    </section>
+  );
+};
+
+export default ProductFilter;

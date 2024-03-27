@@ -1,0 +1,76 @@
+'use client';
+import React, { useEffect, useState } from 'react';
+import { Metadata } from 'next';
+import { useGetProductsQuery } from '@/lib/redux/query/productQuery';
+import { useSearchParams } from 'next/navigation';
+import ProductFilter from '@/components/pages/shop/productFilter';
+import LoadingItem from '@/components/(ui)/loadingItem';
+import NotFoundItem from '@/components/(ui)/notFoundItem';
+import { getCategories } from '@/api/categoryApi';
+import { Category, Tag } from '@/types/types';
+import { getTags } from '@/api/tagApi';
+import ProductList from '@/components/pages/shop/productList';
+export default function Shop() {
+  const searchQuery = useSearchParams();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const currPage = Number(searchQuery.get('page')) || 1;
+  const {
+    data: productsData,
+    isSuccess: isSuccessProductsData,
+    isLoading: isLoadingProductsData,
+  } = useGetProductsQuery(
+    `page=${currPage}&category=${searchQuery.get(
+      'category'
+    )}&tag=${searchQuery.get('tag')}&sort=${searchQuery.get(
+      'sort'
+    )}&search=${searchQuery.get('search')}`,
+    {
+      pollingInterval: Number(process.env.NEXT_DEFAULT_POLLING) * 1000,
+    }
+  );
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const categoriesData = await getCategories();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    }
+    async function fetchTags() {
+      try {
+        const tagsData = await getTags();
+        setTags(tagsData);
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    }
+    fetchCategories();
+    fetchTags();
+  }, []);
+  return (
+    <main className='flex min-h-screen flex-col items-center gap-[24px] py-24 px-8'>
+      <ProductFilter categories={categories} tags={tags} />
+      {isSuccessProductsData &&
+        productsData?.products?.length === 0 &&
+        !isLoadingProductsData && <NotFoundItem message='No Products Yet!' />}
+      {isSuccessProductsData &&
+        productsData?.products?.length > 0 &&
+        !isLoadingProductsData && (
+          <ProductList
+            products={productsData.products}
+            totalPage={productsData.totalPage}
+          />
+        )}
+      {isLoadingProductsData && (
+        <LoadingItem
+          sectionClass={
+            'container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[40px]'
+          }
+          heightItem='h-[420px]'
+        />
+      )}
+    </main>
+  );
+}
