@@ -1,19 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { PaginationItemType, usePagination } from '@nextui-org/react';
 import useQueryString from '@/lib/hooks/useQueryString';
+import { useSearchParams } from 'next/navigation';
 const CustomPagination = ({ totalPage }: { totalPage: number }) => {
   const [createQueryString] = useQueryString();
+  const searchQuery = useSearchParams();
   const { activePage, range, setPage, onNext, onPrevious } = usePagination({
     total: totalPage,
     showControls: true,
-    siblings: 10,
+    siblings: 6,
     boundaries: 10,
   });
-  useEffect(() => {
-    if (activePage) {
-      createQueryString('page', activePage.toString());
-    }
-  }, [activePage]);
+
+  const handleNext = useCallback(
+    (page: string) => {
+      const currPage = Number(searchQuery.get('page'));
+      if (page === 'next') {
+        onNext();
+        setPage(activePage + 1);
+        const nextPage = currPage >= totalPage ? totalPage : currPage + 1;
+        createQueryString('page', nextPage.toString());
+      }
+    },
+    [createQueryString]
+  );
+
+  const handlePrevious = useCallback(
+    (page: string) => {
+      const currPage = Number(searchQuery.get('page'));
+      if (page === 'prev') {
+        onPrevious();
+        setPage(activePage - 1);
+        const prev = currPage <= 1 ? 1 : currPage - 1;
+        createQueryString('page', prev.toString());
+      }
+    },
+    [createQueryString]
+  );
+  const handleSetPage = useCallback(
+    (page: number) => {
+      setPage(page);
+      createQueryString('page', page.toString());
+    },
+    [activePage, setPage]
+  );
   return (
     <div className='flex flex-col gap-2'>
       <ul className='flex gap-2 items-center'>
@@ -22,8 +52,12 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
             return (
               <li key={page}>
                 <button
-                  className='w-max h-full px-2 py-1 rounded border border-gray-200 text-gray-500'
-                  onClick={onNext}
+                  className={`w-max h-full px-2 py-1 rounded border border-gray-200 text-gray-500 ${
+                    Number(searchQuery.get('page')) >= totalPage &&
+                    'cursor-not-allowed'
+                  }`}
+                  onClick={() => handleNext(page)}
+                  disabled={Number(searchQuery.get('page')) >= totalPage}
                 >
                   Next
                 </button>
@@ -35,8 +69,11 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
             return (
               <li key={page}>
                 <button
-                  className='w-max h-full px-2 py-1 rounded border border-gray-200 text-gray-500'
-                  onClick={onPrevious}
+                  className={`w-max h-full px-2 py-1 rounded border border-gray-200 text-gray-500 ${
+                    Number(searchQuery.get('page')) <= 1 && 'cursor-not-allowed'
+                  }`}
+                  onClick={() => handlePrevious(page)}
+                  disabled={Number(searchQuery.get('page')) <= 1}
                 >
                   Prev
                 </button>
@@ -52,8 +89,11 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
             <li key={page}>
               <button
                 className={`w-[32px] h-full px-2 py-1 border border-gray-200 rounded
-                 ${activePage === page && 'bg-secondary text-gray-100'}`}
-                onClick={() => setPage(page)}
+                 ${
+                   Number(searchQuery.get('page')) === page &&
+                   'bg-secondary text-gray-100'
+                 }`}
+                onClick={() => handleSetPage(page)}
               >
                 {page}
               </button>

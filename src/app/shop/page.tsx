@@ -1,15 +1,27 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
 import { useGetProductsQuery } from '@/lib/redux/query/productQuery';
 import { useSearchParams } from 'next/navigation';
-import ProductFilter from '@/components/pages/shop/productFilter';
 import LoadingItem from '@/components/(ui)/loadingItem';
 import NotFoundItem from '@/components/(ui)/notFoundItem';
 import { getCategories } from '@/api/categoryApi';
 import { Category, Tag } from '@/types/types';
 import { getTags } from '@/api/tagApi';
 import ProductList from '@/components/pages/shop/productList';
+const DynamicProductFilter = dynamic(
+  () => import('@/components/pages/shop/productFilter'),
+  {
+    loading: () => (
+      <div className='container flex flex-col md:flex-row justify-between items-center gap-[20px] md:gap-[80px]'>
+        <div className='skeleton max-w-[320px] sm:w-full h-[48px]'></div>
+        <div className='skeleton w-full h-[48px]'></div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
 export default function Shop() {
   const searchQuery = useSearchParams();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -51,7 +63,7 @@ export default function Shop() {
   }, []);
   return (
     <main className='flex min-h-screen flex-col items-center gap-[24px] py-24 px-8'>
-      <ProductFilter categories={categories} tags={tags} />
+      <DynamicProductFilter categories={categories} tags={tags} />
       {isSuccessProductsData &&
         productsData?.products?.length === 0 &&
         !isLoadingProductsData && <NotFoundItem message='No Products Yet!' />}

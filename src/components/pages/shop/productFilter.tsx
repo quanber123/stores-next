@@ -123,7 +123,7 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
   );
   return (
     <section className='container text-gray-500 flex flex-col'>
-      <div className='flex flex-col md:flex-row justify-between items-center gap-[20px]'>
+      <div className='flex flex-col md:flex-row justify-between items-center gap-[20px] md:gap-0'>
         <ul className='py-4 max-w-[320px] sm:w-full flex justify-center md:justify-start items-center gap-[24px] text-lg overflow-auto'>
           <li className='relative py-2 font-medium'>
             <button

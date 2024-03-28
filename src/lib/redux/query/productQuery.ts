@@ -2,7 +2,6 @@ import { nextConfig } from '@/config/config';
 import { getAuthToken } from '@/lib/utils/getAuthToken';
 import providesList from '@/lib/utils/providesList';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-console.log(nextConfig.BACKEND_URL);
 export const productApi = createApi({
   reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({

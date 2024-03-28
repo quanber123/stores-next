@@ -12,15 +12,19 @@ const useQueryString = (): [
   const createQueryString = useCallback(
     (name: string, value?: string) => {
       const params = new URLSearchParams(searchQuery.toString());
-      value && params.set(name, value);
-      router.push(pathname + '?' + params.toString());
+      if (value) {
+        params.set(name, value);
+      } else {
+        params.delete(name);
+      }
+      router.push(`${pathname}?${params.toString()}`);
     },
-    [searchQuery, pathname, router]
+    [router]
   );
 
   const deleteQueryString = useCallback(() => {
-    router.push(pathname + '?' + 'page=1');
-  }, []);
+    router.push(pathname + '?' + 'page=1', { scroll: true });
+  }, [router]);
 
   return [createQueryString, deleteQueryString];
 };
