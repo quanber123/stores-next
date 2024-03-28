@@ -23,7 +23,7 @@ function Categories() {
     return categories.map((c, index) => {
       return (
         <article
-          className='relative w-[280px] h-[180px] border border-gray-200 cursor-pointer overflow-hidden'
+          className='relative w-full max-w-[280px] flex-shrink-0 h-[180px] border border-gray-200 cursor-pointer overflow-hidden'
           key={c._id}
           onMouseEnter={() => setCategoryHover(index)}
           onMouseLeave={() => setCategoryHover(null)}
@@ -81,8 +81,10 @@ function Categories() {
     });
   }, [categories, categoryHover]);
   return (
-    <section className='container w-full px-8 flex justify-center items-center gap-9 overflow-y-auto'>
-      {renderedCategories}
+    <section className='container px-8 flex justify-center items-center'>
+      <div className='m-auto w-full flex justify-start items-center gap-9 overflow-y-auto'>
+        {renderedCategories}
+      </div>
     </section>
   );
 }

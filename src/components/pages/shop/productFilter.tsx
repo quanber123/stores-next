@@ -122,17 +122,17 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
     [inputValue]
   );
   return (
-    <section className='container text-gray-500 flex flex-col'>
+    <section className='container px-4 md:px-0 text-gray-500 flex flex-col'>
       <div className='flex flex-col md:flex-row justify-between items-center gap-[20px] md:gap-0'>
-        <ul className='py-4 max-w-[320px] sm:w-full flex justify-center md:justify-start items-center gap-[24px] text-lg overflow-auto'>
+        <ul className='py-4 w-full flex justify-start items-center gap-[24px] text-lg overflow-y-auto'>
           <li className='relative py-2 font-medium'>
             <button
               className={`${
                 searchQuery.get('category') === null && 'text-violet-500'
-              } ?`}
+              } w-max`}
               onClick={deleteQueryString}
             >
-              All
+              All Products
             </button>
             <span
               style={{ transition: 'width 0.3s ease' }}

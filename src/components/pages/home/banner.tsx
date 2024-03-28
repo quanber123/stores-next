@@ -2,9 +2,11 @@
 import { getBanners } from '@/api/bannerApi';
 import { Banner } from '@/types/types';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function Banners() {
+  const router = useRouter();
   const [banners, setBanners] = useState<Banner[]>([]);
   const [currArticle, setCurrArticle] = useState(0);
   useEffect(() => {
@@ -57,7 +59,12 @@ export default function Banners() {
             <p className='text-2xl md:text-6xl font-bold capitalize'>
               {b.sub_content}
             </p>
-            <button className='w-[128px] md:w-[162px] h-[36px] md:h-[46px] font-medium text-white bg-neutral-500 transition-colors hover:bg-violet-500 rounded-[23px]'>
+            <button
+              className='w-[128px] md:w-[162px] h-[36px] md:h-[46px] font-medium text-white bg-neutral-500 transition-colors hover:bg-violet-500 rounded-[23px]'
+              onClick={() =>
+                router.push(`/shop?page=1?category=${b.category.name}`)
+              }
+            >
               Shop Now
             </button>
           </div>
