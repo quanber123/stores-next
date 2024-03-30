@@ -4,6 +4,7 @@ import { Category } from '@/types/types';
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import LazyLoadImage from '@/components/(ui)/lazyloadImage';
 function Categories() {
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -28,7 +29,7 @@ function Categories() {
           onMouseEnter={() => setCategoryHover(index)}
           onMouseLeave={() => setCategoryHover(null)}
         >
-          <Image
+          <LazyLoadImage
             className='w-full h-full object-cover'
             width={300}
             height={250}

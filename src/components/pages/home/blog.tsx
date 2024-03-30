@@ -18,6 +18,7 @@ const Blogs = () => {
           <PreviewBlog
             key={b._id}
             blog={b}
+            type='home-page'
             style={{
               width: `calc(${width}% - 20px)`,
               flexShrink: 0,

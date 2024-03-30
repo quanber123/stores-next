@@ -62,7 +62,7 @@ export default function Shop() {
     fetchTags();
   }, []);
   return (
-    <main className='flex min-h-screen flex-col items-center gap-[24px] py-24 px-8'>
+    <div className='flex flex-col items-center gap-[24px] px-8 py-8'>
       <DynamicProductFilter categories={categories} tags={tags} />
       {isSuccessProductsData &&
         productsData?.products?.length === 0 &&
@@ -81,8 +81,9 @@ export default function Shop() {
             'container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[40px]'
           }
           heightItem='h-[420px]'
+          amount={8}
         />
       )}
-    </main>
+    </div>
   );
 }

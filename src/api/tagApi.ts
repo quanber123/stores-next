@@ -1,6 +1,5 @@
-import { nextConfig } from '@/config/config';
 export async function getTags() {
-  const res = await fetch(`${nextConfig.BACKEND_URL}tags`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/tags`, {
     cache: 'force-cache',
     next: {
       revalidate: 3600,

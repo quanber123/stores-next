@@ -2,10 +2,11 @@ import React from 'react';
 type Props = {
   sectionClass?: string;
   heightItem?: string;
+  amount: number;
 };
-const LoadingItem: React.FC<Props> = ({ sectionClass, heightItem }) => {
+const LoadingItem: React.FC<Props> = ({ sectionClass, heightItem, amount }) => {
   const loadingItems = [];
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < amount; i++) {
     loadingItems.push(
       <article className={`flex flex-col gap-[24px] ${heightItem}`} key={i}>
         <div className='skeleton w-full h-3/4'></div>

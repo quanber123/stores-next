@@ -1,7 +1,27 @@
-import { Roboto } from 'next/font/google';
-import StoreProvider from './StoreProvider';
-import UiProvider from './UiProvider';
 import './globals.css';
+import { Roboto } from 'next/font/google';
+import dynamic from 'next/dynamic';
+import UiProvider from '@/context/UiProvider';
+import StoreProvider from '@/context/StoreProvider';
+import { ModalProvider } from '@/context/ModalProvider';
+const DynamicHeader = dynamic(() => import('@/components/common/header'), {
+  loading: () => (
+    <div
+      style={{ boxShadow: '0 0px 3px 0px rgba(0, 0, 0, 0.2)' }}
+      className='fixed top-0 left-0 w-full h-[64px] z-[100] flex items-center'
+    >
+      <div className='container m-auto px-4 flex justify-between items-center gap-20'>
+        <div className='skeleton w-[150px] h-[32px]'></div>
+        <div className='skeleton w-[150px] h-[38px]'></div>
+      </div>
+    </div>
+  ),
+  ssr: false,
+});
+const DynamicFooter = dynamic(() => import('@/components/common/footer'), {
+  loading: () => <div className='skeleton mt-24 w-full h-[320px]'></div>,
+  ssr: false,
+});
 const roboto = Roboto({
   subsets: ['latin'],
   weight: ['100', '300', '400', '500', '700', '900'],
@@ -9,19 +29,26 @@ const roboto = Roboto({
 interface RootLayoutProps {
   children: React.ReactNode;
 }
-
-export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
+export default async function RootLayout({
+  children,
+}: RootLayoutProps): Promise<JSX.Element> {
   return (
     <html lang='vi'>
       <head>
         <link
           rel='icon'
-          href='http://localhost:3000/public/images/logo-04.png-fotor-2023121102555.png'
+          href={`${process.env.NEXT_PUBLIC_BACKEND_URL}public/images/logo-04.png-fotor-2023121102555.png`}
         />
       </head>
       <body className={roboto.className}>
         <UiProvider>
-          <StoreProvider>{children}</StoreProvider>
+          <StoreProvider>
+            <ModalProvider>
+              <DynamicHeader />
+              <main className='min-h-screen flex-1'>{children}</main>
+              <DynamicFooter />
+            </ModalProvider>
+          </StoreProvider>
         </UiProvider>
       </body>
     </html>

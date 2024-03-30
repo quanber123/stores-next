@@ -1,8 +1,8 @@
 import { getAuthToken } from '@/lib/utils/getAuthToken';
 import providesList from '@/lib/utils/providesList';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-export const productApi = createApi({
-  reducerPath: 'productApi',
+export const userApi = createApi({
+  reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}api`,
     prepareHeaders: (headers) => {
@@ -13,23 +13,24 @@ export const productApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['products', 'productDetails'],
+  tagTypes: ['users'],
   endpoints: (builder) => {
     return {
-      getProducts: builder.query({
-        query: (query) => {
-          return `products?${query}`;
+      getUser: builder.query({
+        query: () => {
+          return `auth/get-user`;
         },
-        providesTags: (result) => providesList(result, 'products'),
+        providesTags: (result) => providesList(result, 'users'),
       }),
-      getProductsById: builder.query({
-        query: (id) => {
-          return `products/${id}`;
-        },
-        providesTags: (result) => providesList(result, 'productDetails'),
+      userLogin: builder.mutation({
+        query: (body) => ({
+          url: 'auth/login',
+          method: 'POST',
+          body: body,
+        }),
       }),
     };
   },
 });
 
-export const { useGetProductsQuery, useGetProductsByIdQuery } = productApi;
+export const { useGetUserQuery, useUserLoginMutation } = userApi;

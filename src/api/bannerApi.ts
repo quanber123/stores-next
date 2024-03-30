@@ -1,6 +1,5 @@
-import { nextConfig } from '@/config/config';
 export async function getBanners() {
-  const res = await fetch(`${nextConfig.BACKEND_URL}banners`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}api/banners`, {
     cache: 'force-cache',
     next: {
       revalidate: 3600,

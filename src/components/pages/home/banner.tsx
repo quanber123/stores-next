@@ -60,7 +60,7 @@ export default function Banners() {
               {b.sub_content}
             </p>
             <button
-              className='w-[128px] md:w-[162px] h-[36px] md:h-[46px] font-medium text-white bg-neutral-500 transition-colors hover:bg-violet-500 rounded-[23px]'
+              className='w-[128px] md:w-[162px] h-[36px] md:h-[46px] font-medium text-white bg-neutral-700 transition-colors hover:bg-violet-500 rounded-[23px]'
               onClick={() =>
                 router.push(`/shop?page=1?category=${b.category.name}`)
               }

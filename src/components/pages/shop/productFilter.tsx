@@ -124,7 +124,7 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
   return (
     <section className='container px-4 md:px-0 text-gray-500 flex flex-col'>
       <div className='flex flex-col md:flex-row justify-between items-center gap-[20px] md:gap-0'>
-        <ul className='py-4 w-full flex justify-start items-center gap-[24px] text-lg overflow-y-auto'>
+        <ul className='py-4 w-full flex justify-start items-center gap-[24px] overflow-y-auto'>
           <li className='relative py-2 font-medium'>
             <button
               className={`${
@@ -146,7 +146,7 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
         <div className='flex items-center gap-4'>
           <button
             style={{ transition: 'all 0.2s ease' }}
-            className='flex items-center gap-2 border border-gray-200 rounded px-8 py-3 hover:text-violet-500 hover:border-violet-500'
+            className='flex items-center gap-2 border border-gray-200 rounded px-8 py-3 hover:text-violet-500 hover:border-violet-500 text-sm'
             onClick={() => handleDropdown('filterDropdown')}
           >
             <span
@@ -156,7 +156,7 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
           </button>
           <button
             style={{ transition: 'all 0.2s ease' }}
-            className='flex items-center gap-2 border border-gray-200 rounded px-8 py-3 hover:text-violet-500 hover:border-violet-500'
+            className='flex items-center gap-2 border border-gray-200 rounded px-8 py-3 hover:text-violet-500 hover:border-violet-500 text-sm'
             onClick={() => handleDropdown('searchDropdown')}
           >
             <span

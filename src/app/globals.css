@@ -16,6 +16,14 @@ body {
 * {
   box-sizing: border-box;
 }
+main {
+  padding-top: 64px;
+}
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 4px;
@@ -32,7 +40,6 @@ body {
   background: #666666;
   border-radius: 2px;
 }
-
 .skeleton {
   opacity: 0.7;
   animation: skeleton-loading 1s linear infinite alternate;
@@ -43,65 +50,6 @@ body {
   }
   to {
     background-color: hsl(200, 20%, 95%);
-  }
-}
-
-.loader {
-  width: 48px;
-  height: 48px;
-  position: relative;
-}
-.loader::before,
-.loader::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 48em;
-  height: 48em;
-  background-image: radial-gradient(circle 10px, #716fe0 100%, transparent 0),
-    radial-gradient(circle 10px, #716fe0 100%, transparent 0),
-    radial-gradient(circle 10px, #716fe0 100%, transparent 0),
-    radial-gradient(circle 10px, #716fe0 100%, transparent 0),
-    radial-gradient(circle 10px, #716fe0 100%, transparent 0),
-    radial-gradient(circle 10px, #716fe0 100%, transparent 0),
-    radial-gradient(circle 10px, #716fe0 100%, transparent 0),
-    radial-gradient(circle 10px, #716fe0 100%, transparent 0);
-  background-position: 0em -18em, 0em 18em, 18em 0em, -18em 0em, 13em -13em,
-    -13em -13em, 13em 13em, -13em 13em;
-  background-repeat: no-repeat;
-  font-size: 0.5px;
-  border-radius: 50%;
-  animation: blast 1s ease-in infinite;
-}
-.loader::after {
-  font-size: 1px;
-  background: #716fe0;
-  animation: bounce 1s ease-in infinite;
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    font-size: 0.75px;
-  }
-  50% {
-    font-size: 1.5px;
-  }
-}
-@keyframes blast {
-  0%,
-  40% {
-    font-size: 0.5px;
-  }
-  70% {
-    opacity: 1;
-    font-size: 4px;
-  }
-  100% {
-    font-size: 6px;
-    opacity: 0;
   }
 }
 
@@ -161,4 +109,36 @@ body {
   opacity: 0;
   transform: translateY(200%);
   z-index: 3;
+}
+
+.bars::before {
+  position: absolute;
+  content: '';
+  top: 50%;
+  left: 0;
+  width: 26px;
+  height: 3px;
+  background-color: #333333;
+  transform: rotate(0);
+  transition: all 0.3s linear;
+  -webkit-transition: all 0.3s linear;
+  opacity: 1;
+  z-index: 20;
+}
+.bars:first-child::before {
+  top: 30%;
+}
+.bars:nth-child(3):before {
+  top: 70%;
+}
+.bars.bars.active:nth-child(2)::before {
+  opacity: 0;
+}
+.bars.active:first-child::before {
+  top: 50%;
+  transform: rotate(45deg);
+}
+.bars.active:nth-child(3):before {
+  top: 50%;
+  transform: rotate(-45deg);
 }
