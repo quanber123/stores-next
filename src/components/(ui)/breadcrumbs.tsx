@@ -11,7 +11,7 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
     (r: string | undefined) => {
       r !== name && router.push(`/${r}`);
     },
-    [pathname]
+    [pathname, name, router]
   );
   const renderedBreadcrumbs = useMemo(() => {
     return formatArr?.map((b, index) => {

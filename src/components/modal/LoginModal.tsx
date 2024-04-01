@@ -45,7 +45,7 @@ function LoginModal() {
         return { ...prevForm, [name]: value };
       });
     },
-    [form]
+    []
   );
   const googleLogin = () => {
     window.open(
@@ -68,7 +68,7 @@ function LoginModal() {
       email: '',
       password: '',
     });
-  }, [state.visibleLoginModal]);
+  }, [state.visibleLoginModal, setVisibleModal]);
   useEffect(() => {
     if (isSuccessLogin && !isLoadingUser && statusLogin === 'fulfilled') {
       closeAllModal();
@@ -89,7 +89,17 @@ function LoginModal() {
       email: '',
       password: '',
     });
-  }, [isSuccessLogin, isLoadingUser, statusLogin, errorLogin]);
+  }, [
+    isSuccessLogin,
+    isLoadingUser,
+    dataLogin,
+    statusLogin,
+    errorLogin,
+    pathname,
+    dispatch,
+    setVisibleModal,
+    closeAllModal,
+  ]);
   return (
     <section
       className={`login-form ${state.visibleLoginModal ? 'active' : ''}`}

@@ -18,12 +18,12 @@ const useQueryString = (): [
       }
       return router.push(`${pathname}?${params.toString()}`);
     },
-    [router, searchQuery]
+    [router, searchQuery, pathname]
   );
 
   const deleteQueryString = useCallback(() => {
     router.push(pathname + '?' + 'page=1', { scroll: true });
-  }, [router]);
+  }, [router, pathname]);
 
   return [createQueryString, deleteQueryString];
 };

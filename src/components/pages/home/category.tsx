@@ -80,7 +80,7 @@ function Categories() {
         </article>
       );
     });
-  }, [categories, categoryHover]);
+  }, [categories, categoryHover, router]);
   return (
     <section className='container px-8 flex justify-center items-center'>
       <div className='m-auto w-full flex justify-start items-center gap-9 overflow-y-auto'>

@@ -20,7 +20,7 @@ const Header = () => {
     if (isSuccessGetUser) {
       dispatch(setUser(userData));
     }
-  }, [isSuccessGetUser]);
+  }, [isSuccessGetUser, userData, dispatch]);
   const router = useRouter();
   const pathname = usePathname();
   const routes = [

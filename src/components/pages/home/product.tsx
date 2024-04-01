@@ -17,7 +17,7 @@ const Products = () => {
         return <PreviewProduct key={p._id} product={p} />;
       })
     );
-  }, [productsData]);
+  }, [isSuccessProductsData, productsData]);
   return (
     <section className='container px-8 flex flex-col items-center gap-8'>
       <h2 className='text-xl sm:text-4xl md:text-6xl text-neutral-700 font-bold'>

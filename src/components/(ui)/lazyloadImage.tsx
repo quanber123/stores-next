@@ -35,7 +35,7 @@ function LazyLoadImage(props: LazyLoadImageProps) {
       observer.observe(imgElement);
       return () => observer.disconnect();
     }
-  }, []);
+  }, [props.src]);
 
   // Function to handle image loaded
   const handleImageLoad = () => {

@@ -20,13 +20,13 @@ const ListImages: React.FC<Props> = ({ images }) => {
       if (prevIndex === images.length - 1) return 0;
       return prevIndex + 1;
     });
-  }, [images.length, indexImage]);
+  }, [images.length]);
   useEffect(() => {
     const infiniteSlider = setInterval(() => {
       handleNext();
     }, 5000);
     return clearInterval(infiniteSlider);
-  }, []);
+  }, [handleNext]);
   const renderListImage = useMemo(
     () =>
       images.map((image, index) => {

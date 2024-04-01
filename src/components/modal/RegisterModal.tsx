@@ -55,14 +55,14 @@ function RegisterModal() {
       email: '',
       password: '',
     });
-  }, [state.visibleRegisterModal]);
-  const handleVerifiedEmail = () => {
+  }, [state.visibleRegisterModal, setVisibleModal]);
+  const handleVerifiedEmail = useCallback(() => {
     registerUser({
       name: form.name,
       email: form.email,
       password: form.password,
     });
-  };
+  }, [registerUser]);
   useEffect(() => {
     if (
       isSuccessRegister &&
@@ -83,7 +83,16 @@ function RegisterModal() {
         },
       });
     }
-  }, [isSuccessRegister, isLoadingRegister, statusRegister, errorRegister]);
+  }, [
+    isSuccessRegister,
+    isLoadingRegister,
+    dataRegister,
+    statusRegister,
+    errorRegister,
+    dispatch,
+    closeAllModal,
+    setVisibleModal,
+  ]);
   return (
     <section
       className={`${state.visibleRegisterModal ? 'active' : ''} register-form`}

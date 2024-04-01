@@ -7,13 +7,13 @@ export const useCarousel = (length: number) => {
     setIndexCarousel((prevIndex) =>
       prevIndex - 1 < 0 ? length - breakpoints : prevIndex - 1
     );
-  }, [length]);
+  }, [length, breakpoints]);
 
   const handleNext = useCallback(() => {
     setIndexCarousel((prevIndex) =>
       prevIndex + 1 >= length - (breakpoints - 1) ? 0 : prevIndex + 1
     );
-  }, [length]);
+  }, [length, breakpoints]);
 
   const handleResize = useCallback(() => {
     let newBreakpoints;
@@ -27,7 +27,7 @@ export const useCarousel = (length: number) => {
       newBreakpoints = 1;
     }
     setBreakPoints(newBreakpoints);
-  }, [breakpoints]);
+  }, []);
 
   useEffect(() => {
     const infinite = setInterval(() => {
@@ -39,7 +39,7 @@ export const useCarousel = (length: number) => {
       window.clearInterval(infinite);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [handleNext, handleResize]);
 
   const width = useMemo(() => {
     return 100 / breakpoints;

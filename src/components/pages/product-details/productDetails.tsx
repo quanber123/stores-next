@@ -23,14 +23,14 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
             .flatMap((v) => v.color)
         )
       ),
-    [selectedSizes]
+    [selectedSizes, details.variants]
   );
   const [selectedColors, setSelectedColors] = useState<string>(colors[0]);
   const curVariants = useMemo(() => {
     return details.variants.find(
       (v) => v.size === selectedSizes && v.color === selectedColors
     );
-  }, [selectedColors, selectedSizes]);
+  }, [selectedColors, selectedSizes, details.variants]);
   const [amount, setAmount] = useState<number>(curVariants?.quantity || 0);
   const [totalQuantity, setTotalQuantity] = useState(1);
   const handleSelectedSizes = useCallback(
@@ -63,7 +63,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         </li>
       );
     });
-  }, [selectedSizes, product]);
+  }, [selectedSizes, product, handleSelectedSizes, sizes]);
   const renderedColors = useMemo(() => {
     return colors.map((c, index) => {
       return (
@@ -81,7 +81,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         </li>
       );
     });
-  }, [selectedSizes, selectedColors, product]);
+  }, [selectedSizes, selectedColors, product, colors]);
   const handleChangeCount = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       if (Number(e.target.value) >= amount) {
@@ -92,7 +92,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
       }
       return setTotalQuantity(Number(e.target.value));
     },
-    [product]
+    [product, amount]
   );
   const handleUpdateCount = useCallback(
     (type: string) => {
@@ -115,7 +115,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         });
       }
     },
-    [product]
+    [product, amount]
   );
   return (
     <div className='flex flex-col gap-6'>

@@ -71,7 +71,7 @@ export default function Banners() {
         </article>
       );
     });
-  }, [banners, currArticle]);
+  }, [banners, currArticle, router]);
   return (
     <section className='relative w-full h-[320px] sm:h-[480px] md:h-[640px] lg:h-[100vh] overflow-hidden'>
       {renderedBanners}

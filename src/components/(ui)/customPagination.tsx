@@ -22,7 +22,7 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
         createQueryString('page', nextPage.toString());
       }
     },
-    [createQueryString, searchQuery.get('page')]
+    [createQueryString, activePage, onNext, searchQuery]
   );
 
   const handlePrevious = useCallback(
@@ -35,14 +35,14 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
         createQueryString('page', prev.toString());
       }
     },
-    [createQueryString, searchQuery.get('page')]
+    [createQueryString, activePage, onNext, searchQuery]
   );
   const handleSetPage = useCallback(
     (page: number) => {
       setPage(page);
       createQueryString('page', page.toString());
     },
-    [activePage, setPage]
+    [createQueryString, activePage, onNext, searchQuery]
   );
   return (
     <div className='flex flex-col gap-2'>

@@ -18,11 +18,14 @@ const useClickOutside = (modal: any) => {
     },
     [setVisibleModal, modalRef, modal]
   );
-  const handleKeyPress = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      closeAllModal();
-    }
-  }, []);
+  const handleKeyPress = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeAllModal();
+      }
+    },
+    [closeAllModal]
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);

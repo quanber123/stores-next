@@ -58,7 +58,7 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
         </li>
       );
     });
-  }, [categories, searchQuery]);
+  }, [categories, searchQuery, createQueryString]);
   const renderedTags = useMemo(() => {
     return tags?.map((t) => {
       return (
@@ -78,7 +78,7 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
         </li>
       );
     });
-  }, [searchQuery, tags]);
+  }, [searchQuery, tags, createQueryString]);
   const renderedSortBtn = useMemo(() => {
     return sortButtons.map((b) => {
       return (
@@ -96,21 +96,18 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
         </li>
       );
     });
-  }, [sortButtons, searchQuery]);
-  const handleDropdown = useCallback(
-    (dropdown: string) => {
-      setDropdown((prevState) => {
-        if (prevState === dropdown) return '';
-        return dropdown;
-      });
-    },
-    [dropdown]
-  );
+  }, [sortButtons, searchQuery, createQueryString]);
+  const handleDropdown = useCallback((dropdown: string) => {
+    setDropdown((prevState) => {
+      if (prevState === dropdown) return '';
+      return dropdown;
+    });
+  }, []);
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue(event.target.value);
     },
-    [inputValue]
+    []
   );
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -119,7 +116,7 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
         inputValue === '' && deleteQueryString();
       }
     },
-    [inputValue]
+    [inputValue, createQueryString, deleteQueryString]
   );
   return (
     <section className='container px-4 md:px-0 text-gray-500 flex flex-col'>
