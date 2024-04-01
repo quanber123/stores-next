@@ -22,7 +22,7 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
         createQueryString('page', nextPage.toString());
       }
     },
-    [createQueryString, activePage, onNext, searchQuery]
+    [createQueryString, activePage, onNext, searchQuery, setPage, totalPage]
   );
 
   const handlePrevious = useCallback(
@@ -35,7 +35,7 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
         createQueryString('page', prev.toString());
       }
     },
-    [createQueryString, activePage, onNext, searchQuery]
+    [createQueryString, activePage, onNext, onPrevious, setPage, searchQuery]
   );
   const handleSetPage = useCallback(
     (page: number) => {

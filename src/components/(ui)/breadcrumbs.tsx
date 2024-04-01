@@ -33,7 +33,7 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
         </React.Fragment>
       );
     });
-  }, [pathname]);
+  }, [pathname, name, formatArr, handleRedirect]);
   return (
     <section className='container'>
       <ul className='flex items-center gap-2 text-md font-bold'>
