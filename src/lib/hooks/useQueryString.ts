@@ -8,7 +8,6 @@ const useQueryString = (): [
   const searchQuery = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-
   const createQueryString = useCallback(
     (name: string, value?: string) => {
       const params = new URLSearchParams(searchQuery.toString());
@@ -17,9 +16,9 @@ const useQueryString = (): [
       } else {
         params.delete(name);
       }
-      router.push(`${pathname}?${params.toString()}`);
+      return router.push(`${pathname}?${params.toString()}`);
     },
-    [router]
+    [router, searchQuery]
   );
 
   const deleteQueryString = useCallback(() => {
