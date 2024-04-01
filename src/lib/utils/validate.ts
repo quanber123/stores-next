@@ -4,7 +4,6 @@ export const validateEmptyStr = (str: string | string[]): boolean => {
   }
   return typeof str === 'string' && str.trim() === '';
 };
-
 export function validateEmail(email: string) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
