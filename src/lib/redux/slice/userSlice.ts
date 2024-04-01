@@ -71,6 +71,7 @@ export const getCurAddress = (state: { user: State }) => state.user.curDelivery;
 export const getAllCarts = (state: { user: State }) => state.user.cart;
 export const getAllFavorites = (state: { user: State }) => state.user.favorite;
 export const {
+  setToken,
   setUser,
   setCurDelivery,
   setAllCarts,
