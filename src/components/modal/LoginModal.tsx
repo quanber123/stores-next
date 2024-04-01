@@ -68,7 +68,7 @@ function LoginModal() {
       email: '',
       password: '',
     });
-  }, [state.visibleLoginModal, setVisibleModal]);
+  }, [setVisibleModal]);
   useEffect(() => {
     if (isSuccessLogin && !isLoadingUser && statusLogin === 'fulfilled') {
       closeAllModal();
@@ -248,7 +248,7 @@ function LoginModal() {
           </button>
         </div>
         <div className='flex justify-center items-center gap-[10px]'>
-          <p className='text-mediumGray'>Don't have an account?</p>
+          <p className='text-mediumGray'>Don&#39;t have an account?</p>
           <button
             className='text-mediumGray hover:text-blue font-bold'
             onClick={changeModal}

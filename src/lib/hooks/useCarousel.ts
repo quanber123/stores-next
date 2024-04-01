@@ -43,6 +43,6 @@ export const useCarousel = (length: number) => {
 
   const width = useMemo(() => {
     return 100 / breakpoints;
-  }, [breakpoints, handleResize]);
+  }, [breakpoints]);
   return { breakpoints, width, indexCarousel, handlePrev, handleNext };
 };

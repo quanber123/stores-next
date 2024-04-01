@@ -55,14 +55,14 @@ function RegisterModal() {
       email: '',
       password: '',
     });
-  }, [state.visibleRegisterModal, setVisibleModal]);
+  }, [setVisibleModal]);
   const handleVerifiedEmail = useCallback(() => {
     registerUser({
       name: form.name,
       email: form.email,
       password: form.password,
     });
-  }, [registerUser]);
+  }, [registerUser, form.name, form.email, form.password]);
   useEffect(() => {
     if (
       isSuccessRegister &&

@@ -37,7 +37,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
     (size: string) => {
       setSelectedSizes(size);
     },
-    [selectedSizes, selectedColors, product]
+    [selectedSizes]
   );
   useEffect(() => {
     setSelectedColors(colors[0]);
@@ -63,7 +63,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         </li>
       );
     });
-  }, [selectedSizes, product, handleSelectedSizes, sizes]);
+  }, [selectedSizes, handleSelectedSizes, sizes]);
   const renderedColors = useMemo(() => {
     return colors.map((c, index) => {
       return (
@@ -81,7 +81,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         </li>
       );
     });
-  }, [selectedSizes, selectedColors, product, colors]);
+  }, [selectedColors, colors]);
   const handleChangeCount = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       if (Number(e.target.value) >= amount) {
@@ -92,7 +92,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
       }
       return setTotalQuantity(Number(e.target.value));
     },
-    [product, amount]
+    [amount]
   );
   const handleUpdateCount = useCallback(
     (type: string) => {
@@ -115,7 +115,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         });
       }
     },
-    [product, amount]
+    [amount]
   );
   return (
     <div className='flex flex-col gap-6'>

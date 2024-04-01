@@ -43,7 +43,7 @@ function Footer() {
           </li>
         );
       }),
-    []
+    [helps]
   );
   return (
     <footer className='mt-24 py-[75px] px-8 bg-neutral-800 text-gray-100'>

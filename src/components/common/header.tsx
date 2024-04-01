@@ -51,7 +51,7 @@ const Header = () => {
         </li>
       );
     });
-  }, [routes, pathname]);
+  }, [routes, pathname, router]);
   return (
     <header
       style={{ boxShadow: '0 0px 3px 0px rgba(0, 0, 0, 0.2)' }}

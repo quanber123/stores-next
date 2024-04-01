@@ -11,7 +11,7 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
     (r: string | undefined) => {
       r !== name && router.push(`/${r}`);
     },
-    [pathname, name, router]
+    [name, router]
   );
   const renderedBreadcrumbs = useMemo(() => {
     return formatArr?.map((b, index) => {
@@ -33,7 +33,7 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
         </React.Fragment>
       );
     });
-  }, [pathname, name, formatArr, handleRedirect]);
+  }, [name, formatArr, handleRedirect]);
   return (
     <section className='container'>
       <ul className='flex items-center gap-2 text-md font-bold'>
