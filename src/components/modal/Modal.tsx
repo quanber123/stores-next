@@ -5,6 +5,7 @@ import './Modal.css';
 import { useSelector } from 'react-redux';
 import { userInfo } from '@/lib/redux/slice/userSlice';
 const LoginModal = lazy(() => import('./LoginModal'));
+const RegisterModal = lazy(() => import('./RegisterModal'));
 const ToastModal = lazy(() => import('./ToastModal'));
 
 const Modal = () => {
@@ -13,6 +14,7 @@ const Modal = () => {
   return (
     <Suspense>
       {!user && <LoginModal />}
+      {!user && <RegisterModal />}
       {state.visibleToastModal && <ToastModal />}
     </Suspense>
   );

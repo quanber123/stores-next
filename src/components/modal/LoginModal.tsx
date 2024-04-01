@@ -62,6 +62,13 @@ function LoginModal() {
   const handleLoginUser = () => {
     loginUser(form);
   };
+  const changeModal = useCallback(() => {
+    setVisibleModal('visibleRegisterModal');
+    setForm({
+      email: '',
+      password: '',
+    });
+  }, [state.visibleLoginModal]);
   useEffect(() => {
     if (isSuccessLogin && !isLoadingUser && statusLogin === 'fulfilled') {
       closeAllModal();
@@ -96,7 +103,7 @@ function LoginModal() {
         <button
           className='absolute top-[20px] right-[20px] w-[40px] h-[40px] flex justify-center items-center text-md bg-neutral-200 rounded-full'
           aria-label='close-modal'
-          onClick={() => setVisibleModal('visibleLoginModal')}
+          onClick={closeAllModal}
           dangerouslySetInnerHTML={{ __html: Icons.xmark_icon }}
         ></button>
         <h1 className='w-full text-gray-700 font-bold text-lg md:text-2xl text-center'>
@@ -234,7 +241,7 @@ function LoginModal() {
           <p className='text-mediumGray'>Don't have an account?</p>
           <button
             className='text-mediumGray hover:text-blue font-bold'
-            onClick={() => setVisibleModal('visibleRegisterModal')}
+            onClick={changeModal}
           >
             Sign Up
           </button>

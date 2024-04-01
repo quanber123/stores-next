@@ -1,4 +1,5 @@
-.login-form {
+.login-form,
+.register-form {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -16,13 +17,15 @@
   overflow: hidden;
   z-index: -10;
 }
-.login-form.active {
+.login-form.active,
+.register-form.active {
   width: 100vw;
   height: 100vh;
   opacity: 1;
   z-index: 999;
 }
-.login-form > form {
+.login-form > form,
+.register-form > form {
   position: relative;
   background-color: #fff;
   max-width: 460px;
@@ -35,13 +38,15 @@
   border-radius: 10px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
-.wrap-input-login {
+.wrap-input-login,
+.wrap-input-register {
   width: 100%;
   cursor: text;
   position: relative;
 }
 
-.wrap-input-login > label {
+.wrap-input-login > label,
+.wrap-input-register > label {
   cursor: text;
   position: absolute;
   top: 50%;
@@ -53,10 +58,12 @@
   -webkit-transition: transform 0.2s linear;
   z-index: 10;
 }
-.wrap-input-login > label.active {
+.wrap-input-login > label.active,
+.wrap-input-register > label.active {
   transform: translateY(-150%);
 }
-.wrap-input-login > input {
+.wrap-input-login > input,
+.wrap-input-register > input {
   all: unset;
   padding: 0 5px;
   width: 100%;
@@ -64,7 +71,8 @@
   font-size: 15px;
   background-color: transparent;
 }
-.focus-input-login::before {
+.focus-input-login::before,
+.focus-input-register::before {
   position: absolute;
   content: '';
   bottom: 0;
@@ -74,7 +82,8 @@
   height: 2px;
   z-index: 1;
 }
-.focus-input-login::after {
+.focus-input-login::after,
+.focus-input-register::after {
   position: absolute;
   content: '';
   bottom: 0;
@@ -87,15 +96,18 @@
   -webkit-transition: all 0.3s linear;
   z-index: 2;
 }
-.focus-input-login.active::after {
+.focus-input-login.active::after,
+.focus-input-register.active::after {
   width: 100%;
 }
-.login-form-btn {
+.login-form-btn,
+.register-form-btn {
   position: relative;
   border-radius: 26px;
   overflow: hidden;
 }
-.login-form-btn > button {
+.login-form-btn > button,
+.register-form-btn > button {
   width: 100%;
   height: 50px;
   padding: 0 20px;
@@ -120,7 +132,8 @@
   -webkit-transition: background-position 0.5s ease-in-out;
 }
 
-.login-form-btn > button::after {
+.login-form-btn > button::after,
+.register-form-btn > button::after {
   position: absolute;
   content: '';
   top: 0;
@@ -136,9 +149,11 @@
   transition: left 0.5s ease-in-out;
   z-index: 100;
 }
-.login-form-btn > button:hover {
+.login-form-btn > button:hover,
+.register-form-btn > button:hover {
   background-position: 100%;
 }
-.login-form-btn > button:hover::after {
+.login-form-btn > button:hover::after,
+.register-form-btn > button:hover::after {
   left: 100%;
 }
