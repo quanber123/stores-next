@@ -19,15 +19,13 @@ const ValidateMessage: React.FC<Props> = ({
         customClassName ? customClassName : `absolute -bottom-2/3`
       }`}
     >
-      {!isValidate && (
-        <p
-          className={`${
-            isValidate ? 'text-green-500' : 'text-red-500'
-          } font-bold text-sm`}
-        >
-          {message}
-        </p>
-      )}
+      <p
+        className={`${
+          isValidate ? 'text-green-500 hidden' : 'text-red-500'
+        } font-bold text-sm`}
+      >
+        {message}
+      </p>
       {icon && (
         <span
           className={iconClassName}
