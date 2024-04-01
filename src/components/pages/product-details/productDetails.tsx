@@ -192,7 +192,9 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
       <div className='flex flex-col sm:flex-row justify-center lg:justify-start lg:items-stretch gap-4'>
         <button className='rounded px-6 py-3 border bg-violet-50 border-violet-500 text-violet-500 hover:bg-white transition-all duration-200 flex justify-center items-center gap-2'>
           <span className='uppercase'>Add to cart</span>
-          <span dangerouslySetInnerHTML={{ __html: Icons.cart_icon }}></span>
+          <span
+            dangerouslySetInnerHTML={{ __html: Icons.cart_plus_icon }}
+          ></span>
         </button>
         <button className='uppercase rounded px-12 py-3 bg-violet-500 text-white hover:opacity-80 transition-all duration-200'>
           Buy Now
