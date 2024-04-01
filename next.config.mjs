@@ -31,7 +31,7 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-      process.env.NEXT_ENVIRONMENT === 'development' && {
+      {
         protocol: 'http',
         hostname: 'localhost',
         port: '3000',
