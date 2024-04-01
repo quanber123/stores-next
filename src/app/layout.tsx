@@ -18,6 +18,7 @@ const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   ),
   ssr: false,
 });
+const DynamicModal = dynamic(() => import('@/components/modal/Modal'));
 const DynamicFooter = dynamic(() => import('@/components/common/footer'), {
   loading: () => <div className='skeleton mt-24 w-full h-[320px]'></div>,
   ssr: false,
@@ -46,6 +47,7 @@ export default async function RootLayout({
             <ModalProvider>
               <DynamicHeader />
               <main className='min-h-screen flex-1'>{children}</main>
+              <DynamicModal />
               <DynamicFooter />
             </ModalProvider>
           </StoreProvider>

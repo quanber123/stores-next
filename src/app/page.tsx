@@ -1,9 +1,7 @@
 'use client';
 import LoadingItem from '@/components/(ui)/loadingItem';
-import { token } from '@/lib/redux/slice/userSlice';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { useSelector } from 'react-redux';
 const DynamicBanners = dynamic(() => import('@/components/pages/home/banner'), {
   loading: () => (
     <div className='skeleton w-full h-[320px] sm:h-[480px] md:h-[640px] lg:h-[100vh]'></div>

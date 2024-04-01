@@ -52,6 +52,7 @@ const ListImages: React.FC<Props> = ({ images }) => {
       images.map((image, index) => {
         return (
           <div
+            key={index}
             className='max-w-[76px] w-full min-h-[64px] p-1 rounded overflow-hidden'
             style={{
               border: `${indexImage === index ? '1px solid #ccc' : ''}`,

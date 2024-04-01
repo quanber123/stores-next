@@ -18,6 +18,10 @@ type InitialState = {
   visibleAddAddressModal: boolean;
   visibleUpdateAddressModal: Address;
   visibleReviewsModal: any;
+  visibleToastModal: {
+    type: 'success' | 'error' | 'warning' | 'info';
+    message: string;
+  };
 };
 const SET_VISIBLE_MODAL = 'SET_VISIBLE_MODAL';
 const CLOSE_ALL_MODAL = 'CLOSE_ALL_MODAL';

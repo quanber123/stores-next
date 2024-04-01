@@ -1,13 +1,15 @@
 'use client';
+import { ModalContext } from '@/context/ModalProvider';
 import { useGetUserQuery } from '@/lib/redux/query/userQuery';
 import { setUser, token } from '@/lib/redux/slice/userSlice';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Header = () => {
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
+  const { setVisibleModal } = useContext(ModalContext);
   const accessToken = useSelector(token);
   const dispatch = useDispatch();
   const { data: userData, isSuccess: isSuccessGetUser } = useGetUserQuery(
@@ -74,13 +76,13 @@ const Header = () => {
         <section className='w-full ml-auto text-sm hidden md:flex items-center gap-6'>
           <button
             className='ml-auto font-bold'
-            // onClick={() => setVisibleModal('visibleLoginModal')}
+            onClick={() => setVisibleModal('visibleLoginModal')}
           >
             Login
           </button>
           <button
             className='px-5 py-2 font-bold bg-neutral-700 text-white hover:bg-purple rounded-[28px]'
-            // onClick={() => setVisibleModal('visibleRegisterModal')}
+            onClick={() => setVisibleModal('visibleRegisterModal')}
           >
             Register
           </button>
