@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const helps = ['Track Order', 'Returns', 'Shipping', 'FAQs'];
   const router = useRouter();
   useEffect(() => {
     async function fetchCategories() {
@@ -34,17 +33,18 @@ function Footer() {
       }),
     [categories, router]
   );
-  const renderHelps = useMemo(
-    () =>
-      helps.map((h, index) => {
-        return (
-          <li key={index}>
-            <button className='text-sm'>{h}</button>
-          </li>
-        );
-      }),
-    [helps]
-  );
+
+  const renderHelps = useMemo(() => {
+    const helps = ['Track Order', 'Returns', 'Shipping', 'FAQs'];
+    return helps.map((h, index) => {
+      return (
+        <li key={index}>
+          <button className='text-sm'>{h}</button>
+        </li>
+      );
+    });
+  }, []);
+
   return (
     <footer className='mt-24 py-[75px] px-8 bg-neutral-800 text-gray-100'>
       <div className='container w-full m-auto grid gird-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[40px]'>

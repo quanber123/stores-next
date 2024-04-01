@@ -1,3 +1,4 @@
+'use client';
 import useQueryString from '@/lib/hooks/useQueryString';
 import { Category, Tag } from '@/types/types';
 import { useSearchParams } from 'next/navigation';
@@ -13,28 +14,6 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
   const [dropdown, setDropdown] = useState('');
   const [inputValue, setInputValue] = useState('');
   const searchRef = useRef(null);
-  const sortButtons = [
-    {
-      name: 'Newness',
-      value: 'date',
-      type: 'sort',
-    },
-    {
-      name: 'Oldness',
-      value: '-date',
-      type: 'sort',
-    },
-    {
-      name: 'Price: Low to High',
-      value: '-price',
-      type: 'sort',
-    },
-    {
-      name: 'Price: High to Low',
-      value: 'price',
-      type: 'sort',
-    },
-  ];
   const renderedCategories = useMemo(() => {
     return categories?.map((c) => {
       return (
@@ -80,6 +59,28 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
     });
   }, [searchQuery, tags, createQueryString]);
   const renderedSortBtn = useMemo(() => {
+    const sortButtons = [
+      {
+        name: 'Newness',
+        value: 'date',
+        type: 'sort',
+      },
+      {
+        name: 'Oldness',
+        value: '-date',
+        type: 'sort',
+      },
+      {
+        name: 'Price: Low to High',
+        value: '-price',
+        type: 'sort',
+      },
+      {
+        name: 'Price: High to Low',
+        value: 'price',
+        type: 'sort',
+      },
+    ];
     return sortButtons.map((b) => {
       return (
         <li className='w-max' key={b.value}>
@@ -96,7 +97,7 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
         </li>
       );
     });
-  }, [sortButtons, searchQuery, createQueryString]);
+  }, [searchQuery, createQueryString]);
   const handleDropdown = useCallback((dropdown: string) => {
     setDropdown((prevState) => {
       if (prevState === dropdown) return '';

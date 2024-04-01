@@ -33,12 +33,9 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
   }, [selectedColors, selectedSizes, details.variants]);
   const [amount, setAmount] = useState<number>(curVariants?.quantity || 0);
   const [totalQuantity, setTotalQuantity] = useState(1);
-  const handleSelectedSizes = useCallback(
-    (size: string) => {
-      setSelectedSizes(size);
-    },
-    [selectedSizes]
-  );
+  const handleSelectedSizes = useCallback((size: string) => {
+    setSelectedSizes(size);
+  }, []);
   useEffect(() => {
     setSelectedColors(colors[0]);
     curVariants?.quantity &&

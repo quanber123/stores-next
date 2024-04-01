@@ -23,19 +23,19 @@ const Header = () => {
   }, [isSuccessGetUser, userData, dispatch]);
   const router = useRouter();
   const pathname = usePathname();
-  const routes = [
-    {
-      link: 'about',
-    },
-    {
-      link: 'shop?page=1',
-    },
-    { link: 'blog?page=1' },
-    {
-      link: 'contact',
-    },
-  ];
   const route = useMemo(() => {
+    const routes = [
+      {
+        link: 'about',
+      },
+      {
+        link: 'shop?page=1',
+      },
+      { link: 'blog?page=1' },
+      {
+        link: 'contact',
+      },
+    ];
     return routes.map((r, index) => {
       return (
         <li key={index}>
@@ -51,7 +51,7 @@ const Header = () => {
         </li>
       );
     });
-  }, [routes, pathname, router]);
+  }, [pathname, router]);
   return (
     <header
       style={{ boxShadow: '0 0px 3px 0px rgba(0, 0, 0, 0.2)' }}

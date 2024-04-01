@@ -42,7 +42,7 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
       setPage(page);
       createQueryString('page', page.toString());
     },
-    [createQueryString, setPage, activePage, searchQuery]
+    [createQueryString, setPage]
   );
   return (
     <div className='flex flex-col gap-2'>
