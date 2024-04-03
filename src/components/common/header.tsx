@@ -27,9 +27,7 @@ const FavoriteDropdown = lazy(
 const Header = () => {
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
   const { setVisibleModal, closeAllModal } = useContext(ModalContext);
-  const { state, setVisibleDropdown, closeDropdown } =
-    useContext(DropdownContext);
-  console.log(state);
+  const { setVisibleDropdown, closeDropdown } = useContext(DropdownContext);
   const accessToken = useSelector(token);
   const user = useSelector(userInfo);
   const dispatch = useDispatch();
@@ -99,7 +97,7 @@ const Header = () => {
           height={20}
           src={`${process.env.NEXT_PUBLIC_BACKEND_URL}public/images/logo-01.png.webp`}
           alt='logo'
-          priority
+          priority={true}
           onClick={() => routerRedirect('/')}
         />
         {/* desktop display */}

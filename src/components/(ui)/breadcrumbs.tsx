@@ -1,3 +1,4 @@
+import scrollElement from '@/lib/utils/scrollElement';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useMemo } from 'react';
 type Props = {
@@ -9,9 +10,12 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
   const formatArr = pathname?.split('/').filter((b) => b);
   const handleRedirect = useCallback(
     (r: string | undefined) => {
-      r !== name && router.push(`/${r}`);
+      if (r !== name) {
+        router.push(`/${r}`);
+        scrollElement();
+      }
     },
-    [name, router]
+    [name, router, scrollElement]
   );
   const renderedBreadcrumbs = useMemo(() => {
     return formatArr?.map((b, index) => {
@@ -38,7 +42,7 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
     <section className='container'>
       <ul className='flex items-center gap-2 text-md font-bold'>
         <li>
-          <button>Home</button>
+          <button onClick={() => handleRedirect('')}>Home</button>
         </li>
         {renderedBreadcrumbs}
       </ul>
