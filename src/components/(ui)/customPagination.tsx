@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useCallback } from 'react';
 import { PaginationItemType, usePagination } from '@nextui-org/react';
 import useQueryString from '@/lib/hooks/useQueryString';
 import { useSearchParams } from 'next/navigation';
 const CustomPagination = ({ totalPage }: { totalPage: number }) => {
   const [createQueryString] = useQueryString();
   const searchQuery = useSearchParams();
+  const curPage = searchQuery.get('page') || 1;
   const { activePage, range, setPage, onNext, onPrevious } = usePagination({
     total: totalPage,
     showControls: true,
@@ -14,7 +15,7 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
 
   const handleNext = useCallback(
     (page: string) => {
-      const currPage = Number(searchQuery.get('page'));
+      const currPage = Number(curPage);
       if (page === 'next') {
         onNext();
         setPage(activePage + 1);
@@ -27,7 +28,7 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
 
   const handlePrevious = useCallback(
     (page: string) => {
-      const currPage = Number(searchQuery.get('page'));
+      const currPage = Number(curPage);
       if (page === 'prev') {
         onPrevious();
         setPage(activePage - 1);
@@ -53,11 +54,10 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
               <li key={page}>
                 <button
                   className={`w-max h-full px-2 py-1 rounded border border-gray-200 text-gray-500 ${
-                    Number(searchQuery.get('page')) >= totalPage &&
-                    'cursor-not-allowed'
+                    Number(curPage) >= totalPage && 'cursor-not-allowed'
                   }`}
                   onClick={() => handleNext(page)}
-                  disabled={Number(searchQuery.get('page')) >= totalPage}
+                  disabled={Number(curPage) >= totalPage}
                 >
                   Next
                 </button>
@@ -70,10 +70,10 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
               <li key={page}>
                 <button
                   className={`w-max h-full px-2 py-1 rounded border border-gray-200 text-gray-500 ${
-                    Number(searchQuery.get('page')) <= 1 && 'cursor-not-allowed'
+                    Number(curPage) <= 1 && 'cursor-not-allowed'
                   }`}
                   onClick={() => handlePrevious(page)}
-                  disabled={Number(searchQuery.get('page')) <= 1}
+                  disabled={Number(curPage) <= 1}
                 >
                   Prev
                 </button>
@@ -89,10 +89,7 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
             <li key={page}>
               <button
                 className={`w-[32px] h-full px-2 py-1 border border-gray-200 rounded
-                 ${
-                   Number(searchQuery.get('page')) === page &&
-                   'bg-secondary text-gray-100'
-                 }`}
+                 ${Number(curPage) === page && 'bg-secondary text-gray-100'}`}
                 onClick={() => handleSetPage(page)}
               >
                 {page}
