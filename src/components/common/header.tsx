@@ -1,17 +1,44 @@
 'use client';
+import { DropdownContext } from '@/context/DropdownProvider';
 import { ModalContext } from '@/context/ModalProvider';
+import { Icons } from '@/enum/enum';
+import {
+  useGetAllCartsQuery,
+  useGetAllFavoritesQuery,
+} from '@/lib/redux/query/productQuery';
 import { useGetUserQuery } from '@/lib/redux/query/userQuery';
-import { setUser, token } from '@/lib/redux/slice/userSlice';
+import { setUser, token, userInfo } from '@/lib/redux/slice/userSlice';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  Suspense,
+  lazy,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+const CartDropdown = lazy(() => import('@/components/dropdown/CartDropdown'));
+const FavoriteDropdown = lazy(
+  () => import('@/components/dropdown/FavoriteDropdown')
+);
 const Header = () => {
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
-  const { setVisibleModal } = useContext(ModalContext);
+  const { setVisibleModal, closeAllModal } = useContext(ModalContext);
+  const { state, setVisibleDropdown, closeDropdown } =
+    useContext(DropdownContext);
+  console.log(state);
   const accessToken = useSelector(token);
+  const user = useSelector(userInfo);
   const dispatch = useDispatch();
+  const { data: cartsData, isSuccess: isSuccessCarts } = useGetAllCartsQuery(
+    null,
+    { skip: !user?.id }
+  );
+  const { data: favoritesData, isSuccess: isSuccessFavorites } =
+    useGetAllFavoritesQuery(null, { skip: !user?.id });
   const { data: userData, isSuccess: isSuccessGetUser } = useGetUserQuery(
     null,
     { skip: !accessToken }
@@ -23,6 +50,14 @@ const Header = () => {
   }, [isSuccessGetUser, userData, dispatch]);
   const router = useRouter();
   const pathname = usePathname();
+  const routerRedirect = useCallback(
+    (link: string) => {
+      router.push(`/${link}`, { scroll: true });
+      closeAllModal();
+      closeDropdown();
+    },
+    [closeAllModal, closeDropdown, router]
+  );
   const route = useMemo(() => {
     const routes = [
       {
@@ -44,7 +79,7 @@ const Header = () => {
               pathname.split('/')[1] === r.link.split('?')[0] &&
               'text-violet-500'
             }`}
-            onClick={() => router.push(`/${r.link}`)}
+            onClick={() => routerRedirect(r.link)}
           >
             {r.link.split('?')[0]}
           </button>
@@ -65,7 +100,7 @@ const Header = () => {
           src={`${process.env.NEXT_PUBLIC_BACKEND_URL}public/images/logo-01.png.webp`}
           alt='logo'
           priority
-          onClick={() => router.push(`/`, { scroll: true })}
+          onClick={() => routerRedirect('/')}
         />
         {/* desktop display */}
         <section className='hidden md:block'>
@@ -73,20 +108,88 @@ const Header = () => {
             {route}
           </ul>
         </section>
-        <section className='w-full ml-auto text-sm hidden md:flex items-center gap-6'>
-          <button
-            className='ml-auto font-bold'
-            onClick={() => setVisibleModal('visibleLoginModal')}
-          >
-            Login
-          </button>
-          <button
-            className='px-5 py-2 font-bold bg-neutral-700 text-white hover:bg-purple rounded-[28px]'
-            onClick={() => setVisibleModal('visibleRegisterModal')}
-          >
-            Register
-          </button>
-        </section>
+        {!user && (
+          <section className='w-full ml-auto text-sm hidden md:flex items-center gap-6'>
+            <button
+              className='ml-auto font-bold'
+              onClick={() => setVisibleModal('visibleLoginModal')}
+            >
+              Login
+            </button>
+            <button
+              className='px-5 py-2 font-bold bg-neutral-700 text-white hover:bg-purple rounded-[28px]'
+              onClick={() => setVisibleModal('visibleRegisterModal')}
+            >
+              Register
+            </button>
+          </section>
+        )}
+        {user && (
+          <section className='ml-auto flex items-center gap-[20px]'>
+            <div className='relative'>
+              <button
+                className='hover:text-violet-500 transition-colors'
+                aria-label='cart-btn'
+                onClick={() => setVisibleDropdown('visibleCartDropdown')}
+              >
+                <span
+                  dangerouslySetInnerHTML={{ __html: Icons.cart_icon }}
+                ></span>
+                {isSuccessCarts && cartsData.total > 0 && (
+                  <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
+                    {cartsData.total}
+                  </span>
+                )}
+              </button>
+              {isSuccessCarts && (
+                <Suspense>
+                  <CartDropdown carts={cartsData.cart} />
+                </Suspense>
+              )}
+            </div>
+            <div className='relative'>
+              <button
+                className='hover:text-violet-500 transition-colors'
+                aria-label='heart-btn'
+                onClick={() => setVisibleDropdown('visibleFavoriteDropdown')}
+              >
+                <span
+                  dangerouslySetInnerHTML={{ __html: Icons.heart_icon }}
+                ></span>
+                {isSuccessFavorites && favoritesData.total > 0 && (
+                  <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
+                    {favoritesData.total}
+                  </span>
+                )}
+              </button>
+              {isSuccessFavorites && (
+                <Suspense>
+                  <FavoriteDropdown favorites={favoritesData.favorite} />
+                </Suspense>
+              )}
+            </div>
+            <div className='relative'>
+              <button
+                className='hover:text-violet-500 transition-colors'
+                aria-label='notify-btn'
+              >
+                <span
+                  dangerouslySetInnerHTML={{ __html: Icons.bell_icon }}
+                ></span>
+                <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
+                  1
+                </span>
+              </button>
+            </div>
+            <Image
+              className='rounded-full cursor-pointer'
+              src={user.image}
+              width={32}
+              height={32}
+              alt={user.name}
+            />
+          </section>
+        )}
         {/* mobile display */}
         <section className='md:hidden ml-auto flex items-center gap-[10px]'>
           <div

@@ -13,7 +13,7 @@ export const productApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['products', 'productDetails'],
+  tagTypes: ['products', 'productDetails', 'carts', 'favorites'],
   endpoints: (builder) => {
     return {
       getProducts: builder.query({
@@ -28,8 +28,84 @@ export const productApi = createApi({
         },
         providesTags: (result) => providesList(result, 'productDetails'),
       }),
+      getAllCarts: builder.query({
+        query: () => ({
+          url: `carts`,
+          method: 'GET',
+        }),
+        providesTags: (result) => providesList(result, 'carts'),
+      }),
+      createCart: builder.mutation({
+        query: ({ cart }) => ({
+          url: 'carts',
+          method: 'POST',
+          body: {
+            cart: cart,
+          },
+        }),
+        invalidatesTags: ['carts'],
+      }),
+      updateCart: builder.mutation({
+        query: ({ id, product }) => ({
+          url: `carts/${id}`,
+          method: 'PUT',
+          body: {
+            product: product,
+          },
+        }),
+        invalidatesTags: ['carts'],
+      }),
+      deleteCartById: builder.mutation({
+        query: (id) => ({
+          url: `carts/${id}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: ['carts'],
+      }),
+      deleteManyCartsById: builder.mutation({
+        query: ({ products }) => ({
+          url: 'carts',
+          method: 'DELETE',
+          body: {
+            products: products,
+          },
+        }),
+        invalidatesTags: ['carts'],
+      }),
+      getFavoriteByProduct: builder.query({
+        query: (productId) => `/products/favorite/${productId}`,
+        providesTags: (result) => providesList(result, 'favorites'),
+      }),
+      getAllFavorites: builder.query({
+        query: () => ({
+          url: `users/favorites`,
+          method: 'GET',
+        }),
+        providesTags: (result) => providesList(result, 'favorites'),
+      }),
+      postFavorites: builder.mutation({
+        query: (productId) => ({
+          url: 'users/favorites',
+          method: 'POST',
+          body: {
+            productId: productId,
+          },
+        }),
+        invalidatesTags: ['favorites'],
+      }),
     };
   },
 });
 
-export const { useGetProductsQuery, useGetProductsByIdQuery } = productApi;
+export const {
+  useGetProductsQuery,
+  useGetProductsByIdQuery,
+  useGetAllCartsQuery,
+  useCreateCartMutation,
+  useUpdateCartMutation,
+  useDeleteCartByIdMutation,
+  useDeleteManyCartsByIdMutation,
+  useGetFavoriteByProductQuery,
+  useGetAllFavoritesQuery,
+  usePostFavoritesMutation,
+} = productApi;

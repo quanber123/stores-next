@@ -14,11 +14,12 @@ import { validateEmail } from '@/lib/utils/validate';
 import { useUserLoginMutation } from '@/lib/redux/query/userQuery';
 import { getLogoUrl } from '@/lib/redux/slice/pageSlice';
 import Image from 'next/image';
-import { setUser } from '@/lib/redux/slice/userSlice';
 import { redirect, usePathname } from 'next/navigation';
 import ValidateMessage from '../(ui)/validateMessage';
+import { userInfo } from '@/lib/redux/slice/userSlice';
 function LoginModal() {
   const pathname = usePathname();
+  const user = useSelector(userInfo);
   const logoUrl = useSelector(getLogoUrl);
   const { state, setVisibleModal, closeAllModal } = useContext(ModalContext);
   const dispatch = useDispatch();
@@ -73,8 +74,7 @@ function LoginModal() {
     if (isSuccessLogin && !isLoadingUser && statusLogin === 'fulfilled') {
       closeAllModal();
       window.localStorage.setItem('coza-store-token', dataLogin.accessToken);
-      dispatch(setUser(dataLogin));
-      dataLogin.user.isVerified ? redirect(pathname) : redirect('/verified');
+      user?.isVerified ? redirect(pathname) : redirect('/verified');
     }
     if (errorLogin && 'data' in errorLogin) {
       const errorData = errorLogin.data as { message: string };
@@ -96,6 +96,7 @@ function LoginModal() {
     statusLogin,
     errorLogin,
     pathname,
+    user,
     dispatch,
     setVisibleModal,
     closeAllModal,

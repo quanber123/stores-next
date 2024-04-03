@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import UiProvider from '@/context/UiProvider';
 import StoreProvider from '@/context/StoreProvider';
 import { ModalProvider } from '@/context/ModalProvider';
+import { DropdownProvider } from '@/context/DropdownProvider';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   loading: () => (
     <div
@@ -18,6 +19,7 @@ const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   ),
   ssr: false,
 });
+const DynamicScroll = dynamic(() => import('@/components/common/scroll'));
 const DynamicModal = dynamic(() => import('@/components/modal/Modal'));
 const DynamicFooter = dynamic(() => import('@/components/common/footer'), {
   loading: () => <div className='skeleton mt-24 w-full h-[320px]'></div>,
@@ -45,8 +47,11 @@ export default async function RootLayout({
         <UiProvider>
           <StoreProvider>
             <ModalProvider>
-              <DynamicHeader />
+              <DropdownProvider>
+                <DynamicHeader />
+              </DropdownProvider>
               <main className='min-h-screen flex-1'>{children}</main>
+              <DynamicScroll />
               <DynamicModal />
               <DynamicFooter />
             </ModalProvider>

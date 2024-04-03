@@ -1,0 +1,32 @@
+.cart-modal,
+.favorite-modal,
+.notifications-modal {
+  position: absolute;
+  background-color: #fff;
+  padding: 12px 0;
+  top: 150%;
+  right: 0;
+  max-width: 400px;
+  width: 400px;
+  height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0px 3px 0px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  opacity: 0;
+  overflow: hidden;
+}
+.favorite-modal {
+  padding-bottom: 0;
+}
+.cart-modal.active,
+.favorite-modal.active,
+.notifications-modal.active {
+  height: 90vh;
+  opacity: 1;
+}
