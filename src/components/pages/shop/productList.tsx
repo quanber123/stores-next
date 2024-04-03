@@ -17,7 +17,9 @@ const ProductList: React.FC<Props> = ({ products, totalPage }) => {
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[40px]'>
         {renderedProducts}
       </div>
-      {totalPage > 1 && <CustomPagination totalPage={totalPage} />}
+      {totalPage > 1 && (
+        <CustomPagination totalPage={totalPage} isScroll={true} />
+      )}
     </section>
   );
 };
