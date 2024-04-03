@@ -51,7 +51,7 @@ export const userSlice = createSlice({
       state.favorite.favorite = action.payload.favorite;
       state.favorite.total = action.payload.total;
     },
-    removeAuth: (state) => {
+    removeUser: (state) => {
       window.localStorage.removeItem('coza-store-token');
       state.curDelivery = {} as Address;
       state.cart = {
@@ -76,6 +76,6 @@ export const {
   setCurDelivery,
   setAllCarts,
   setAllFavorites,
-  removeAuth,
+  removeUser,
 } = userSlice.actions;
 export default userSlice.reducer;
