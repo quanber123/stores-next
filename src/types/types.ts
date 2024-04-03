@@ -19,6 +19,27 @@ export type Banner = {
   sub_content: string;
   category: Category;
 };
+type Details = {
+  variants: {
+    size: string;
+    color: string;
+    quantity: number;
+    inStock: boolean;
+  }[];
+  shortDescription: string;
+  description: string;
+  weight: string;
+  dimensions: string;
+  materials: string;
+  category: {
+    name: string;
+  };
+  tags: {
+    _id: string;
+    name: string;
+  }[];
+};
+
 export type Product = {
   _id: string;
   images: string[];
@@ -36,30 +57,7 @@ export type Product = {
   salePrice: number;
   finalPrice: number;
   type: string;
-  details: {
-    variants: [
-      {
-        size: string;
-        color: string;
-        quantity: number;
-        inStock: boolean;
-      }
-    ];
-    shortDescription: string;
-    description: string;
-    weight: string;
-    dimensions: string;
-    materials: string;
-    category: {
-      name: string;
-    };
-    tags: [
-      {
-        _id: string;
-        name: string;
-      }
-    ];
-  };
+  details: Details;
   reviews?: [
     {
       avatar: string;

@@ -151,42 +151,45 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
           <ul className='flex items-center gap-4 text-sm'>{renderedColors}</ul>
         </div>
       </div>
-      <div className='w-full flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4 sm:gap-[40px]'>
-        <div className='relative max-w-[135px] flex justify-between'>
-          <button
-            className='w-[45px] h-[38px] text-lg flex justify-center items-center border border-gray-200 rounded-l-sm'
-            onClick={() => handleUpdateCount('decrease')}
-            aria-label='Decrease'
-          >
-            -
-          </button>
-          <input
-            className='w-[45px] h-[38px] px-2 text-center text-md outline-none border border-gray-200 bg-gray-200'
-            type='number'
-            min='1'
-            max={amount}
-            maxLength={3}
-            value={totalQuantity}
-            onChange={handleChangeCount}
-            aria-label='Number'
-          />
-          <button
-            className='w-[45px] h-[38px] text-lg flex justify-center items-center border border-gray-200 rounded-r-sm'
-            onClick={() => handleUpdateCount('increase')}
-            aria-label='Increase'
-          >
-            +
-          </button>
+      <div className='w-full flex flex-col sm:flex-row justify-start sm:items-center gap-6'>
+        <div className='flex gap-6 items-center'>
+          <p className='max-w-[62px] w-full'>Quantity:</p>
+          <div className='relative max-w-[135px] flex justify-between'>
+            <button
+              className='w-[45px] h-[38px] text-lg flex justify-center items-center border border-gray-200 rounded-l-sm'
+              onClick={() => handleUpdateCount('decrease')}
+              aria-label='Decrease'
+            >
+              -
+            </button>
+            <input
+              className='w-[45px] h-[38px] px-2 text-center text-md outline-none border border-gray-200 bg-gray-200'
+              type='number'
+              min='1'
+              max={amount}
+              maxLength={3}
+              value={totalQuantity}
+              onChange={handleChangeCount}
+              aria-label='Number'
+            />
+            <button
+              className='w-[45px] h-[38px] text-lg flex justify-center items-center border border-gray-200 rounded-r-sm'
+              onClick={() => handleUpdateCount('increase')}
+              aria-label='Increase'
+            >
+              +
+            </button>
+          </div>
         </div>
         {amount && (
-          <p className='flex gap-[5px] text-md font-medium'>
+          <p className='m-auto sm:m-0 flex gap-[5px] text-md font-medium'>
             ( <span>{amount}</span>
             <span>available</span>
             <span>{amount > 1 ? 'products' : 'product'}</span>)
           </p>
         )}
       </div>
-      <div className='flex flex-col sm:flex-row justify-center lg:justify-start lg:items-stretch gap-4'>
+      <div className='my-4 flex flex-col sm:flex-row justify-center lg:justify-start lg:items-stretch gap-4'>
         <button className='rounded px-6 py-3 border bg-violet-50 border-violet-500 text-violet-500 hover:bg-white transition-all duration-200 flex justify-center items-center gap-2'>
           <span className='uppercase'>Add to cart</span>
           <span

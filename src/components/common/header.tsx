@@ -155,11 +155,12 @@ const Header = () => {
                 <span
                   dangerouslySetInnerHTML={{ __html: Icons.heart_icon }}
                 ></span>
-                {isSuccessFavorites && favoritesData.total > 0 && (
-                  <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
-                    {favoritesData.total}
-                  </span>
-                )}
+                {isSuccessFavorites &&
+                  favoritesData.favorite?.products?.length > 0 && (
+                    <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
+                      {favoritesData.favorite?.products?.length}
+                    </span>
+                  )}
               </button>
               {isSuccessFavorites && (
                 <Suspense>

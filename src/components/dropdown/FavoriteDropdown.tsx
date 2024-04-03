@@ -20,16 +20,16 @@ function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
       return (
         <article
           key={p._id}
-          className='text-semiBoldGray flex justify-between gap-[20px]'
+          className='h-[80px] text-semiBoldGray flex justify-between gap-[20px]'
         >
           <div className='relative rounded-[12px] overflow-hidden'>
             <Image
-              width={150}
+              width={200}
               height={80}
               loading='lazy'
               src={p.images[0]}
               alt={p.name}
-              className='w-full h-full object-cover'
+              className='w-[150px] h-full object-cover'
             />
           </div>
           <div className='flex-1 flex flex-col justify-between gap-[5px]'>
@@ -40,12 +40,8 @@ function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
               {p.name}
             </h3>
             <button
-              className='w-max ml-auto px-4 py-2 text-base rounded-[2px] text-white bg-purple hover:bg-darkGray'
-              onClick={() =>
-                postFavorite({
-                  productId: p._id,
-                })
-              }
+              className='w-max ml-auto px-4 py-2 text-base rounded-[2px] text-white bg-violet-500 hover:bg-neutral-700 transition-colors'
+              onClick={() => postFavorite(p._id)}
             >
               Unlike
             </button>

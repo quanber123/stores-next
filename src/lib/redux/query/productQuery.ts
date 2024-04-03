@@ -13,7 +13,15 @@ export const productApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['products', 'productDetails', 'carts', 'favorites'],
+  tagTypes: [
+    'products',
+    'productDetails',
+    'carts',
+    'favorites',
+    'favoriteProduct',
+    'reviews',
+    'orders',
+  ],
   endpoints: (builder) => {
     return {
       getProducts: builder.query({
@@ -74,7 +82,7 @@ export const productApi = createApi({
       }),
       getFavoriteByProduct: builder.query({
         query: (productId) => `/products/favorite/${productId}`,
-        providesTags: (result) => providesList(result, 'favorites'),
+        providesTags: (result) => providesList(result, 'favoriteProduct'),
       }),
       getAllFavorites: builder.query({
         query: () => ({
@@ -91,7 +99,19 @@ export const productApi = createApi({
             productId: productId,
           },
         }),
-        invalidatesTags: ['favorites'],
+        invalidatesTags: ['favorites', 'favoriteProduct'],
+      }),
+      getReviews: builder.query({
+        query: ({ id, query }) => `products/reviews/${id}?${query}`,
+        providesTags: (result) => providesList(result, 'reviews'),
+      }),
+      reviewsProduct: builder.mutation({
+        query: (reviews) => ({
+          url: 'products/reviews',
+          method: 'POST',
+          body: reviews,
+        }),
+        invalidatesTags: ['orders', 'reviews'],
       }),
     };
   },
@@ -108,4 +128,6 @@ export const {
   useGetFavoriteByProductQuery,
   useGetAllFavoritesQuery,
   usePostFavoritesMutation,
+  useGetReviewsQuery,
+  useReviewsProductMutation,
 } = productApi;

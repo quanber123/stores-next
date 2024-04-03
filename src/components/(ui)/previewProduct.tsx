@@ -1,16 +1,50 @@
 import { Product } from '@/types/types';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import LazyLoadImage from './lazyloadImage';
+import { useSelector } from 'react-redux';
+import { userInfo } from '@/lib/redux/slice/userSlice';
+import {
+  useGetAllFavoritesQuery,
+  usePostFavoritesMutation,
+} from '@/lib/redux/query/productQuery';
+import { Icons } from '@/enum/enum';
+import { ModalContext } from '@/context/ModalProvider';
 type Props = {
   product: Product;
+  style?: React.CSSProperties;
 };
-const PreviewProduct: React.FC<Props> = ({ product }) => {
+const PreviewProduct: React.FC<Props> = ({ product, style }) => {
   const { _id, images, name, price, sale, salePrice } = product;
+  const { setVisibleModal } = useContext(ModalContext);
+  const user = useSelector(userInfo);
+  const { data: dataUserFavorite, isSuccess: isSuccessUserFavorite } =
+    useGetAllFavoritesQuery(null, { skip: !user?.id });
+  const [postFavorite] = usePostFavoritesMutation();
+  const isCurUserLiked = useMemo(() => {
+    return !!(
+      isSuccessUserFavorite &&
+      dataUserFavorite.favorite?.products?.find((p: Product) => p._id === _id)
+    );
+  }, [isSuccessUserFavorite, dataUserFavorite]);
+  const handlePostFavorite = useCallback(
+    (id: string | number) => {
+      if (!user?.id) {
+        setVisibleModal({
+          visibleToastModal: {
+            type: 'error',
+            message: 'You have to login first!',
+          },
+        });
+      } else {
+        postFavorite(id);
+      }
+    },
+    [user, setVisibleModal, postFavorite]
+  );
   const router = useRouter();
   return (
-    <article className='flex flex-col gap-4'>
+    <article style={style} className='flex flex-col gap-4'>
       <div className='w-full overflow-hidden'>
         <LazyLoadImage
           width={680}
@@ -33,17 +67,19 @@ const PreviewProduct: React.FC<Props> = ({ product }) => {
           >
             {name}
           </h6>
-          {/* {loveProduct ? (
-            <FaHeart
-              className='cursor-pointer text-purple'
-              onClick={handlePostFavorite}
-            />
+          {isCurUserLiked ? (
+            <button
+              dangerouslySetInnerHTML={{ __html: Icons.heart_active_icon }}
+              aria-label='heart-btn'
+              onClick={() => handlePostFavorite(_id)}
+            ></button>
           ) : (
-            <FaRegHeart
-              className='cursor-pointer hover:text-purple transition-colors'
-              onClick={handlePostFavorite}
-            />
-          )} */}
+            <button
+              dangerouslySetInnerHTML={{ __html: Icons.heart_icon }}
+              aria-label='heart-btn'
+              onClick={() => handlePostFavorite(_id)}
+            ></button>
+          )}
         </div>
         <p className='flex items-center gap-[20px]'>
           <span

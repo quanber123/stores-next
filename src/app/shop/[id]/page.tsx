@@ -1,4 +1,6 @@
 'use client';
+import MoreInformation from '@/components/pages/product-details/moreInformation';
+import RelatedProducts from '@/components/pages/product-details/relatedProducts';
 import { useGetProductsByIdQuery } from '@/lib/redux/query/productQuery';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
@@ -44,16 +46,22 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
   return (
     isSuccessData &&
     productData && (
-      <div className='container m-auto flex flex-col gap-16 py-8'>
+      <section className='container m-auto flex flex-col gap-16 py-8'>
         <DynamicBreadcrumbs
           pathname={pathname}
           name={productData.product.name}
         />
-        <div className='w-full px-4 py-8 rounded grid grid-cols-1 lg:grid-cols-2 gap-12 border border-gray-200 shadow-lg'>
-          <DynamicListImages images={productData.product.images} />
+        <section className='w-full px-4 py-8 rounded grid grid-cols-1 lg:grid-cols-2 gap-12 border border-gray-200 shadow-lg'>
+          <DynamicListImages product={productData.product} />
           <DynamicProductDetails product={productData.product} />
-        </div>
-      </div>
+        </section>
+        <section className='w-full px-4 py-8 rounded flex flex-col gap-8 border border-gray-200 shadow-lg'>
+          <MoreInformation product={productData.product} />
+        </section>
+        <section className='flex flex-col gap-8'>
+          <RelatedProducts products={productData.relatedProducts} />
+        </section>
+      </section>
     )
   );
 }
