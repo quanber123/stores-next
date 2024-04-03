@@ -56,7 +56,7 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
   }, [product]);
 
   const renderStars = useCallback(
-    (rate: number) => {
+    (rate: number, size: number) => {
       const fullStars = Math.floor(rate);
       const decimalPart = rate - fullStars;
       const stars = [];
@@ -64,7 +64,7 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
         stars.push(
           <span
             key={i}
-            className='text-violet-500'
+            className={`text-violet-500 w-[${size}px] h-[${size}px]`}
             dangerouslySetInnerHTML={{ __html: Icons.star_active_icon }}
           />
         );
@@ -73,7 +73,7 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
         stars.push(
           <span
             key={fullStars}
-            className='text-violet-500'
+            className={`text-violet-500 w-[${size}px] h-[${size}px]`}
             dangerouslySetInnerHTML={{ __html: Icons.star_half_icon }}
             // style={{ width: `${decimalPart * 100}%`, overflow: 'hidden' }}
           />
@@ -83,6 +83,7 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
       for (let i = 0; i < remainingStars; i++) {
         stars.push(
           <span
+            className={`w-[${size}px] h-[${size}px]`}
             key={fullStars + i}
             dangerouslySetInnerHTML={{ __html: Icons.star_icon }}
           />
@@ -98,25 +99,25 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
       ? dataReviews.reviews.map((r: any) => (
           <div
             key={r._id}
-            className='py-4 flex items-center gap-[20px] text-gray-700 border-b border-lightGray'
+            className='py-4 flex items-center gap-[20px] text-gray-700 border-b border-gray-200'
           >
-            <LazyLoadImage
-              src={r.avatar}
-              alt={r.username}
-              className='w-[42px] h-[42px] rounded-full'
-              width={42}
-              height={42}
-            />
-            <div className='flex-1 flex flex-col justify-between gap-[10px]'>
-              <div className='flex items-center justify-between'>
-                <div>
-                  <p>{r.username}</p>
-                  <p className='text-sm text-gray'>
-                    {formatTime(r.created_at)}
-                  </p>
+            <div className='w-[42px] h-[42px] rounded-full overflow-hidden'>
+              <LazyLoadImage
+                src={r.avatar}
+                alt={r.username}
+                className='object-cover'
+                width={42}
+                height={42}
+              />
+            </div>
+            <div className='w-full flex flex-col justify-between gap-2'>
+              <div className='w-full flex flex-col sm:flex-row justify-between'>
+                <p>{r.username}</p>
+                <div className='flex items-center order-1 sm:order-2'>
+                  {renderStars(r.rate, 24)}
                 </div>
-                <div className='flex items-center'>{renderStars(r.rate)}</div>
               </div>
+              <p className='text-sm text-gray'>{formatTime(r.created_at)}</p>
               <p className='text-sm text-gray'>{r.reviews}</p>
             </div>
           </div>
@@ -165,15 +166,15 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
           } flex flex-col gap-[10px] py-8`}
         >
           {isSuccessReviews && dataReviews?.reviews.length !== 0 && (
-            <div className='flex flex-col gap-[40px] items-start'>
+            <div className='w-full sm:w-4/5 m-auto flex flex-col gap-[40px] items-start text-violet-500'>
               <div className='flex items-center gap-[20px]'>
-                <p className='text-xl text-purple font-medium flex gap-[5px]'>
+                <p className='text-4xl font-medium flex gap-[5px]'>
                   <span>{dataReviews?.avgRate}</span>
                   <span>/</span>
                   <span>5</span>
                 </p>
-                <div className='flex items-center text-lg'>
-                  {renderStars(dataReviews?.avgRate)}
+                <div className='flex items-center h-[2px]'>
+                  {renderStars(dataReviews?.avgRate, 36)}
                 </div>
               </div>
               <div className='w-full flex flex-col gap-[10px]'>
