@@ -1,6 +1,7 @@
-.cart-modal,
-.favorite-modal,
-.notifications-modal {
+.cart-dropdown,
+.favorite-dropdown,
+.notifications-dropdown,
+.user-dropdown {
   position: absolute;
   background-color: #fff;
   padding: 12px 0;
@@ -21,12 +22,21 @@
   opacity: 0;
   overflow: hidden;
 }
-.favorite-modal {
+.user-dropdown {
+  max-width: 280px;
+  width: 280px;
+  gap: 0;
+}
+.favorite-dropdown {
   padding-bottom: 0;
 }
-.cart-modal.active,
-.favorite-modal.active,
-.notifications-modal.active {
+.cart-dropdown.active,
+.favorite-dropdown.active,
+.notifications-dropdown.active {
   height: 90vh;
+  opacity: 1;
+}
+.user-dropdown.active {
+  height: 250px;
   opacity: 1;
 }

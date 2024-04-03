@@ -56,7 +56,7 @@ function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
   }, [favorites, handleRedirect, postFavorite]);
   return (
     <div
-      className={`favorite-modal ${
+      className={`favorite-dropdown ${
         state.visibleFavoriteDropdown ? 'active' : ''
       }`}
     >
