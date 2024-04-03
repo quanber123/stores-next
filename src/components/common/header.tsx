@@ -20,6 +20,7 @@ import React, {
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import UserDropdown from '../dropdown/UserDropdown';
 const CartDropdown = lazy(() => import('@/components/dropdown/CartDropdown'));
 const FavoriteDropdown = lazy(
   () => import('@/components/dropdown/FavoriteDropdown')
@@ -179,13 +180,17 @@ const Header = () => {
                 </span>
               </button>
             </div>
-            <Image
-              className='rounded-full cursor-pointer'
-              src={user.image}
-              width={32}
-              height={32}
-              alt={user.name}
-            />
+            <div className='relative'>
+              <Image
+                className='rounded-full cursor-pointer'
+                src={user.image}
+                width={32}
+                height={32}
+                alt={user.name}
+                onClick={() => setVisibleDropdown('visibleUserDropdown')}
+              />
+              {isSuccessGetUser && <UserDropdown user={userData} />}
+            </div>
           </section>
         )}
         {/* mobile display */}
