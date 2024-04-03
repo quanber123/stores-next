@@ -1,9 +1,7 @@
 'use client';
-import MoreInformation from '@/components/pages/product-details/moreInformation';
-import RelatedProducts from '@/components/pages/product-details/relatedProducts';
 import { useGetProductsByIdQuery } from '@/lib/redux/query/productQuery';
-import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import React from 'react';
 const DynamicBreadcrumbs = dynamic(
   () => import('@/components/(ui)/breadcrumbs'),
@@ -38,6 +36,25 @@ const DynamicProductDetails = dynamic(
     ssr: false,
   }
 );
+const DynamicMoreInformation = dynamic(
+  () => import('@/components/pages/product-details/moreInformation'),
+  {
+    loading: () => <div className='h-[200px] w-full skeleton'></div>,
+    ssr: false,
+  }
+);
+const DynamicRelatedProducts = dynamic(
+  () => import('@/components/pages/product-details/relatedProducts'),
+  {
+    loading: () => (
+      <>
+        <div className='m-auto w-1/2 h-[60px] skeleton'></div>
+        <div className='w-full h-[380px] skeleton'></div>
+      </>
+    ),
+    ssr: false,
+  }
+);
 export default function ProductDetails({ params }: { params: { id: string } }) {
   const { id } = params;
   const pathname = usePathname();
@@ -56,10 +73,10 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
           <DynamicProductDetails product={productData.product} />
         </section>
         <section className='w-full px-4 py-8 rounded flex flex-col gap-8 border border-gray-200 shadow-lg'>
-          <MoreInformation product={productData.product} />
+          <DynamicMoreInformation product={productData.product} />
         </section>
         <section className='flex flex-col gap-8'>
-          <RelatedProducts products={productData.relatedProducts} />
+          <DynamicRelatedProducts products={productData.relatedProducts} />
         </section>
       </section>
     )
