@@ -2,7 +2,12 @@ import React, { useCallback } from 'react';
 import { PaginationItemType, usePagination } from '@nextui-org/react';
 import useQueryString from '@/lib/hooks/useQueryString';
 import { useSearchParams } from 'next/navigation';
-const CustomPagination = ({ totalPage }: { totalPage: number }) => {
+import scrollElement from '@/lib/utils/scrollElement';
+type Props = {
+  totalPage: number;
+  isScroll?: boolean;
+};
+const CustomPagination: React.FC<Props> = ({ totalPage, isScroll }) => {
   const [createQueryString] = useQueryString();
   const searchQuery = useSearchParams();
   const curPage = searchQuery.get('page') || 1;
@@ -21,9 +26,19 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
         setPage(activePage + 1);
         const nextPage = currPage >= totalPage ? totalPage : currPage + 1;
         createQueryString('page', nextPage.toString());
+        isScroll && scrollElement();
       }
     },
-    [createQueryString, activePage, onNext, searchQuery, setPage, totalPage]
+    [
+      createQueryString,
+      activePage,
+      onNext,
+      searchQuery,
+      setPage,
+      totalPage,
+      scrollElement,
+      isScroll,
+    ]
   );
 
   const handlePrevious = useCallback(
@@ -34,16 +49,26 @@ const CustomPagination = ({ totalPage }: { totalPage: number }) => {
         setPage(activePage - 1);
         const prev = currPage <= 1 ? 1 : currPage - 1;
         createQueryString('page', prev.toString());
+        isScroll && scrollElement();
       }
     },
-    [createQueryString, activePage, onPrevious, setPage, searchQuery]
+    [
+      createQueryString,
+      activePage,
+      onPrevious,
+      setPage,
+      searchQuery,
+      scrollElement,
+      isScroll,
+    ]
   );
   const handleSetPage = useCallback(
     (page: number) => {
       setPage(page);
       createQueryString('page', page.toString());
+      isScroll && scrollElement();
     },
-    [createQueryString, setPage]
+    [createQueryString, setPage, scrollElement, isScroll]
   );
   return (
     <div className='flex flex-col gap-2'>
