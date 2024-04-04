@@ -26,7 +26,10 @@ const DynamicProductList = dynamic(
   }
 );
 const DynamicNotFoundItem = dynamic(
-  () => import('@/components/(ui)/notFoundItem')
+  () => import('@/components/(ui)/notFoundItem'),
+  {
+    ssr: false,
+  }
 );
 export default function Shop() {
   const searchQuery = useSearchParams();
