@@ -1,15 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Metadata } from 'next';
 import { useGetProductsQuery } from '@/lib/redux/query/productQuery';
 import { useSearchParams } from 'next/navigation';
 import LoadingItem from '@/components/(ui)/loadingItem';
-import NotFoundItem from '@/components/(ui)/notFoundItem';
 import { getCategories } from '@/api/categoryApi';
 import { Category, Tag } from '@/types/types';
 import { getTags } from '@/api/tagApi';
-import ProductList from '@/components/pages/shop/productList';
 const DynamicProductFilter = dynamic(
   () => import('@/components/pages/shop/productFilter'),
   {
@@ -21,6 +18,15 @@ const DynamicProductFilter = dynamic(
     ),
     ssr: false,
   }
+);
+const DynamicProductList = dynamic(
+  () => import('@/components/pages/shop/productList'),
+  {
+    ssr: false,
+  }
+);
+const DynamicNotFoundItem = dynamic(
+  () => import('@/components/(ui)/notFoundItem')
 );
 export default function Shop() {
   const searchQuery = useSearchParams();
@@ -66,11 +72,13 @@ export default function Shop() {
       <DynamicProductFilter categories={categories} tags={tags} />
       {isSuccessProductsData &&
         productsData?.products?.length === 0 &&
-        !isLoadingProductsData && <NotFoundItem message='No Products Yet!' />}
+        !isLoadingProductsData && (
+          <DynamicNotFoundItem message='No Products Yet!' />
+        )}
       {isSuccessProductsData &&
         productsData?.products?.length > 0 &&
         !isLoadingProductsData && (
-          <ProductList
+          <DynamicProductList
             products={productsData.products}
             totalPage={productsData.totalPage}
           />
