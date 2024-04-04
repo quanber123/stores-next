@@ -17,13 +17,13 @@ const nextConfig = {
     minimumCacheTTL: 60,
     // ordered list of acceptable optimized image formats (mime types)
     formats: ['image/webp'],
-    dangerouslyAllowSVG: false,
+    dangerouslyAllowSVG: true,
     // set the Content-Security-Policy header
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     // sets the Content-Disposition header (inline or attachment)
     contentDispositionType: 'inline',
     // limit of 50 objects
-    unoptimized: false,
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
