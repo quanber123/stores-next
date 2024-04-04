@@ -9,12 +9,9 @@ import './Dropdown.css';
 function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
   const { state } = useContext(DropdownContext);
   const [postFavorite] = usePostFavoritesMutation();
-  const handleRedirect = useCallback(
-    (id: string) => {
-      redirect(`/shop/${id}`);
-    },
-    [redirect]
-  );
+  const handleRedirect = useCallback((id: string) => {
+    redirect(`/shop/${id}`);
+  }, []);
   const renderedFavorite = useMemo(() => {
     return favorites?.products?.map((p) => {
       return (

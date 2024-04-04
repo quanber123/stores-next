@@ -26,7 +26,7 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
       isSuccessUserFavorite &&
       dataUserFavorite.favorite?.products?.find((p: Product) => p._id === _id)
     );
-  }, [isSuccessUserFavorite, dataUserFavorite]);
+  }, [_id, isSuccessUserFavorite, dataUserFavorite]);
   const handlePostFavorite = useCallback(
     (id: string | number) => {
       if (!user?.id) {

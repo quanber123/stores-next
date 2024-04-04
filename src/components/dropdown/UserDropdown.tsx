@@ -5,6 +5,7 @@ import { User } from '@/types/types';
 import { removeUser } from '@/lib/redux/slice/userSlice';
 import { Icons } from '@/enum/enum';
 import './Dropdown.css';
+import Image from 'next/image';
 type Props = {
   user: User;
 };
@@ -23,10 +24,13 @@ const UserDropdown: React.FC<Props> = ({ user }) => {
       className={`user-dropdown ${state.visibleUserDropdown ? 'active' : ''}`}
     >
       <div className='mx-[26px] my-[16px] flex items-center gap-[20px]'>
-        <img
+        <Image
+          width={42}
+          height={42}
           className='w-[42px] h-[42px] rounded-full'
           src={user.image}
           alt={user.name}
+          loading='lazy'
         />
         <div>
           <h3 className='font-bold text-base'>{user.name}</h3>

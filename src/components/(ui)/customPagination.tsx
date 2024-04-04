@@ -25,7 +25,7 @@ const CustomPagination: React.FC<Props> = ({ totalPage, isScroll }) => {
         isScroll && scrollElement();
       }
     },
-    [createQueryString, searchQuery, totalPage, scrollElement, isScroll]
+    [createQueryString, searchQuery, totalPage, isScroll, curPage]
   );
 
   const handlePrevious = useCallback(
@@ -36,14 +36,14 @@ const CustomPagination: React.FC<Props> = ({ totalPage, isScroll }) => {
         isScroll && scrollElement();
       }
     },
-    [createQueryString, searchQuery, scrollElement, isScroll]
+    [createQueryString, searchQuery, isScroll, curPage]
   );
   const handleSetPage = useCallback(
     (page: number) => {
       createQueryString('page', page.toString());
       isScroll && scrollElement();
     },
-    [createQueryString, scrollElement, isScroll]
+    [createQueryString, isScroll, curPage]
   );
 
   const renderItems = ({ key, value }: PaginationItemRenderProps) => {

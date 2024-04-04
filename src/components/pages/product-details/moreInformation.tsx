@@ -18,7 +18,6 @@ interface Details {
 }
 const MoreInformation: React.FC<Props> = ({ product }) => {
   const { details } = product;
-  const propertiesToExclude = ['weights', 'dimensions', 'materials'];
   const [tab, setTab] = useState(0);
   const searchQuery = useSearchParams();
   const tabpanel = ['description', 'additional information', 'reviews'];
@@ -29,6 +28,8 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
     }
   );
   const renderedInformation = useMemo(() => {
+    const propertiesToExclude = ['weights', 'dimensions', 'materials'];
+
     return Object.keys(details)
       .filter((d) => propertiesToExclude.includes(d))
       .map((item, index) => {
@@ -45,7 +46,7 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
           return null;
         }
       });
-  }, [details, propertiesToExclude]);
+  }, [details.variants]);
 
   const sizes = useMemo(() => details.variants.map((v) => v.size), [product]);
   const colors = useMemo(() => {
@@ -53,47 +54,44 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
       ...details.variants.map((v) => v.color).filter((v) => v),
     ];
     return Array.from(new Set(arrColors));
-  }, [product]);
+  }, [details.variants]);
 
-  const renderStars = useCallback(
-    (rate: number, size: number) => {
-      const fullStars = Math.floor(rate);
-      const decimalPart = rate - fullStars;
-      const stars = [];
-      for (let i = 0; i < fullStars; i++) {
-        stars.push(
-          <span
-            key={i}
-            className={`text-violet-500 w-[${size}px] h-[${size}px]`}
-            dangerouslySetInnerHTML={{ __html: Icons.star_active_icon }}
-          />
-        );
-      }
-      if (decimalPart > 0) {
-        stars.push(
-          <span
-            key={fullStars}
-            className={`text-violet-500 w-[${size}px] h-[${size}px]`}
-            dangerouslySetInnerHTML={{ __html: Icons.star_half_icon }}
-            // style={{ width: `${decimalPart * 100}%`, overflow: 'hidden' }}
-          />
-        );
-      }
-      const remainingStars = 5 - Math.ceil(rate);
-      for (let i = 0; i < remainingStars; i++) {
-        stars.push(
-          <span
-            className={`w-[${size}px] h-[${size}px]`}
-            key={fullStars + i}
-            dangerouslySetInnerHTML={{ __html: Icons.star_icon }}
-          />
-        );
-      }
+  const renderStars = useCallback((rate: number, size: number) => {
+    const fullStars = Math.floor(rate);
+    const decimalPart = rate - fullStars;
+    const stars = [];
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <span
+          key={i}
+          className={`text-violet-500 w-[${size}px] h-[${size}px]`}
+          dangerouslySetInnerHTML={{ __html: Icons.star_active_icon }}
+        />
+      );
+    }
+    if (decimalPart > 0) {
+      stars.push(
+        <span
+          key={fullStars}
+          className={`text-violet-500 w-[${size}px] h-[${size}px]`}
+          dangerouslySetInnerHTML={{ __html: Icons.star_half_icon }}
+          // style={{ width: `${decimalPart * 100}%`, overflow: 'hidden' }}
+        />
+      );
+    }
+    const remainingStars = 5 - Math.ceil(rate);
+    for (let i = 0; i < remainingStars; i++) {
+      stars.push(
+        <span
+          className={`w-[${size}px] h-[${size}px]`}
+          key={fullStars + i}
+          dangerouslySetInnerHTML={{ __html: Icons.star_icon }}
+        />
+      );
+    }
 
-      return stars;
-    },
-    [dataReviews]
-  );
+    return stars;
+  }, []);
   const renderReviews = useMemo(() => {
     return dataReviews?.reviews && isSuccessReviews
       ? dataReviews.reviews.map((r: any) => (
@@ -123,7 +121,7 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
           </div>
         ))
       : null;
-  }, [dataReviews, isSuccessReviews, formatTime, renderStars]);
+  }, [dataReviews, isSuccessReviews, renderStars]);
   return (
     <>
       <ul className='flex flex-col justify-center sm:flex-row gap-6'>

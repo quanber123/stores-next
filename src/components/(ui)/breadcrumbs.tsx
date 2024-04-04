@@ -15,7 +15,7 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
         scrollElement();
       }
     },
-    [name, router, scrollElement]
+    [name, router]
   );
   const renderedBreadcrumbs = useMemo(() => {
     return formatArr?.map((b, index) => {

@@ -12,7 +12,7 @@ function CartDropdown({ carts }: { carts: Cart[] }) {
   const redirectCart = useCallback(() => {
     setVisibleDropdown('visibleCartDropdown');
     redirect('/cart');
-  }, [setVisibleDropdown, redirect]);
+  }, [setVisibleDropdown]);
   const renderedCart = useMemo(() => {
     return carts.map((c) => {
       return (

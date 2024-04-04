@@ -41,7 +41,7 @@ const BlogFilter: React.FC<Props> = ({ categories, tags }) => {
         );
       })
     );
-  }, [categories, createQueryString, mouseHover]);
+  }, [categories, createQueryString, mouseHover, searchQuery]);
   const renderedTags = useMemo(() => {
     const type = 'tag';
     return (
@@ -62,7 +62,7 @@ const BlogFilter: React.FC<Props> = ({ categories, tags }) => {
         );
       })
     );
-  }, [tags, createQueryString]);
+  }, [tags, createQueryString, searchQuery]);
   const handleDropdown = () => {
     setDropdownCategory((prevState) => !prevState);
   };
