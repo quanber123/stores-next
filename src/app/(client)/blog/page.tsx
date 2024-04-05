@@ -8,21 +8,21 @@ import { Category, Tag } from '@/types/types';
 import { useSearchParams } from 'next/navigation';
 import LoadingItem from '@/components/(ui)/loadingItem';
 const DynamicBlogTitle = dynamic(
-  () => import('@/components/pages/blog/blogTitle'),
+  () => import('@/components/pages/(client)/blog/blogTitle'),
   {
     loading: () => <div className='skeleton w-full h-[240px]'></div>,
     ssr: false,
   }
 );
 const DynamicBlogFilter = dynamic(
-  () => import('@/components/pages/blog/blogFilter'),
+  () => import('@/components/pages/(client)/blog/blogFilter'),
   {
     loading: () => <div className='skeleton w-full h-[320px] lg:w-1/3'></div>,
     ssr: false,
   }
 );
 const DynamicBlogList = dynamic(
-  () => import('@/components/pages/blog/blogList'),
+  () => import('@/components/pages/(client)/blog/blogList'),
   {
     ssr: false,
   }

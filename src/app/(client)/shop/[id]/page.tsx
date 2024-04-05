@@ -15,14 +15,14 @@ const DynamicBreadcrumbs = dynamic(
   }
 );
 const DynamicListImages = dynamic(
-  () => import('@/components/pages/product-details/listImages'),
+  () => import('@/components/pages/(client)/product-details/listImages'),
   {
     loading: () => <div className='skeleton h-[580px]'></div>,
     ssr: false,
   }
 );
 const DynamicProductDetails = dynamic(
-  () => import('@/components/pages/product-details/productDetails'),
+  () => import('@/components/pages/(client)/product-details/productDetails'),
   {
     loading: () => (
       <div className='h-[580px] flex flex-col gap-6'>
@@ -37,14 +37,14 @@ const DynamicProductDetails = dynamic(
   }
 );
 const DynamicMoreInformation = dynamic(
-  () => import('@/components/pages/product-details/moreInformation'),
+  () => import('@/components/pages/(client)/product-details/moreInformation'),
   {
     loading: () => <div className='h-[200px] w-full skeleton'></div>,
     ssr: false,
   }
 );
 const DynamicRelatedProducts = dynamic(
-  () => import('@/components/pages/product-details/relatedProducts'),
+  () => import('@/components/pages/(client)/product-details/relatedProducts'),
   {
     loading: () => (
       <>

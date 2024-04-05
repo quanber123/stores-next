@@ -6,7 +6,7 @@ function Scroll() {
   const [btnFixed, setBtnFixed] = useState(false);
   useEffect(() => {
     const setFixed = () => {
-      if (window.pageYOffset > 250) {
+      if (window.scrollY > 250) {
         setBtnFixed(true);
       } else {
         setBtnFixed(false);

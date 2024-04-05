@@ -13,6 +13,7 @@ const useQueryString = (): [
       const params = new URLSearchParams(searchQuery.toString());
       if (value) {
         params.set(name, value);
+        name !== 'page' && params.set('page', '1');
       } else {
         params.delete(name);
       }

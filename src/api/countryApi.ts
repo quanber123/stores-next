@@ -12,9 +12,9 @@ export async function getProvinces() {
   return data;
 }
 
-export async function getDistricts() {
+export async function getDistricts(code: string | number) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}api/districts/getByProvince`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}api/districts/getByProvince?provinceCode=${code}`,
     {
       cache: 'force-cache',
     }
@@ -26,9 +26,9 @@ export async function getDistricts() {
   return data;
 }
 
-export async function getWards() {
+export async function getWards(code: string | number) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}api/wards/getByDistrict`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}api/wards/getByDistrict?districtCode=${code}`,
     {
       cache: 'force-cache',
     }

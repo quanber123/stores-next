@@ -1,10 +1,10 @@
-import './globals.css';
-import { Roboto } from 'next/font/google';
 import dynamic from 'next/dynamic';
 import UiProvider from '@/context/UiProvider';
 import StoreProvider from '@/context/StoreProvider';
+import { Roboto } from 'next/font/google';
 import { ModalProvider } from '@/context/ModalProvider';
 import { DropdownProvider } from '@/context/DropdownProvider';
+import './globals.css';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   loading: () => (
     <div
@@ -29,9 +29,9 @@ const roboto = Roboto({
   subsets: ['latin'],
   weight: ['100', '300', '400', '500', '700', '900'],
 });
-interface RootLayoutProps {
+type RootLayoutProps = {
   children: React.ReactNode;
-}
+};
 export default async function RootLayout({
   children,
 }: RootLayoutProps): Promise<JSX.Element> {

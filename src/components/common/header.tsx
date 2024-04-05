@@ -7,9 +7,14 @@ import {
   useGetAllFavoritesQuery,
 } from '@/lib/redux/query/productQuery';
 import { useGetUserQuery } from '@/lib/redux/query/userQuery';
-import { setUser, token, userInfo } from '@/lib/redux/slice/userSlice';
+import {
+  setToken,
+  setUser,
+  token,
+  userInfo,
+} from '@/lib/redux/slice/userSlice';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, {
   Suspense,
   lazy,
@@ -29,6 +34,7 @@ const Header = () => {
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
   const { setVisibleModal, closeAllModal } = useContext(ModalContext);
   const { setVisibleDropdown, closeDropdown } = useContext(DropdownContext);
+  const searchQuery = useSearchParams();
   const accessToken = useSelector(token);
   const user = useSelector(userInfo);
   const dispatch = useDispatch();
@@ -42,6 +48,11 @@ const Header = () => {
     null,
     { skip: !accessToken }
   );
+  useEffect(() => {
+    if (searchQuery.get('token')) {
+      dispatch(setToken({ accessToken: searchQuery.get('token') }));
+    }
+  }, [searchQuery.get('token'), dispatch]);
   useEffect(() => {
     if (isSuccessGetUser) {
       dispatch(setUser(userData));

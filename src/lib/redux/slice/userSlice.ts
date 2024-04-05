@@ -36,6 +36,10 @@ export const userSlice = createSlice({
   reducers: {
     setToken: (state, action) => {
       state.token = action.payload.accessToken;
+      window.localStorage.setItem(
+        'coza-store-token',
+        action.payload.accessToken
+      );
     },
     setUser: (state, action) => {
       state.user = action.payload;

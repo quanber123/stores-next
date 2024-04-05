@@ -8,7 +8,7 @@ import { getCategories } from '@/api/categoryApi';
 import { Category, Tag } from '@/types/types';
 import { getTags } from '@/api/tagApi';
 const DynamicProductFilter = dynamic(
-  () => import('@/components/pages/shop/productFilter'),
+  () => import('@/components/pages/(client)/shop/productFilter'),
   {
     loading: () => (
       <div className='container flex flex-col md:flex-row justify-between items-center gap-[20px] md:gap-[80px]'>
@@ -20,7 +20,7 @@ const DynamicProductFilter = dynamic(
   }
 );
 const DynamicProductList = dynamic(
-  () => import('@/components/pages/shop/productList'),
+  () => import('@/components/pages/(client)/shop/productList'),
   {
     ssr: false,
   }
