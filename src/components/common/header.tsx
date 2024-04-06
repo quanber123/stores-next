@@ -109,7 +109,7 @@ const Header = () => {
           height={20}
           src={`${process.env.NEXT_PUBLIC_BACKEND_URL}public/images/logo-01.png.webp`}
           alt='logo'
-          priority={true}
+          priority
           onClick={() => routerRedirect('/')}
         />
         {/* desktop display */}
