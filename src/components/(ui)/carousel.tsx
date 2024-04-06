@@ -10,7 +10,7 @@ const Carousel: React.FC<Props> = ({ children }) => {
     useCarousel(React.Children.toArray(children).length);
   return (
     <div className='container relative mt-4'>
-      <div className={`max-w-[${width * breakpoints}%] overflow-hidden`}>
+      <div className={`max-w-[${width * breakpoints}%] px-2 overflow-hidden`}>
         <div
           className='w-full flex justify-between items-stretch gap-[20px]'
           style={{
