@@ -10,11 +10,19 @@ import { Product } from '@/types/types';
 import Image from 'next/image';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  PinterestShareButton,
+  PinterestIcon,
+  TwitterShareButton,
+  TwitterIcon,
+} from 'next-share';
 type Props = {
   product: Product;
 };
 const ListImages: React.FC<Props> = ({ product }) => {
-  const { _id, images } = product;
+  const { _id, images, name, details } = product;
   const { setVisibleModal } = useContext(ModalContext);
   const user = useSelector(userInfo);
   const { data: dataFavorite, isSuccess: isSuccessFavorite } =
@@ -128,13 +136,30 @@ const ListImages: React.FC<Props> = ({ product }) => {
           )}
         </div>
         <div className='flex justify-center items-center gap-6'>
-          <button className='flex items-center gap-2 text-lg font-bold'>
-            <span>Share:</span>
-            <span
-              className='text-blue-700'
-              dangerouslySetInnerHTML={{ __html: Icons.facebook_icon }}
-            ></span>
-          </button>
+          <div className='flex items-center gap-2 text-lg font-bold'>
+            <p>Share:</p>
+            <FacebookShareButton
+              url={window.location.href}
+              quote={name}
+              hashtag={details.tags.join('#')}
+            >
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <PinterestShareButton
+              url={window.location.href}
+              media={images[0]}
+              description={name}
+            >
+              <PinterestIcon size={32} round />
+            </PinterestShareButton>
+            <TwitterShareButton
+              url={window.location.href}
+              title={name}
+              hashtags={details.tags.map((t) => t.name)}
+            >
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+          </div>
           <span className='w-[2px] h-[24px] bg-gray-200'></span>
           <button
             className='flex items-center gap-2 text-lg font-bold'
