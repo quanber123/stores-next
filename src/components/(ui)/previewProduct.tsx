@@ -10,6 +10,7 @@ import {
 } from '@/lib/redux/query/productQuery';
 import { Icons } from '@/enum/enum';
 import { ModalContext } from '@/context/ModalProvider';
+import scrollElement from '@/lib/utils/scrollElement';
 type Props = {
   product: Product;
   style?: React.CSSProperties;
@@ -43,6 +44,13 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
     [user, setVisibleModal, postFavorite]
   );
   const router = useRouter();
+  const handleRedirect = useCallback(
+    (id: string) => {
+      router.push(`/shop/${_id}`, { scroll: true });
+      scrollElement();
+    },
+    [router]
+  );
   return (
     <article style={style} className='flex flex-col gap-4'>
       <div className='w-full overflow-hidden'>
@@ -63,7 +71,7 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
         <div className='flex justify-between items-center text-mediumGray font-bold'>
           <h6
             className='cursor-pointer capitalize'
-            onClick={() => router.push(`/shop/${_id}`, { scroll: true })}
+            onClick={() => handleRedirect(_id)}
           >
             {name}
           </h6>

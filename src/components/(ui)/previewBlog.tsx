@@ -1,10 +1,10 @@
 import { formatDate } from '@/lib/utils/format';
 import { Blog } from '@/types/types';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useCallback } from 'react';
 import LazyLoadImage from './lazyloadImage';
 import { Icons } from '@/enum/enum';
+import scrollElement from '@/lib/utils/scrollElement';
 type Props = {
   blog: Blog;
   type?: string;
@@ -13,9 +13,16 @@ type Props = {
 const PreviewBlog: React.FC<Props> = ({ blog, type, style }) => {
   const router = useRouter();
   const { _id, imgSrc, title, author, created_at, open_paragraph, tags } = blog;
+  const handleRedirect = useCallback(
+    (id: string) => {
+      router.push(`/blog/${id}`, { scroll: true });
+      scrollElement();
+    },
+    [router]
+  );
   return type === 'home-page' ? (
     <article style={{ ...style }} className='flex flex-col gap-4'>
-      <div className='w-full overflow-hidden'>
+      <div className='w-full h-[260px] overflow-hidden'>
         <LazyLoadImage
           src={imgSrc}
           width={290}
@@ -31,7 +38,7 @@ const PreviewBlog: React.FC<Props> = ({ blog, type, style }) => {
         </p>
         <p
           className='min-h-[64px] h-full text-xl sm:text-2xl line-clamp-2 flex-1 cursor-pointer'
-          onClick={() => router.push(`/blog/${_id}`, { scroll: true })}
+          onClick={() => handleRedirect(_id)}
         >
           {title}
         </p>
@@ -56,7 +63,10 @@ const PreviewBlog: React.FC<Props> = ({ blog, type, style }) => {
         />
       </div>
       <div className='flex flex-col gap-2'>
-        <p className='text-2xl lg:text-3xl font-bold line-clamp-2 cursor-pointer'>
+        <p
+          className='text-2xl lg:text-3xl font-bold line-clamp-2 cursor-pointer'
+          onClick={() => handleRedirect(_id)}
+        >
           {title}
         </p>
         <p className='line-clamp-3'>{open_paragraph}</p>
@@ -70,7 +80,10 @@ const PreviewBlog: React.FC<Props> = ({ blog, type, style }) => {
               {tags.map((t) => t.name).join(', ')}
             </p>
           </div>
-          <button className='ml-auto uppercase text-lg font-bold flex items-center gap-2 hover:text-violet-500 transition-colors'>
+          <button
+            className='ml-auto uppercase text-lg font-bold flex items-center gap-2 hover:text-violet-500 transition-colors'
+            onClick={() => handleRedirect(_id)}
+          >
             Continue reading
             <span
               dangerouslySetInnerHTML={{ __html: Icons.arrow_right_icon }}

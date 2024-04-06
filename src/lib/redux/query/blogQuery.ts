@@ -13,7 +13,7 @@ export const blogApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['blogs'],
+  tagTypes: ['blogs', 'blogDetails'],
   endpoints: (builder) => {
     return {
       getBlogs: builder.query({
@@ -22,8 +22,12 @@ export const blogApi = createApi({
         },
         providesTags: (result) => providesList(result, 'blogs'),
       }),
+      getBlogById: builder.query({
+        query: (id) => `blogs/${id}`,
+        providesTags: (result) => providesList(result, 'blogDetails'),
+      }),
     };
   },
 });
 
-export const { useGetBlogsQuery } = blogApi;
+export const { useGetBlogsQuery, useGetBlogByIdQuery } = blogApi;
