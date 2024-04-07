@@ -24,9 +24,10 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
           <li className='text-md font-bold'>&gt;</li>
           <li>
             <button
-              className={`capitalize ${
+              className={`max-w-[150px] md:max-w-full capitalize text-ellipsis whitespace-nowrap overflow-hidden ${
                 index === formatArr.length - 1 && 'text-violet-500'
               }`}
+              title={index === formatArr.length - 1 ? name : b}
               onClick={() =>
                 handleRedirect(index === formatArr.length - 1 ? name : b)
               }
@@ -39,7 +40,7 @@ const Breadcrumbs: React.FC<Props> = ({ pathname, name }) => {
     });
   }, [name, formatArr, handleRedirect]);
   return (
-    <section className='container'>
+    <section className='container text-sm md:text-base'>
       <ul className='flex items-center gap-2 text-md font-bold'>
         <li>
           <button onClick={() => handleRedirect('')}>Home</button>
