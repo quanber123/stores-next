@@ -5,6 +5,7 @@ import { Roboto } from 'next/font/google';
 import { ModalProvider } from '@/context/ModalProvider';
 import { DropdownProvider } from '@/context/DropdownProvider';
 import { StatusOrderProvider } from '@/context/StatusOrderProvider';
+import { Metadata } from 'next';
 import './globals.css';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   loading: () => (
@@ -32,6 +33,12 @@ const roboto = Roboto({
 });
 type RootLayoutProps = {
   children: React.ReactNode;
+};
+export const metadata: Metadata = {
+  title: {
+    template: '%s | COZASTORE',
+    default: 'COZASTORE',
+  },
 };
 export default async function RootLayout({
   children,
