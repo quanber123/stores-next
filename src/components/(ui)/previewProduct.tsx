@@ -69,12 +69,12 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
       </div>
       <div className='flex flex-col gap-[5px]'>
         <div className='flex justify-between items-center text-mediumGray font-bold'>
-          <h6
+          <p
             className='cursor-pointer capitalize'
             onClick={() => handleRedirect(_id)}
           >
             {name}
-          </h6>
+          </p>
           {isCurUserLiked ? (
             <button
               dangerouslySetInnerHTML={{ __html: Icons.heart_active_icon }}
