@@ -1,8 +1,8 @@
 'use client';
 import { useGetProductsByIdQuery } from '@/lib/redux/query/productQuery';
-import { usePathname } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 const DynamicBreadcrumbs = dynamic(
   () => import('@/components/(ui)/breadcrumbs'),
   {
@@ -58,12 +58,20 @@ const DynamicRelatedProducts = dynamic(
 export default function ProductDetails({ params }: { params: { id: string } }) {
   const { id } = params;
   const pathname = usePathname();
-  const { data: productData, isSuccess: isSuccessData } =
-    useGetProductsByIdQuery(id);
+  const {
+    data: productData,
+    isSuccess: isSuccessProduct,
+    isError: isErrorProduct,
+  } = useGetProductsByIdQuery(id);
+  useLayoutEffect(() => {
+    if (isErrorProduct) {
+      redirect(`/not-found-product-${id}`);
+    }
+  }, [isErrorProduct]);
   return (
-    isSuccessData &&
+    isSuccessProduct &&
     productData && (
-      <section className='container m-auto flex flex-col gap-16 py-8'>
+      <div className='container m-auto flex flex-col gap-16 py-8 px-4'>
         <DynamicBreadcrumbs
           pathname={pathname}
           name={productData.product.name}
@@ -78,7 +86,7 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
         <section className='flex flex-col gap-8'>
           <DynamicRelatedProducts products={productData.relatedProducts} />
         </section>
-      </section>
+      </div>
     )
   );
 }
