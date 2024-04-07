@@ -16,7 +16,7 @@ import { getLogoUrl } from '@/lib/redux/slice/pageSlice';
 import Image from 'next/image';
 import { redirect, usePathname } from 'next/navigation';
 import ValidateMessage from '../(ui)/validateMessage';
-import { userInfo } from '@/lib/redux/slice/userSlice';
+import { setToken, userInfo } from '@/lib/redux/slice/userSlice';
 function LoginModal() {
   const pathname = usePathname();
   const user = useSelector(userInfo);
@@ -30,7 +30,6 @@ function LoginModal() {
       data: dataLogin,
       isSuccess: isSuccessLogin,
       isLoading: isLoadingUser,
-      status: statusLogin,
       error: errorLogin,
     },
   ] = useUserLoginMutation();
@@ -70,10 +69,15 @@ function LoginModal() {
       password: '',
     });
   }, [setVisibleModal]);
+  console.log(isSuccessLogin);
   useEffect(() => {
-    if (isSuccessLogin && !isLoadingUser && statusLogin === 'fulfilled') {
+    if (isSuccessLogin && dataLogin) {
       closeAllModal();
-      window.localStorage.setItem('coza-store-token', dataLogin.accessToken);
+      dispatch(setToken(dataLogin));
+      setForm({
+        email: '',
+        password: '',
+      });
       user?.isVerified ? redirect(pathname) : redirect('/verified');
     }
     if (errorLogin && 'data' in errorLogin) {
@@ -85,15 +89,10 @@ function LoginModal() {
         },
       });
     }
-    setForm({
-      email: '',
-      password: '',
-    });
   }, [
     isSuccessLogin,
     isLoadingUser,
     dataLogin,
-    statusLogin,
     errorLogin,
     pathname,
     user,
@@ -208,20 +207,20 @@ function LoginModal() {
           <button
             style={{
               filter: `${
-                !validateEmail(form.email) || statusLogin === 'pending'
+                !validateEmail(form.email) || isLoadingUser
                   ? 'grayscale(80%)'
                   : 'none'
               }`,
               cursor: `${
-                !validateEmail(form.email) || statusLogin === 'pending'
+                !validateEmail(form.email) || isLoadingUser
                   ? 'no-drop'
                   : 'pointer'
               }`,
             }}
-            disabled={!validateEmail(form.email) || statusLogin === 'pending'}
+            disabled={!validateEmail(form.email) || isLoadingUser}
             onClick={handleLoginUser}
           >
-            {statusLogin === 'pending' ? '...Loading' : 'Login'}
+            {isLoadingUser ? '...Loading' : 'Login'}
           </button>
         </div>
         <div className='w-full grid grid-cols-2 justify-center items-center gap-[20px] text-white'>
