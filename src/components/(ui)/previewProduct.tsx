@@ -49,7 +49,7 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
       router.push(`/shop/${_id}`, { scroll: true });
       scrollElement();
     },
-    [router]
+    [router, _id]
   );
   return (
     <article style={style} className='flex flex-col gap-4'>

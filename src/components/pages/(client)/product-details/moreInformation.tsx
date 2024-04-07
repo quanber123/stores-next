@@ -46,9 +46,12 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
           return null;
         }
       });
-  }, [details.variants]);
+  }, [details.variants, details]);
 
-  const sizes = useMemo(() => details.variants.map((v) => v.size), [product]);
+  const sizes = useMemo(
+    () => details.variants.map((v) => v.size),
+    [details.variants]
+  );
   const colors = useMemo(() => {
     const arrColors = [
       ...details.variants.map((v) => v.color).filter((v) => v),

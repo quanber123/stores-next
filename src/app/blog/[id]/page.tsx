@@ -50,7 +50,7 @@ export default function BlogDetails({ params }: { params: { id: string } }) {
     if (isErrorBlog) {
       redirect(`/not-found-blog-${id}`);
     }
-  }, [isErrorBlog]);
+  }, [isErrorBlog, id]);
   return (
     isSuccessBlog &&
     blogData && (

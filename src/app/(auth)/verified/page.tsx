@@ -31,7 +31,7 @@ function Verified() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setCode(e.target.value);
     },
-    [code]
+    []
   );
   const handleVerified = useCallback(() => {
     verifiedEmail({ email: user?.email, code: code });
@@ -64,6 +64,7 @@ function Verified() {
       });
     }
   }, [
+    dataVerified,
     setVisibleModal,
     verifiedEmail,
     dispatch,

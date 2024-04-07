@@ -34,7 +34,7 @@ const ListImages: React.FC<Props> = ({ product }) => {
       isSuccessUserFavorite &&
       dataUserFavorite.favorite?.products?.find((p: Product) => p._id === _id)
     );
-  }, [isSuccessUserFavorite, dataUserFavorite]);
+  }, [isSuccessUserFavorite, dataUserFavorite, _id]);
   const [indexImage, setIndexImage] = useState<number>(0);
   const handleIndex = (index: number) => {
     setIndexImage(index);
@@ -42,11 +42,11 @@ const ListImages: React.FC<Props> = ({ product }) => {
   const [postFavorite] = usePostFavoritesMutation();
   const handlePostFavorite = useCallback(() => {
     if (user?.id) {
-      postFavorite(product._id);
+      postFavorite(_id);
     } else {
       setVisibleModal('visibleLoginModal');
     }
-  }, [setVisibleModal, postFavorite, user]);
+  }, [setVisibleModal, postFavorite, user, _id]);
   const handlePrev = useCallback(() => {
     setIndexImage((prevIndex) => {
       if (prevIndex === 0) return images?.length - 1;

@@ -23,7 +23,7 @@ export const StatusOrderProvider = ({ children }: { children: any }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
   return (
     <StatusOrderContext.Provider value={null}>
       {children}

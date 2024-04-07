@@ -67,7 +67,7 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
     if (isErrorProduct) {
       redirect(`/not-found-product-${id}`);
     }
-  }, [isErrorProduct]);
+  }, [isErrorProduct, id]);
   return (
     isSuccessProduct &&
     productData && (

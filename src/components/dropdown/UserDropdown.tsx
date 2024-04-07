@@ -19,7 +19,7 @@ const UserDropdown: React.FC<Props> = ({ user }) => {
       router.push(`${route}`);
       closeDropdown();
     },
-    [router]
+    [router, closeDropdown]
   );
   const handleLogout = useCallback(() => {
     dispatch(removeUser());

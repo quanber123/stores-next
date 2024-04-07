@@ -49,10 +49,12 @@ const Header = () => {
     { skip: !accessToken }
   );
   useEffect(() => {
-    if (searchQuery.get('token')) {
-      dispatch(setToken({ accessToken: searchQuery.get('token') }));
+    const token = searchQuery.get('token');
+    if (token) {
+      dispatch(setToken({ accessToken: token }));
     }
-  }, [searchQuery.get('token'), dispatch]);
+  }, [searchQuery, dispatch]);
+
   useEffect(() => {
     if (isSuccessGetUser) {
       dispatch(setUser(userData));
@@ -96,7 +98,7 @@ const Header = () => {
         </li>
       );
     });
-  }, [pathname, router, routerRedirect]);
+  }, [pathname, routerRedirect]);
   return (
     <header
       style={{ boxShadow: '0 0px 3px 0px rgba(0, 0, 0, 0.2)' }}

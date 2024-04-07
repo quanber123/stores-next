@@ -94,7 +94,7 @@ const Comments: React.FC<Props> = ({ comment, blog }) => {
         postComment({ id: _id, text: text });
       }
     },
-    [postComment]
+    [postComment, _id, text]
   );
   const redirectToVerified = useCallback(() => {
     router.push('/verified');
