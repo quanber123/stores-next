@@ -87,7 +87,7 @@ function Blog() {
           )}
         {isLoadingBlogsData && (
           <LoadingItem
-            sectionClass='w-full lg:w-2/3 flex flex-col gap-20'
+            sectionClass='w-full lg:w-2/3'
             heightItem='h-[500px]'
             amount={8}
           />

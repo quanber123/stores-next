@@ -13,7 +13,7 @@ export const blogApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['blogs', 'blogDetails'],
+  tagTypes: ['blogs', 'blogDetails', 'comments'],
   endpoints: (builder) => {
     return {
       getBlogs: builder.query({
@@ -26,8 +26,27 @@ export const blogApi = createApi({
         query: (id) => `blogs/${id}`,
         providesTags: (result) => providesList(result, 'blogDetails'),
       }),
+      getCommentBlog: builder.query({
+        query: (id) => `blogs/${id}/comments`,
+        providesTags: (result) => providesList(result, 'comments'),
+      }),
+      postCommentBlog: builder.mutation({
+        query: ({ id, text }) => ({
+          url: `blogs/${id}/comments`,
+          method: 'POST',
+          body: {
+            text: text,
+          },
+        }),
+        invalidatesTags: ['comments'],
+      }),
     };
   },
 });
 
-export const { useGetBlogsQuery, useGetBlogByIdQuery } = blogApi;
+export const {
+  useGetBlogsQuery,
+  useGetBlogByIdQuery,
+  useGetCommentBlogQuery,
+  usePostCommentBlogMutation,
+} = blogApi;
