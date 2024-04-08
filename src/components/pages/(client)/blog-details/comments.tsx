@@ -29,7 +29,7 @@ type Props = {
   blog: Blog;
 };
 const Comments: React.FC<Props> = ({ comment, blog }) => {
-  const { comments, totalComments } = comment;
+  const { comments } = comment;
   const { _id, title, tags, imgSrc } = blog;
   const [
     postComment,
@@ -111,9 +111,9 @@ const Comments: React.FC<Props> = ({ comment, blog }) => {
         <div className='flex items-center gap-4'>
           <span dangerouslySetInnerHTML={{ __html: Icons.comment_icon }}></span>
           <p>
-            {totalComments > 1
-              ? `${totalComments} comments`
-              : `${totalComments > 0 ? totalComments : 0} comment`}
+            {comments?.length > 1
+              ? `${comments?.length} comments`
+              : `${comments?.length > 0 ? comments.length : 0} comment`}
           </p>
         </div>
         <div className='ml-auto flex items-center gap-2 text-lg font-bold'>
