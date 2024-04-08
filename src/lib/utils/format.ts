@@ -46,3 +46,7 @@ export const hidePartialUsername = (username: string, visibleChars = 3) => {
     return hiddenUsername;
   }
 };
+
+export function formatNumberWithDot(number: number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
