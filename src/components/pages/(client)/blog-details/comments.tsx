@@ -3,6 +3,7 @@ import { Blog } from '@/types/types';
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -30,13 +31,19 @@ type Props = {
 const Comments: React.FC<Props> = ({ comment, blog }) => {
   const { comments, totalComments } = comment;
   const { _id, title, tags, imgSrc } = blog;
-  const [postComment, { isLoading: isLoadingPostComment }] =
-    usePostCommentBlogMutation();
+  const [
+    postComment,
+    {
+      data: commentData,
+      isSuccess: isSuccessPostComment,
+      isLoading: isLoadingPostComment,
+    },
+  ] = usePostCommentBlogMutation();
   const router = useRouter();
   const { setVisibleModal } = useContext(ModalContext);
-  const [text, setText] = useState('');
   const user = useSelector(userInfo);
   const commentRef = useRef<HTMLParagraphElement | null>(null);
+  const [isFocusComment, setIsFocusComment] = useState(false);
   const renderedComments = useMemo(() => {
     if (!comments) {
       return [];
@@ -68,38 +75,36 @@ const Comments: React.FC<Props> = ({ comment, blog }) => {
       );
     });
   }, [comments]);
-  const handleFocus = useCallback(() => {
-    if (commentRef.current) {
-      const content = commentRef.current.textContent?.trim();
-      if (content === 'Write comment...' || !content) {
-        commentRef.current.textContent = '';
-      }
-    }
-  }, []);
 
-  const handleBlur = useCallback(() => {
-    if (commentRef.current) {
-      const content = commentRef.current.textContent?.trim();
-      if (!content) {
-        commentRef.current.textContent = 'Write comment...';
-      }
-    }
-    setText(commentRef.current?.textContent || '');
-  }, []);
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLParagraphElement>) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         console.log('key down');
-        postComment({ id: _id, text: text });
+        if (!commentRef.current?.textContent) {
+          setVisibleModal({
+            visibleToastModal: {
+              type: 'warning',
+              message: 'Comment can not be null!',
+            },
+          });
+        } else {
+          postComment({ id: _id, text: commentRef.current?.textContent });
+        }
       }
     },
-    [postComment, _id, text]
+    [postComment, _id, commentRef.current, setVisibleModal]
   );
+  useEffect(() => {
+    if (isSuccessPostComment && commentData) {
+      if (commentRef.current) {
+        commentRef.current.textContent = '';
+      }
+    }
+  }, [isSuccessPostComment, commentData]);
   const redirectToVerified = useCallback(() => {
     router.push('/verified');
   }, [router]);
-  console.log(totalComments);
   return (
     <section className='flex flex-col gap-8 text-sm md:text-base'>
       <div className='py-4 border-t border-b border-gray-400 flex flex-col sm:flex-row justify-between sm:items-center gap-4'>
@@ -157,20 +162,35 @@ const Comments: React.FC<Props> = ({ comment, blog }) => {
             <div className='relative w-full text-darkGray'>
               <p
                 ref={commentRef}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
+                onFocus={() => setIsFocusComment(true)}
+                onBlur={() => setIsFocusComment(false)}
                 onKeyDown={handleKeyDown}
                 contentEditable
-                className='sticky top-0 right-0 py-2 px-4 w-full min-h-[36px] rounded-[24px] bg-gray-200 z-20'
+                className='py-2 px-4 w-full min-h-[36px] rounded-[24px] bg-gray-200 z-20'
                 id='comment'
               ></p>
+              <p
+                className={`${
+                  isFocusComment ? 'hidden' : 'block'
+                } absolute top-2 left-4`}
+                onClick={() => setIsFocusComment(true)}
+              >
+                Write comment...
+              </p>
               <button
                 className={`absolute bottom-[10px] right-[5%] md:right-[2%] z-50 text-gray-500 hover:text-blue-500 transition-colors ${
-                  text ? 'text-blue-500' : ''
+                  !commentRef.current?.textContent ? 'text-blue-500' : ''
                 }`}
-                disabled={isLoadingPostComment || !text}
+                disabled={
+                  isLoadingPostComment || !commentRef.current?.textContent
+                }
                 aria-label='Send-comment'
-                onClick={() => postComment({ id: _id, text: text })}
+                onClick={() =>
+                  postComment({
+                    id: _id,
+                    text: !commentRef.current?.textContent,
+                  })
+                }
                 dangerouslySetInnerHTML={{ __html: Icons.paper_plane_icon }}
               ></button>
             </div>
