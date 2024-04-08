@@ -5,15 +5,16 @@ import { DropdownContext } from '@/context/DropdownProvider';
 import LazyLoadImage from '../(ui)/lazyloadImage';
 import { Cart } from '@/types/types';
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
-import './Dropdown.css';
+import { useRouter } from 'next/navigation';
 import { formatNumberWithDot } from '@/lib/utils/format';
+import './Dropdown.css';
 function CartDropdown({ carts }: { carts: Cart[] }) {
   const { state, setVisibleDropdown } = useContext(DropdownContext);
+  const router = useRouter();
   const redirectCart = useCallback(() => {
     setVisibleDropdown('visibleCartDropdown');
-    redirect('/cart');
-  }, [setVisibleDropdown]);
+    router.push('/cart', { scroll: true });
+  }, [setVisibleDropdown, router]);
   const renderedCart = useMemo(() => {
     return carts.map((c) => {
       return (
@@ -87,7 +88,7 @@ function CartDropdown({ carts }: { carts: Cart[] }) {
       {carts.length > 0 && (
         <div className='pr-[16px] my-4 flex justify-end'>
           <button
-            className='h-[42px] px-4 bg-purple hover:bg-darkGray text-white rounded-[4px]'
+            className='transition-colors h-[42px] px-4 bg-violet-500 hover:bg-neutral-700 text-white rounded-[4px]'
             onClick={redirectCart}
           >
             View your cart

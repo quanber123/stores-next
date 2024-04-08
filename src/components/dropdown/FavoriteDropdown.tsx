@@ -3,15 +3,19 @@ import { useCallback, useContext, useMemo } from 'react';
 import { DropdownContext } from '@/context/DropdownProvider';
 import { Favorite } from '@/types/types';
 import { usePostFavoritesMutation } from '@/lib/redux/query/productQuery';
-import { redirect } from 'next/navigation';
-import './Dropdown.css';
+import { useRouter } from 'next/navigation';
 import LazyLoadImage from '../(ui)/lazyloadImage';
+import './Dropdown.css';
 function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
   const { state } = useContext(DropdownContext);
   const [postFavorite] = usePostFavoritesMutation();
-  const handleRedirect = useCallback((id: string) => {
-    redirect(`/shop/${id}`);
-  }, []);
+  const router = useRouter();
+  const handleRedirect = useCallback(
+    (id: string) => {
+      router.push(`/shop/${id}`, { scroll: true });
+    },
+    [router]
+  );
   const renderedFavorite = useMemo(() => {
     return favorites?.products?.map((p) => {
       return (
