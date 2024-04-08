@@ -1,7 +1,7 @@
 import { Icons } from '@/enum/enum';
 import { useCreateCartMutation } from '@/lib/redux/query/productQuery';
+import { formatNumberWithDot } from '@/lib/utils/format';
 import { Product } from '@/types/types';
-import { image } from '@nextui-org/react';
 import React, {
   ChangeEvent,
   useCallback,
@@ -134,7 +134,6 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
       },
     });
   }, [createCart]);
-  console.log(isSuccessCreateCart, cartData);
   return (
     <div className='flex flex-col gap-6'>
       <h3 className='text-2xl font-medium capitalize'>{name}</h3>
@@ -149,14 +148,14 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
             sale?.rate && sale?.active && 'text-red-600 line-through'
           }`}
         >
-          {price} VND
+          {formatNumberWithDot(price)} VND
         </span>
         <span
           className={`${
             sale?.rate && sale?.active ? 'block text-sm font-bold' : 'hidden'
           }`}
         >
-          {salePrice} VND
+          {salePrice && formatNumberWithDot(salePrice)} VND
         </span>
       </p>
       <p className='text-darkGray'>{details.shortDescription}</p>

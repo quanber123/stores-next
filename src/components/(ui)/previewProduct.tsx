@@ -11,6 +11,7 @@ import {
 import { Icons } from '@/enum/enum';
 import { ModalContext } from '@/context/ModalProvider';
 import scrollElement from '@/lib/utils/scrollElement';
+import { formatNumberWithDot } from '@/lib/utils/format';
 type Props = {
   product: Product;
   style?: React.CSSProperties;
@@ -95,14 +96,14 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
               sale?.rate && sale?.active && 'text-red-600 line-through'
             }`}
           >
-            {price} VND
+            {formatNumberWithDot(price)} VND
           </span>
           <span
             className={`${
               sale?.rate && sale?.active ? 'block text-sm font-bold' : 'hidden'
             }`}
           >
-            {salePrice} VND
+            {salePrice && formatNumberWithDot(salePrice)} VND
           </span>
         </p>
       </div>
