@@ -7,6 +7,7 @@ import { Cart } from '@/types/types';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import './Dropdown.css';
+import { formatNumberWithDot } from '@/lib/utils/format';
 function CartDropdown({ carts }: { carts: Cart[] }) {
   const { state, setVisibleDropdown } = useContext(DropdownContext);
   const redirectCart = useCallback(() => {
@@ -18,9 +19,9 @@ function CartDropdown({ carts }: { carts: Cart[] }) {
       return (
         <article
           key={c._id}
-          className='text-semiBoldGray flex items-center gap-[20px]'
+          className='text-gray-700 flex gap-6 text-sm md:text-base'
         >
-          <div className='relative rounded-[12px] overflow-hidden'>
+          <div className='relative w-[150px] rounded-[12px] overflow-hidden'>
             <LazyLoadImage
               src={c.product.image}
               alt={c.product.name}
@@ -31,8 +32,31 @@ function CartDropdown({ carts }: { carts: Cart[] }) {
           </div>
           <div className='flex flex-col gap-[5px]'>
             <h3 className='font-bold capitalize'>{c.product.name}</h3>
-            <p>Size: {c.product?.size}</p>
-            <p>Color: {c.product?.color}</p>
+            <div className='flex items-center gap-4'>
+              <p>
+                Size:{' '}
+                <span className='uppercase font-bold'>{c.product.size}</span>
+              </p>
+              <p>
+                Color:{' '}
+                <span className='capitalize font-bold'>{c.product.color}</span>
+              </p>
+            </div>
+            <p>
+              Quantity: <span className='font-bold'>{c.product.quantity}</span>
+            </p>
+            <p
+              className='max-w-[180px] text-ellipsis whitespace-nowrap overflow-hidden'
+              title={`${formatNumberWithDot(
+                c.product.totalPrice
+              ).toString()} VND`}
+            >
+              TotalPrice:{' '}
+              <span className='font-bold'>
+                {formatNumberWithDot(c.product.totalPrice)}
+              </span>{' '}
+              VND
+            </p>
           </div>
         </article>
       );

@@ -45,7 +45,7 @@ const UserDropdown: React.FC<Props> = ({ user }) => {
           <h3 className='font-bold text-base'>{user.name}</h3>
           {user.email !== null && (
             <p
-              className='max-w-[150px] w-max text-darkGray text-ellipsis whitespace-nowrap overflow-hidden'
+              className='max-w-[150px] w-max text-gray-700 text-ellipsis whitespace-nowrap overflow-hidden'
               title={user.email}
             >
               {user.email}
@@ -53,7 +53,7 @@ const UserDropdown: React.FC<Props> = ({ user }) => {
           )}
         </div>
       </div>
-      <div className='mx-[26px] my-[16px] flex flex-col gap-[20px] text-darkGray font-bold'>
+      <div className='mx-[26px] my-[16px] flex flex-col gap-[20px] text-gray-700 font-bold'>
         <button
           className='flex items-center gap-[15px]'
           onClick={() => handleRedirect('purchase')}

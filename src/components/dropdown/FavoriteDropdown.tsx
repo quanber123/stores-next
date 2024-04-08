@@ -3,9 +3,9 @@ import { useCallback, useContext, useMemo } from 'react';
 import { DropdownContext } from '@/context/DropdownProvider';
 import { Favorite } from '@/types/types';
 import { usePostFavoritesMutation } from '@/lib/redux/query/productQuery';
-import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import './Dropdown.css';
+import LazyLoadImage from '../(ui)/lazyloadImage';
 function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
   const { state } = useContext(DropdownContext);
   const [postFavorite] = usePostFavoritesMutation();
@@ -17,16 +17,15 @@ function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
       return (
         <article
           key={p._id}
-          className='h-[80px] text-semiBoldGray flex justify-between gap-[20px]'
+          className='h-[80px] text-gray-700 flex justify-between gap-[20px]'
         >
-          <div className='relative rounded-[12px] overflow-hidden'>
-            <Image
+          <div className='relative w-[150px] rounded-[12px] overflow-hidden'>
+            <LazyLoadImage
               width={200}
               height={80}
-              loading='lazy'
               src={p.images[0]}
               alt={p.name}
-              className='w-[150px] h-full object-cover'
+              className='w-full h-full object-cover'
             />
           </div>
           <div className='flex-1 flex flex-col justify-between gap-[5px]'>
