@@ -1,5 +1,7 @@
 import { Icons } from '@/enum/enum';
+import { useCreateCartMutation } from '@/lib/redux/query/productQuery';
 import { Product } from '@/types/types';
+import { image } from '@nextui-org/react';
 import React, {
   ChangeEvent,
   useCallback,
@@ -11,7 +13,9 @@ type Props = {
   product: Product;
 };
 const ProductDetails: React.FC<Props> = ({ product }) => {
-  const { name, price, sale, salePrice, details } = product;
+  const { _id, name, price, sale, salePrice, details, images } = product;
+  const [createCart, { data: cartData, isSuccess: isSuccessCreateCart }] =
+    useCreateCartMutation();
   const sizes = Array.from(new Set(details.variants.flatMap((v) => v.size)));
   const [selectedSizes, setSelectedSizes] = useState<string>(sizes[0]);
   const colors = useMemo(
@@ -114,6 +118,23 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
     },
     [amount]
   );
+  const handleAddToCart = useCallback(() => {
+    createCart({
+      cart: {
+        productId: _id,
+        name: name,
+        category: details.category.name,
+        image: images[0],
+        color: selectedColors,
+        size: selectedSizes,
+        quantity: totalQuantity,
+        price: price,
+        sale: sale,
+        salePrice: salePrice,
+      },
+    });
+  }, [createCart]);
+  console.log(isSuccessCreateCart, cartData);
   return (
     <div className='flex flex-col gap-6'>
       <h3 className='text-2xl font-medium capitalize'>{name}</h3>
@@ -190,7 +211,10 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         )}
       </div>
       <div className='my-4 flex flex-col sm:flex-row justify-center lg:justify-start lg:items-stretch gap-4'>
-        <button className='rounded px-6 py-3 border bg-violet-50 border-violet-500 text-violet-500 hover:bg-white transition-all duration-200 flex justify-center items-center gap-2'>
+        <button
+          className='rounded px-6 py-3 border bg-violet-50 border-violet-500 text-violet-500 hover:bg-white transition-all duration-200 flex justify-center items-center gap-2'
+          onClick={handleAddToCart}
+        >
           <span className='uppercase'>Add to cart</span>
           <span
             dangerouslySetInnerHTML={{ __html: Icons.cart_plus_icon }}
