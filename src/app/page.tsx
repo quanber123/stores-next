@@ -1,6 +1,5 @@
 'use client';
 import LoadingItem from '@/components/(ui)/loadingItem';
-import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 const DynamicBanners = dynamic(
   () => import('@/components/pages/(client)/home/banner'),

@@ -1,3 +1,4 @@
+import { ModalContext } from '@/context/ModalProvider';
 import { Icons } from '@/enum/enum';
 import { useCreateCartMutation } from '@/lib/redux/query/productQuery';
 import { formatNumberWithDot } from '@/lib/utils/format';
@@ -5,6 +6,7 @@ import { Product } from '@/types/types';
 import React, {
   ChangeEvent,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -13,9 +15,17 @@ type Props = {
   product: Product;
 };
 const ProductDetails: React.FC<Props> = ({ product }) => {
+  const { setVisibleModal } = useContext(ModalContext);
   const { _id, name, price, sale, salePrice, details, images } = product;
-  const [createCart, { data: cartData, isSuccess: isSuccessCreateCart }] =
-    useCreateCartMutation();
+  const [
+    createCart,
+    {
+      data: cartData,
+      isSuccess: isSuccessCreateCart,
+      isError: isErrorCreateCart,
+      error: errorCart,
+    },
+  ] = useCreateCartMutation();
   const sizes = Array.from(new Set(details.variants.flatMap((v) => v.size)));
   const [selectedSizes, setSelectedSizes] = useState<string>(sizes[0]);
   const colors = useMemo(
@@ -133,7 +143,26 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         salePrice: salePrice,
       },
     });
-  }, [createCart]);
+  }, [createCart, totalQuantity, product]);
+  useEffect(() => {
+    if (isSuccessCreateCart && cartData) {
+      setVisibleModal({
+        visibleToastModal: {
+          type: 'success',
+          message: 'Add to cart successfully!',
+        },
+      });
+    }
+    if (isErrorCreateCart && errorCart && 'data' in errorCart) {
+      const errorData = errorCart.data as { message: string };
+      setVisibleModal({
+        visibleToastModal: {
+          type: 'error',
+          message: errorData.message,
+        },
+      });
+    }
+  }, [isSuccessCreateCart, cartData, isErrorCreateCart, errorCart]);
   return (
     <div className='flex flex-col gap-6'>
       <h3 className='text-2xl font-medium capitalize'>{name}</h3>

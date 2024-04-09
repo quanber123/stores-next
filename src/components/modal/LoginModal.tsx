@@ -69,7 +69,6 @@ function LoginModal() {
       password: '',
     });
   }, [setVisibleModal]);
-  console.log(isSuccessLogin);
   useEffect(() => {
     if (isSuccessLogin && dataLogin) {
       closeAllModal();

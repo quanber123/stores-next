@@ -1,16 +1,23 @@
 'use client';
-import { userInfo } from '@/lib/redux/slice/userSlice';
+import { useGetUserQuery } from '@/lib/redux/query/userQuery';
 import { redirect } from 'next/navigation';
-import React, { useLayoutEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import './withAuth.css';
 function withAuth(Component: any) {
   return function useAuth(props: any) {
-    const user = useSelector(userInfo);
-    useLayoutEffect(() => {
-      if (user === null) {
+    const { isLoading, isError } = useGetUserQuery(null);
+    useEffect(() => {
+      if (isError) {
         redirect('/not-found');
       }
-    }, [user]);
+    }, [isError]);
+    if (isLoading) {
+      return (
+        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+          <div className='loader'></div>
+        </div>
+      );
+    }
     return <Component {...props} />;
   };
 }
