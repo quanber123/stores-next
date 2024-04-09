@@ -1,25 +1,12 @@
 'use client';
-import { getCategories } from '@/api/categoryApi';
-import { Category } from '@/types/types';
-import React, { useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
+import React, { useContext, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LazyLoadImage from '@/components/(ui)/lazyloadImage';
+import { FetchDataContext } from '@/context/FetchDataProvider';
 function Categories() {
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories } = useContext(FetchDataContext);
   const [categoryHover, setCategoryHover] = useState<number | null>(null);
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const dataCategories = await getCategories();
-        setCategories(dataCategories);
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
-    }
-    fetchCategories();
-  }, []);
   const renderedCategories = useMemo(() => {
     return categories.map((c, index) => {
       return (

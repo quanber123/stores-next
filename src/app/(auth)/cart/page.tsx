@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getAllCarts, userInfo } from '@/lib/redux/slice/userSlice';
+import CartList from '@/components/pages/(client)/cart/cartList';
 const DynamicBreadcrumbs = dynamic(
   () => import('@/components/(ui)/breadcrumbs'),
   {
@@ -18,10 +19,10 @@ const DynamicBreadcrumbs = dynamic(
 );
 const Cart = () => {
   const pathname = usePathname();
-  const carts = useSelector(getAllCarts);
   return (
     <div className='container m-auto flex flex-col gap-16 py-8 px-4'>
       <DynamicBreadcrumbs pathname={pathname} name='cart' />
+      <CartList />
     </div>
   );
 };

@@ -19,6 +19,7 @@ import { useDebounce } from '@/lib/hooks/useDebounced';
 import { useRouter } from 'next/navigation';
 import LazyLoadImage from '@/components/(ui)/lazyloadImage';
 import cartImg from '@/assets/images/cart.png';
+import Image from 'next/image';
 function CartList() {
   const { setVisibleModal } = useContext(ModalContext);
   const cart = useSelector(getAllCarts);
@@ -34,7 +35,7 @@ function CartList() {
   const [updatedCart, { isSuccess: isSuccessUpdateCart }] =
     useUpdateCartMutation();
   const [indexCart, setIndexCart] = useState<number | null>(null);
-  const debouncedCart = useDebounce(indexCart, 1000);
+  const debouncedValue = useDebounce(indexCart, 1000);
   const handleChangeQuantity = useCallback(
     (index: number, action: string, e: React.ChangeEvent<HTMLInputElement>) => {
       const newQuantity = [...quantity];
@@ -62,16 +63,16 @@ function CartList() {
     [quantity, indexCart]
   );
   useEffect(() => {
-    if (debouncedCart !== null) {
+    if (debouncedValue !== null) {
       updatedCart({
-        id: cart.cart[debouncedCart]._id,
+        id: cart.cart[debouncedValue]._id,
         product: {
-          ...cart.cart[debouncedCart].product,
-          quantity: quantity[debouncedCart],
+          ...cart.cart[debouncedValue].product,
+          quantity: quantity[debouncedValue],
         },
       });
     }
-  }, [debouncedCart, updatedCart, cart]);
+  }, [debouncedValue, updatedCart, cart]);
   useEffect(() => {
     if (isSuccessUpdateCart) {
       setIndexCart(null);
@@ -170,7 +171,7 @@ function CartList() {
               router.push(`/shop/${c.product.id}`, { scroll: true })
             }
           >
-            <div className='flex flex-col tablet:flex-row items-center gap-[14px]'>
+            <div className='flex flex-col md:flex-row items-center gap-[14px]'>
               <LazyLoadImage
                 width={80}
                 height={80}
@@ -178,11 +179,11 @@ function CartList() {
                 src={c.product.image}
                 alt={c.product.name}
               />
-              <p>{c.product.name}</p>
+              <p className='cursor-pointer'>{c.product.name}</p>
             </div>
           </td>
-          <td className='p-4'>{c.product.color}</td>
-          <td className='p-4'>{c.product.size}</td>
+          <td className='p-4 capitalize'>{c.product.color}</td>
+          <td className='p-4 uppercase'>{c.product.size}</td>
           <td className='p-4'>
             <span
               className={`${c.product.salePrice > 0 ? 'line-through' : ''}`}
@@ -232,13 +233,21 @@ function CartList() {
         </tr>
       );
     });
-  }, [cart.cart, quantity, selectedProduct]);
+  }, [
+    cart.cart,
+    quantity,
+    selectedProduct,
+    router,
+    debouncedValue,
+    handleDeleteCartById,
+    handleChangeQuantity,
+  ]);
   return (
-    <div className='w-full overflow-hidden border border-lightGray rounded-lg mb-8 text-sm tablet:text-base'>
+    <div className='w-full overflow-hidden border border-lightGray rounded-lg mb-8 text-sm md:text-base'>
       {cart.cart.length ? (
         <div className='w-full overflow-x-auto'>
           <table className='w-full whitespace-nowrap'>
-            <thead className='font-semibold tracking-wide text-semiBoldGray border-b border-lightGray'>
+            <thead className='font-semibold tracking-wide  font-gray-700 border-b border-lightGray'>
               <tr>
                 <td className='p-4'>
                   <div className='flex justify-center items-center'>
@@ -303,7 +312,7 @@ function CartList() {
                     <span className='font-bold text-red'>${totalQuantity}</span>
                   </p>
                   <button
-                    className='px-[36px] py-[12px] rounded-[2px] bg-purple hover:bg-darkGray text-white font-bold'
+                    className='px-[36px] py-[12px] rounded-[2px] bg-violet-500 hover:bg-neutral-700 text-white font-bold transition-colors'
                     onClick={handleCheckout}
                   >
                     Purchase
@@ -315,16 +324,17 @@ function CartList() {
         </div>
       ) : (
         <div className='py-32 flex flex-col justify-center items-center gap-[10px]'>
-          <LazyLoadImage
-            width={200}
-            height={200}
-            className='w-[100px] h-[100px] mobile:w-[200px] mobile:h-[200px] rounded-[2px]'
-            src={cartImg as unknown as string}
+          <Image
+            className='w-[100px] h-[100px] rounded-[2px]'
+            width={100}
+            height={100}
+            src={cartImg}
             alt='cart-img'
+            priority
           />
           <p className='font-bold'>Your cart is empty.</p>
           <button
-            className='bg-purple hover:bg-darkGray px-8 py-2 rounded-[2px] text-white'
+            className='bg-violet-500 hover:bg-neutral-700 px-8 py-2 rounded-[2px] text-white transition-colors'
             onClick={() => router.push('/shop?page=1', { scroll: true })}
           >
             Buy Now

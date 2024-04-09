@@ -3,14 +3,8 @@ import { DropdownContext } from '@/context/DropdownProvider';
 import { ModalContext } from '@/context/ModalProvider';
 import { Icons } from '@/enum/enum';
 import {
-  useGetAllCartsQuery,
-  useGetAllFavoritesQuery,
-} from '@/lib/redux/query/productQuery';
-import { useGetUserQuery } from '@/lib/redux/query/userQuery';
-import {
-  setToken,
-  setUser,
-  token,
+  getAllCarts,
+  getAllFavorites,
   userInfo,
 } from '@/lib/redux/slice/userSlice';
 import Image from 'next/image';
@@ -20,11 +14,10 @@ import React, {
   lazy,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import UserDropdown from '../dropdown/UserDropdown';
 const CartDropdown = lazy(() => import('@/components/dropdown/CartDropdown'));
 const FavoriteDropdown = lazy(
@@ -34,32 +27,9 @@ const Header = () => {
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
   const { setVisibleModal, closeAllModal } = useContext(ModalContext);
   const { setVisibleDropdown, closeDropdown } = useContext(DropdownContext);
-  const searchQuery = useSearchParams();
-  const accessToken = useSelector(token);
   const user = useSelector(userInfo);
-  const dispatch = useDispatch();
-  const { data: cartsData, isSuccess: isSuccessCarts } = useGetAllCartsQuery(
-    null,
-    { skip: !user?.id }
-  );
-  const { data: favoritesData, isSuccess: isSuccessFavorites } =
-    useGetAllFavoritesQuery(null, { skip: !user?.id });
-  const { data: userData, isSuccess: isSuccessGetUser } = useGetUserQuery(
-    null,
-    { skip: !accessToken }
-  );
-  useEffect(() => {
-    const token = searchQuery.get('token');
-    if (token) {
-      dispatch(setToken({ accessToken: token }));
-    }
-  }, [searchQuery, dispatch]);
-
-  useEffect(() => {
-    if (isSuccessGetUser) {
-      dispatch(setUser(userData));
-    }
-  }, [isSuccessGetUser, userData, dispatch]);
+  const cartData = useSelector(getAllCarts);
+  const favoriteData = useSelector(getAllFavorites);
   const router = useRouter();
   const pathname = usePathname();
   const routerRedirect = useCallback(
@@ -147,17 +117,15 @@ const Header = () => {
                 <span
                   dangerouslySetInnerHTML={{ __html: Icons.cart_icon }}
                 ></span>
-                {isSuccessCarts && cartsData.total > 0 && (
+                {cartData.total > 0 && (
                   <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
-                    {cartsData.total}
+                    {cartData.total}
                   </span>
                 )}
               </button>
-              {isSuccessCarts && (
-                <Suspense>
-                  <CartDropdown carts={cartsData.cart} />
-                </Suspense>
-              )}
+              <Suspense>
+                <CartDropdown carts={cartData.cart} />
+              </Suspense>
             </div>
             <div className='relative'>
               <button
@@ -168,18 +136,17 @@ const Header = () => {
                 <span
                   dangerouslySetInnerHTML={{ __html: Icons.heart_icon }}
                 ></span>
-                {isSuccessFavorites &&
-                  favoritesData.favorite?.products?.length > 0 && (
-                    <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
-                      {favoritesData.favorite?.products?.length}
-                    </span>
-                  )}
+                {favoriteData.favorite?.products?.length > 0 && (
+                  <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
+                    {favoriteData.favorite?.products?.length}
+                  </span>
+                )}
               </button>
-              {isSuccessFavorites && (
+              {
                 <Suspense>
-                  <FavoriteDropdown favorites={favoritesData.favorite} />
+                  <FavoriteDropdown favorites={favoriteData.favorite} />
                 </Suspense>
-              )}
+              }
             </div>
             <div className='relative'>
               <button
@@ -203,7 +170,7 @@ const Header = () => {
                 alt={user.name}
                 onClick={() => setVisibleDropdown('visibleUserDropdown')}
               />
-              {isSuccessGetUser && <UserDropdown user={userData} />}
+              <UserDropdown user={user} />
             </div>
           </section>
         )}

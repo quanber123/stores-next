@@ -1,12 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import dynamic from 'next/dynamic';
-import { getCategories } from '@/api/categoryApi';
-import { getTags } from '@/api/tagApi';
 import { useGetBlogsQuery } from '@/lib/redux/query/blogQuery';
-import { Category, Tag } from '@/types/types';
 import { useSearchParams } from 'next/navigation';
 import LoadingItem from '@/components/(ui)/loadingItem';
+import { FetchDataContext } from '@/context/FetchDataProvider';
 const DynamicBlogTitle = dynamic(
   () => import('@/components/pages/(client)/blog/blogTitle'),
   {
@@ -32,8 +30,7 @@ const DynamicNotFoundItem = dynamic(
 );
 function Blog() {
   const searchQuery = useSearchParams();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const { categories, tags } = useContext(FetchDataContext);
   const currPage = Number(searchQuery.get('page')) || 1;
   const {
     data: blogsData,
@@ -47,26 +44,6 @@ function Blog() {
       pollingInterval: Number(process.env.NEXT_DEFAULT_POLLING) * 1000,
     }
   );
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const categoriesData = await getCategories();
-        setCategories(categoriesData);
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
-    }
-    async function fetchTags() {
-      try {
-        const tagsData = await getTags();
-        setTags(tagsData);
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
-    }
-    fetchCategories();
-    fetchTags();
-  }, []);
   return (
     <div className='flex flex-col gap-12'>
       <DynamicBlogTitle />

@@ -4,7 +4,7 @@ import StoreProvider from '@/context/StoreProvider';
 import { Roboto } from 'next/font/google';
 import { ModalProvider } from '@/context/ModalProvider';
 import { DropdownProvider } from '@/context/DropdownProvider';
-import { StatusOrderProvider } from '@/context/StatusOrderProvider';
+import { FetchDataProvider } from '@/context/FetchDataProvider';
 import { Metadata } from 'next';
 import './globals.css';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
@@ -54,7 +54,7 @@ export default async function RootLayout({
       <body className={roboto.className}>
         <UiProvider>
           <StoreProvider>
-            <StatusOrderProvider>
+            <FetchDataProvider>
               <ModalProvider>
                 <DropdownProvider>
                   <DynamicHeader />
@@ -64,7 +64,7 @@ export default async function RootLayout({
                 <DynamicModal />
                 <DynamicFooter />
               </ModalProvider>
-            </StatusOrderProvider>
+            </FetchDataProvider>
           </StoreProvider>
         </UiProvider>
       </body>

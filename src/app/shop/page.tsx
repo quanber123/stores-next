@@ -1,12 +1,10 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import { useGetProductsQuery } from '@/lib/redux/query/productQuery';
 import { useSearchParams } from 'next/navigation';
 import LoadingItem from '@/components/(ui)/loadingItem';
-import { getCategories } from '@/api/categoryApi';
-import { Category, Tag } from '@/types/types';
-import { getTags } from '@/api/tagApi';
+import { FetchDataContext } from '@/context/FetchDataProvider';
 const DynamicProductFilter = dynamic(
   () => import('@/components/pages/(client)/shop/productFilter'),
   {
@@ -33,8 +31,7 @@ const DynamicNotFoundItem = dynamic(
 );
 export default function Shop() {
   const searchQuery = useSearchParams();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
+  const { categories, tags } = useContext(FetchDataContext);
   const currPage = Number(searchQuery.get('page')) || 1;
   const {
     data: productsData,
@@ -50,26 +47,6 @@ export default function Shop() {
       pollingInterval: Number(process.env.NEXT_DEFAULT_POLLING) * 1000,
     }
   );
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const categoriesData = await getCategories();
-        setCategories(categoriesData);
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
-    }
-    async function fetchTags() {
-      try {
-        const tagsData = await getTags();
-        setTags(tagsData);
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
-    }
-    fetchCategories();
-    fetchTags();
-  }, []);
   return (
     <div className='flex flex-col items-center gap-[24px] px-8 py-8'>
       <DynamicProductFilter categories={categories} tags={tags} />
