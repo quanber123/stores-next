@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation';
 import LazyLoadImage from '@/components/(ui)/lazyloadImage';
 import cartImg from '@/assets/images/cart.png';
 import Image from 'next/image';
+import { formatNumberWithDot } from '@/lib/utils/format';
 function CartList() {
   const { setVisibleModal } = useContext(ModalContext);
   const cart = useSelector(getAllCarts);
@@ -143,12 +144,12 @@ function CartList() {
     } else {
       setVisibleModal({
         visibleToastModal: {
-          status: 'error',
+          type: 'error',
           message: 'You have not selected any products to buy!',
         },
       });
     }
-  }, [router, setVisibleModal]);
+  }, [router, setVisibleModal, selectedProduct]);
   const renderedCart = useMemo(() => {
     return cart.cart.map((c, index) => {
       return (
@@ -188,14 +189,16 @@ function CartList() {
             <span
               className={`${c.product.salePrice > 0 ? 'line-through' : ''}`}
             >
-              ${c.product.price}
+              {formatNumberWithDot(c.product.price)} VND
             </span>
             {c.product.salePrice > 0 && (
-              <span className='font-bold'>${c.product.salePrice}</span>
+              <span className='font-bold'>
+                {formatNumberWithDot(c.product.salePrice)} VND
+              </span>
             )}
           </td>
           <td className='p-4'>
-            <div className='flex justify-between items-center border border-lightGray'>
+            <div className='m-auto w-max flex justify-center items-center border border-lightGray'>
               <button
                 className='w-[52px] flex justify-center items-center text-lg'
                 onClick={(e) =>
@@ -205,7 +208,7 @@ function CartList() {
                 -
               </button>
               <input
-                className='w-[52px] flex-1 text-center py-2 border-l border-r border-l-lightGray border-r-lightGray focus:outline-none'
+                className='w-[52px] text-center py-2 border-l border-r border-l-lightGray border-r-lightGray focus:outline-none'
                 type='text'
                 pattern='\d+'
                 value={quantity[index]}
@@ -221,7 +224,9 @@ function CartList() {
               </button>
             </div>
           </td>
-          <td className='p-4'>${c.product.totalPrice}</td>
+          <td className='p-4'>
+            {formatNumberWithDot(c.product.totalPrice)} VND
+          </td>
           <td className='p-4'>
             <button
               className='hover:text-purple font-bold'
@@ -241,6 +246,7 @@ function CartList() {
     debouncedValue,
     handleDeleteCartById,
     handleChangeQuantity,
+    handleSelectedProduct,
   ]);
   return (
     <div className='w-full overflow-hidden border border-lightGray rounded-lg mb-8 text-sm md:text-base'>
@@ -264,7 +270,7 @@ function CartList() {
                 <td className='p-4'>Color</td>
                 <td className='p-4'>Size</td>
                 <td className='p-4'>Price</td>
-                <td className='p-4'>Quantity</td>
+                <td className='p-4 text-center'>Quantity</td>
                 <td className='p-4'>Total</td>
                 <td className='p-4'>Action</td>
               </tr>

@@ -7,6 +7,7 @@ import { userInfo } from '@/lib/redux/slice/userSlice';
 const LoginModal = lazy(() => import('./LoginModal'));
 const RegisterModal = lazy(() => import('./RegisterModal'));
 const ToastModal = lazy(() => import('./ToastModal'));
+const ConfirmModal = lazy(() => import('./ConfirmModal'));
 
 const Modal = () => {
   const { state } = useContext(ModalContext);
@@ -16,6 +17,7 @@ const Modal = () => {
       {!user && <LoginModal />}
       {!user && <RegisterModal />}
       {state.visibleToastModal && <ToastModal />}
+      {state.visibleConfirmModal && <ConfirmModal />}
     </Suspense>
   );
 };

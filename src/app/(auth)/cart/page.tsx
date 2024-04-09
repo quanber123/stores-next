@@ -1,11 +1,8 @@
 'use client';
 import withAuth from '@/auth/withAuth';
-import { redirect, usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { getAllCarts, userInfo } from '@/lib/redux/slice/userSlice';
-import CartList from '@/components/pages/(client)/cart/cartList';
+import React from 'react';
 const DynamicBreadcrumbs = dynamic(
   () => import('@/components/(ui)/breadcrumbs'),
   {
@@ -17,12 +14,21 @@ const DynamicBreadcrumbs = dynamic(
     ssr: false,
   }
 );
+const DynamicCartList = dynamic(
+  () => import('@/components/pages/(client)/cart/cartList'),
+  {
+    loading: () => (
+      <div className='skeleton container w-full h-[350px] rounded-lg'></div>
+    ),
+    ssr: false,
+  }
+);
 const Cart = () => {
   const pathname = usePathname();
   return (
     <div className='container m-auto flex flex-col gap-16 py-8 px-4'>
       <DynamicBreadcrumbs pathname={pathname} name='cart' />
-      <CartList />
+      <DynamicCartList />
     </div>
   );
 };
