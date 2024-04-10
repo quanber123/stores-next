@@ -3,6 +3,7 @@ import { Icons } from '@/enum/enum';
 import { useCreateCartMutation } from '@/lib/redux/query/productQuery';
 import { formatNumberWithDot } from '@/lib/utils/format';
 import { Product } from '@/types/types';
+import { useRouter } from 'next/navigation';
 import React, {
   ChangeEvent,
   useCallback,
@@ -17,6 +18,8 @@ type Props = {
 const ProductDetails: React.FC<Props> = ({ product }) => {
   const { setVisibleModal } = useContext(ModalContext);
   const { _id, name, price, sale, salePrice, details, images } = product;
+  const router = useRouter();
+  const [isBuyNow, setIsBuyNow] = useState(false);
   const [
     createCart,
     {
@@ -156,8 +159,37 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
     salePrice,
     images,
   ]);
+  const handleBuyNow = useCallback(() => {
+    createCart({
+      cart: {
+        productId: _id,
+        name: name,
+        category: details.category.name,
+        image: images[0],
+        color: selectedColors,
+        size: selectedSizes,
+        quantity: totalQuantity,
+        price: price,
+        sale: sale,
+        salePrice: salePrice,
+      },
+    });
+    setIsBuyNow(true);
+  }, [
+    createCart,
+    totalQuantity,
+    _id,
+    name,
+    details,
+    selectedColors,
+    selectedSizes,
+    price,
+    sale,
+    salePrice,
+    images,
+  ]);
   useEffect(() => {
-    if (isSuccessCreateCart && cartData) {
+    if (isSuccessCreateCart && cartData && !isBuyNow) {
       setVisibleModal({
         visibleToastModal: {
           type: 'success',
@@ -165,7 +197,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         },
       });
     }
-    if (isErrorCreateCart && errorCart && 'data' in errorCart) {
+    if (isErrorCreateCart && errorCart && 'data' in errorCart && !isBuyNow) {
       const errorData = errorCart.data as { message: string };
       setVisibleModal({
         visibleToastModal: {
@@ -174,7 +206,17 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         },
       });
     }
-  }, [isSuccessCreateCart, cartData, isErrorCreateCart, errorCart]);
+    if (isBuyNow && isSuccessCreateCart && cartData) {
+      router.push('/cart', { scroll: true });
+    }
+  }, [
+    isSuccessCreateCart,
+    cartData,
+    isErrorCreateCart,
+    errorCart,
+    router,
+    isBuyNow,
+  ]);
   return (
     <div className='flex flex-col gap-6'>
       <h3 className='text-2xl font-medium capitalize'>{name}</h3>
@@ -260,7 +302,10 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
             dangerouslySetInnerHTML={{ __html: Icons.cart_plus_icon }}
           ></span>
         </button>
-        <button className='uppercase rounded px-12 py-3 bg-violet-500 text-white hover:opacity-80 transition-all duration-200'>
+        <button
+          className='uppercase rounded px-12 py-3 bg-violet-500 text-white hover:opacity-80 transition-all duration-200'
+          onClick={handleBuyNow}
+        >
           Buy Now
         </button>
       </div>
