@@ -4,7 +4,7 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 export const metadata: Metadata = {
-  title: 'SHOP | COZASTORE',
+  title: 'SHOP',
 };
 export default async function ShopLayout({
   children,

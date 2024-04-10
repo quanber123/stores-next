@@ -125,6 +125,8 @@ function CartList() {
     if (isSuccessUpdateCart && updateCartData) {
       setIndexCart(null);
     }
+  }, [isSuccessUpdateCart, updateCartData]);
+  useEffect(() => {
     if (isErrorUpdateCart && errorUpdateCart && 'data' in errorUpdateCart) {
       const errorData = errorUpdateCart.data as {
         message: string;
@@ -146,17 +148,26 @@ function CartList() {
           message: errorData.message,
         },
       });
-      if (errorData.data && errorData.data.details.variants.length > 0) {
+      if (
+        errorData.data &&
+        errorData.data.details.variants.length > 0 &&
+        typeof indexCart === 'number'
+      ) {
         setQuantity((prevQuantity) => {
           const newQuantity = [...prevQuantity];
-          indexCart &&
-            (newQuantity[indexCart] =
-              errorData.data.details.variants[0].quantity);
+          newQuantity[indexCart] = errorData.data.details.variants[0].quantity;
           return newQuantity;
+        });
+        setIndexCart((prevIndexCart) => {
+          if (prevIndexCart !== null) {
+            return null;
+          }
+          return prevIndexCart;
         });
       }
     }
-  }, [isSuccessUpdateCart, updateCartData, isErrorUpdateCart, setVisibleModal]);
+  }, [isErrorUpdateCart, errorUpdateCart, indexCart, setVisibleModal]);
+
   const handleDeleteCartById = useCallback(
     (id: string) => {
       setVisibleModal({
