@@ -16,7 +16,7 @@ const ValidateMessage: React.FC<Props> = ({
   return (
     <div
       className={`${
-        customClassName ? customClassName : `absolute -bottom-2/3`
+        customClassName ? customClassName : `absolute -bottom-1/3`
       }`}
     >
       <p
