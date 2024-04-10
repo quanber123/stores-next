@@ -42,7 +42,7 @@ const ContactViews = () => {
         },
       });
     }
-  }, [isSuccessContact, setVisibleModal]);
+  }, [isSuccessContact, setVisibleModal, dataContact?.message]);
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (

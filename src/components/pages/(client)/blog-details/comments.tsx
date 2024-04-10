@@ -93,7 +93,7 @@ const Comments: React.FC<Props> = ({ comment, blog }) => {
         }
       }
     },
-    [postComment, _id, commentRef.current, setVisibleModal]
+    [postComment, _id, setVisibleModal]
   );
   useEffect(() => {
     if (isSuccessPostComment && commentData) {

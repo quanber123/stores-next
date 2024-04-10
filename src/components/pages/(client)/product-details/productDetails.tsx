@@ -143,7 +143,19 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         salePrice: salePrice,
       },
     });
-  }, [createCart, totalQuantity, product]);
+  }, [
+    createCart,
+    totalQuantity,
+    _id,
+    name,
+    details,
+    selectedColors,
+    selectedSizes,
+    price,
+    sale,
+    salePrice,
+    images,
+  ]);
   useEffect(() => {
     if (isSuccessCreateCart && cartData) {
       setVisibleModal({

@@ -82,7 +82,7 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
     if (isSuccessFavorite && favoriteData) {
       dispatch(setAllFavorites(favoriteData));
     }
-  }, [isSuccessCart, cartData, isSuccessFavorite, favoriteData]);
+  }, [isSuccessCart, cartData, isSuccessFavorite, favoriteData, dispatch]);
   return (
     <FetchDataContext.Provider value={{ statusOrders, categories, tags }}>
       {children}

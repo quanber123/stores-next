@@ -61,7 +61,7 @@ function CartList() {
       setIndexCart(index);
       setQuantity(newQuantity);
     },
-    [quantity, indexCart]
+    [quantity]
   );
   useEffect(() => {
     if (debouncedValue !== null) {
@@ -73,7 +73,7 @@ function CartList() {
         },
       });
     }
-  }, [debouncedValue, updatedCart, cart]);
+  }, [debouncedValue, updatedCart, cart, quantity]);
   useEffect(() => {
     if (isSuccessUpdateCart) {
       setIndexCart(null);
@@ -88,7 +88,7 @@ function CartList() {
         },
       });
     },
-    [deleteCartById]
+    [deleteCartById, setVisibleModal]
   );
   const handleDeleteManyCart = useCallback(() => {
     setVisibleModal({
@@ -99,7 +99,7 @@ function CartList() {
         function: () => deleteManyCart({ products: selectedProduct }),
       },
     });
-  }, [deleteManyCart, selectedProduct]);
+  }, [deleteManyCart, selectedProduct, setVisibleModal]);
   const handleSelectedProduct = useCallback(
     (product: Cart) => {
       setSelectedProduct((prevSelectedProducts) => {
@@ -126,7 +126,7 @@ function CartList() {
       setSelectedProduct(cart.cart.map((c) => c));
     }
     setIsSelectedAll((prevState) => !prevState);
-  }, [isSelectedAll, selectedProduct]);
+  }, [isSelectedAll, selectedProduct, cart.cart]);
   const totalQuantity = useMemo(() => {
     return cart.cart
       .filter((c) => selectedProduct.includes(c))
@@ -135,7 +135,7 @@ function CartList() {
           accumulator + currentValue.product.totalPrice,
         0
       );
-  }, [selectedProduct]);
+  }, [selectedProduct, cart.cart]);
   const handleCheckout = useCallback(() => {
     if (selectedProduct.length) {
       router.push(`/checkout/?state=${btoa(JSON.stringify(selectedProduct))}`, {
@@ -243,7 +243,6 @@ function CartList() {
     quantity,
     selectedProduct,
     router,
-    debouncedValue,
     handleDeleteCartById,
     handleChangeQuantity,
     handleSelectedProduct,
