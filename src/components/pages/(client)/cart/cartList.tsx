@@ -31,12 +31,31 @@ function CartList() {
   useEffect(() => {
     setQuantity(cart.cart.map((c) => c.product.quantity));
   }, [cart.cart]);
-  const [deleteCartById] = useDeleteCartByIdMutation();
-  const [deleteManyCart] = useDeleteManyCartsByIdMutation();
-  const [updatedCart, { isSuccess: isSuccessUpdateCart }] =
-    useUpdateCartMutation();
+  const [deleteCartById, { isLoading: isLoadingDeleteCart }] =
+    useDeleteCartByIdMutation();
+  const [deleteManyCart, { isLoading: isLoadingDeleteManyCart }] =
+    useDeleteManyCartsByIdMutation();
+  const [
+    updatedCart,
+    {
+      data: updateCartData,
+      isSuccess: isSuccessUpdateCart,
+      isError: isErrorUpdateCart,
+      error: errorUpdateCart,
+      isLoading: isLoadingUpdateCart,
+    },
+  ] = useUpdateCartMutation();
   const [indexCart, setIndexCart] = useState<number | null>(null);
-  const debouncedValue = useDebounce(indexCart, 1000);
+  const debouncedValue = useDebounce(indexCart, 2000);
+  const totalQuantity = useMemo(() => {
+    return cart.cart
+      .filter((c) => selectedProduct.includes(c))
+      .reduce(
+        (accumulator, currentValue) =>
+          accumulator + currentValue.product.totalPrice,
+        0
+      );
+  }, [selectedProduct, cart.cart]);
   const handleChangeQuantity = useCallback(
     (index: number, action: string, e: React.ChangeEvent<HTMLInputElement>) => {
       const newQuantity = [...quantity];
@@ -63,43 +82,6 @@ function CartList() {
     },
     [quantity]
   );
-  useEffect(() => {
-    if (debouncedValue !== null) {
-      updatedCart({
-        id: cart.cart[debouncedValue]._id,
-        product: {
-          ...cart.cart[debouncedValue].product,
-          quantity: quantity[debouncedValue],
-        },
-      });
-    }
-  }, [debouncedValue, updatedCart, cart, quantity]);
-  useEffect(() => {
-    if (isSuccessUpdateCart) {
-      setIndexCart(null);
-    }
-  }, [isSuccessUpdateCart]);
-  const handleDeleteCartById = useCallback(
-    (id: string) => {
-      setVisibleModal({
-        visibleConfirmModal: {
-          message: 'Do you want to delete this product?',
-          function: () => deleteCartById(id),
-        },
-      });
-    },
-    [deleteCartById, setVisibleModal]
-  );
-  const handleDeleteManyCart = useCallback(() => {
-    setVisibleModal({
-      visibleConfirmModal: {
-        message: `Do you want to remove ${selectedProduct.length} ${
-          selectedProduct.length > 1 ? 'products' : 'product'
-        } ?`,
-        function: () => deleteManyCart({ products: selectedProduct }),
-      },
-    });
-  }, [deleteManyCart, selectedProduct, setVisibleModal]);
   const handleSelectedProduct = useCallback(
     (product: Cart) => {
       setSelectedProduct((prevSelectedProducts) => {
@@ -127,15 +109,75 @@ function CartList() {
     }
     setIsSelectedAll((prevState) => !prevState);
   }, [isSelectedAll, selectedProduct, cart.cart]);
-  const totalQuantity = useMemo(() => {
-    return cart.cart
-      .filter((c) => selectedProduct.includes(c))
-      .reduce(
-        (accumulator, currentValue) =>
-          accumulator + currentValue.product.totalPrice,
-        0
-      );
-  }, [selectedProduct, cart.cart]);
+
+  useEffect(() => {
+    if (debouncedValue !== null) {
+      updatedCart({
+        id: cart.cart[debouncedValue]._id,
+        product: {
+          ...cart.cart[debouncedValue].product,
+          quantity: quantity[debouncedValue],
+        },
+      });
+    }
+  }, [debouncedValue, updatedCart, cart, quantity]);
+  useEffect(() => {
+    if (isSuccessUpdateCart && updateCartData) {
+      setIndexCart(null);
+    }
+    if (isErrorUpdateCart && errorUpdateCart && 'data' in errorUpdateCart) {
+      const errorData = errorUpdateCart.data as {
+        message: string;
+        data: {
+          details: {
+            variants: [
+              {
+                color: string;
+                size: string;
+                quantity: number;
+              }
+            ];
+          };
+        };
+      };
+      setVisibleModal({
+        visibleToastModal: {
+          type: 'error',
+          message: errorData.message,
+        },
+      });
+      if (errorData.data && errorData.data.details.variants.length > 0) {
+        setQuantity((prevQuantity) => {
+          const newQuantity = [...prevQuantity];
+          indexCart &&
+            (newQuantity[indexCart] =
+              errorData.data.details.variants[0].quantity);
+          return newQuantity;
+        });
+      }
+    }
+  }, [isSuccessUpdateCart, updateCartData, isErrorUpdateCart, setVisibleModal]);
+  const handleDeleteCartById = useCallback(
+    (id: string) => {
+      setVisibleModal({
+        visibleConfirmModal: {
+          message: 'Do you want to delete this product?',
+          function: () => deleteCartById(id),
+        },
+      });
+    },
+    [deleteCartById, setVisibleModal]
+  );
+  const handleDeleteManyCart = useCallback(() => {
+    setVisibleModal({
+      visibleConfirmModal: {
+        message: `Do you want to remove ${selectedProduct.length} ${
+          selectedProduct.length > 1 ? 'products' : 'product'
+        } ?`,
+        function: () => deleteManyCart({ products: selectedProduct }),
+      },
+    });
+  }, [deleteManyCart, selectedProduct, setVisibleModal]);
   const handleCheckout = useCallback(() => {
     if (selectedProduct.length) {
       router.push(`/checkout/?state=${btoa(JSON.stringify(selectedProduct))}`, {
@@ -317,6 +359,11 @@ function CartList() {
                     <span className='font-bold text-red'>${totalQuantity}</span>
                   </p>
                   <button
+                    disabled={
+                      isLoadingDeleteCart ||
+                      isLoadingDeleteManyCart ||
+                      isLoadingUpdateCart
+                    }
                     className='px-[36px] py-[12px] rounded-[2px] bg-violet-500 hover:bg-neutral-700 text-white font-bold transition-colors'
                     onClick={handleCheckout}
                   >
