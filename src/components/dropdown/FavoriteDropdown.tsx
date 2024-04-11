@@ -32,7 +32,7 @@ function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
               className='w-full h-full object-cover'
             />
           </div>
-          <div className='flex-1 flex flex-col justify-between gap-[5px]'>
+          <div className='flex-1 flex flex-col justify-between gap-[5px] text-sm'>
             <h3
               className='font-bold cursor-pointer capitalize'
               onClick={() => handleRedirect(p._id)}
@@ -56,7 +56,7 @@ function FavoriteDropdown({ favorites }: { favorites: Favorite }) {
         state.visibleFavoriteDropdown ? 'active' : ''
       }`}
     >
-      <h3 className='pl-[16px] py-[12px] text-md text-semiBoldGray font-bold'>
+      <h3 className='pl-[16px] py-[12px] text-md text-gray-600 font-bold'>
         Your Favorite
       </h3>
       <div className='flex-1 pl-[16px] pr-[32px] flex flex-col gap-[20px] overflow-auto'>

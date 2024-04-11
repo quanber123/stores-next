@@ -18,10 +18,7 @@ function CartDropdown({ carts }: { carts: Cart[] }) {
   const renderedCart = useMemo(() => {
     return carts.map((c) => {
       return (
-        <article
-          key={c._id}
-          className='text-gray-700 flex gap-6 text-sm md:text-base'
-        >
+        <article key={c._id} className='text-gray-700 flex gap-6 text-sm'>
           <div className='relative w-[150px] rounded-[12px] overflow-hidden'>
             <LazyLoadImage
               src={c.product.image}
