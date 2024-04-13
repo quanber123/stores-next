@@ -15,12 +15,12 @@ import {
   useDeleteManyCartsByIdMutation,
   useUpdateCartMutation,
 } from '@/lib/redux/query/productQuery';
-import { useDebounce } from '@/lib/hooks/useDebounced';
 import { useRouter } from 'next/navigation';
 import LazyLoadImage from '@/components/(ui)/lazyloadImage';
 import cartImg from '@/assets/images/cart.png';
 import Image from 'next/image';
 import { formatNumberWithDot } from '@/lib/utils/format';
+import { useDebounce } from '@/lib/hooks/useDebounce';
 function CartList() {
   const { setVisibleModal } = useContext(ModalContext);
   const cart = useSelector(getAllCarts);

@@ -63,11 +63,9 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
     isSuccess: isSuccessProduct,
     isError: isErrorProduct,
   } = useGetProductsByIdQuery(id);
-  useLayoutEffect(() => {
-    if (isErrorProduct) {
-      redirect(`/not-found-product-${id}`);
-    }
-  }, [isErrorProduct, id]);
+  if (isErrorProduct) {
+    redirect(`/not-found-product-${id}`);
+  }
   return (
     isSuccessProduct &&
     productData && (

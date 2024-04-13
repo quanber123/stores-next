@@ -12,13 +12,17 @@ import {
 import {
   setAllCarts,
   setAllFavorites,
+  setCurDelivery,
   setToken,
   setUser,
   token,
   userInfo,
 } from '@/lib/redux/slice/userSlice';
 import { useSearchParams } from 'next/navigation';
-import { useGetUserQuery } from '@/lib/redux/query/userQuery';
+import {
+  useGetAddressUserQuery,
+  useGetUserQuery,
+} from '@/lib/redux/query/userQuery';
 export const FetchDataContext = createContext({
   statusOrders: [] as StatusOrder[],
   categories: [] as Category[],
@@ -36,6 +40,8 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
     null,
     { skip: !accessToken }
   );
+  const { data: dataAddress, isSuccess: isSuccessAddress } =
+    useGetAddressUserQuery(null, { skip: !user });
   const { data: cartData, isSuccess: isSuccessCart } = useGetAllCartsQuery(
     null,
     { skip: !user?.id }
@@ -75,6 +81,11 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
       dispatch(setUser(userData));
     }
   }, [isSuccessGetUser, userData, dispatch]);
+  useEffect(() => {
+    if (isSuccessAddress && dataAddress) {
+      dispatch(setCurDelivery(dataAddress[0]));
+    }
+  }, [isSuccessAddress, dataAddress]);
   useEffect(() => {
     if (isSuccessCart && cartData) {
       dispatch(setAllCarts(cartData));

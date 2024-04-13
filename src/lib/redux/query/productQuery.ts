@@ -80,6 +80,29 @@ export const productApi = createApi({
         }),
         invalidatesTags: ['carts'],
       }),
+      createPayment: builder.mutation({
+        query: ({
+          type,
+          totalPrice,
+          user_name,
+          phone,
+          message,
+          address,
+          products,
+        }) => ({
+          url: `create-payment-${type}`,
+          method: 'POST',
+          body: {
+            user_name: user_name,
+            phone: phone,
+            message: message,
+            address: address,
+            totalPrice: totalPrice,
+            products: products,
+          },
+        }),
+        invalidatesTags: ['carts', 'orders'],
+      }),
       getFavoriteByProduct: builder.query({
         query: (productId) => `/products/favorite/${productId}`,
         providesTags: (result) => providesList(result, 'favoriteProduct'),
@@ -113,6 +136,27 @@ export const productApi = createApi({
         }),
         invalidatesTags: ['orders', 'reviews'],
       }),
+      getAllOrdersUser: builder.query({
+        query: ({ query }) => ({
+          url: `user_orders?${query}`,
+          method: 'GET',
+        }),
+        providesTags: (result) => providesList(result, 'orders'),
+      }),
+      getOrderUserById: builder.query({
+        query: ({ id, paymentMethod }) => ({
+          url: `user_orders/${id}?payment=${paymentMethod}`,
+          method: 'GET',
+        }),
+      }),
+      updateOrderUser: builder.mutation({
+        query: ({ orderId, body }) => ({
+          url: `user_orders/${orderId}`,
+          method: 'PUT',
+          body: { ...body },
+        }),
+        invalidatesTags: ['orders'],
+      }),
     };
   },
 });
@@ -125,9 +169,13 @@ export const {
   useUpdateCartMutation,
   useDeleteCartByIdMutation,
   useDeleteManyCartsByIdMutation,
+  useCreatePaymentMutation,
   useGetFavoriteByProductQuery,
   useGetAllFavoritesQuery,
   usePostFavoritesMutation,
   useGetReviewsQuery,
   useReviewsProductMutation,
+  useGetAllOrdersUserQuery,
+  useGetOrderUserByIdQuery,
+  useUpdateOrderUserMutation,
 } = productApi;
