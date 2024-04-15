@@ -1,15 +1,18 @@
 'use client';
-import { useLayoutEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import cancelImg from '@/assets/images/cancel.png';
 import withAuth from '@/auth/withAuth';
-import { redirect, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   useGetOrderUserByIdQuery,
   useUpdateOrderUserMutation,
 } from '@/lib/redux/query/productQuery';
 import Image from 'next/image';
+import { ModalContext } from '@/context/ModalProvider';
 function Cancel() {
+  const { setVisibleModal } = useContext(ModalContext);
   const router = useRouter();
+  const [countDown, setCountDown] = useState(5);
   const searchQuery = useSearchParams();
   const paymentMethod = searchQuery.get('paymentMethod');
   const code = searchQuery.get('orderCode');
@@ -27,10 +30,24 @@ function Cancel() {
     },
     { skip: !code }
   );
-  const [updateOrder] = useUpdateOrderUserMutation();
-
-  useLayoutEffect(() => {
-    if (isSuccessOrder && status === 'CANCELLED' && isCancel === 'true') {
+  const [updateOrder, { isSuccess: isSuccessUpdateOrder }] =
+    useUpdateOrderUserMutation();
+  useEffect(() => {
+    if (isSuccessUpdateOrder) {
+      const interval = setInterval(() => {
+        setCountDown((prevCount) => (prevCount -= 1));
+      }, 1000);
+      const timeId = setTimeout(() => {
+        router.replace('/');
+      }, 5000);
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeId);
+      };
+    }
+  }, [isSuccessUpdateOrder, router]);
+  useEffect(() => {
+    if (isSuccessOrder && dataOrder.data.status === 'CANCELLED') {
       updateOrder({
         orderId: code,
         body: {
@@ -40,15 +57,22 @@ function Cancel() {
     }
     if (isErrorOrder && errorOrder && 'message' in errorOrder) {
       const err = errorOrder.message as string;
-      redirect(`/${err}`);
+      setVisibleModal({
+        visibleToastModal: {
+          type: 'error',
+          message: err,
+        },
+      });
     }
   }, [
+    status,
+    isCancel,
     isSuccessOrder,
     dataOrder,
     isErrorOrder,
     errorOrder,
     updateOrder,
-    redirect,
+    setVisibleModal,
   ]);
   return (
     <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 py-16 rounded-[4px] bg-neutral-100 flex flex-col justify-center items-center gap-[20px]'>
@@ -71,7 +95,7 @@ function Cancel() {
         className='bg-neutral-700 hover:bg-violet-500 text-white px-8 py-3 text-md rounded-[4px] transition-colors'
         onClick={() => router.push('/')}
       >
-        Go To Home
+        Go To Home ({countDown}s)
       </button>
     </div>
   );

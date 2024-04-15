@@ -1,22 +1,10 @@
 'use client';
-import { getCategories } from '@/api/categoryApi';
-import { Category } from '@/types/types';
+import { FetchDataContext } from '@/context/FetchDataProvider';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
 function Footer() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories } = useContext(FetchDataContext);
   const router = useRouter();
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const dataCategories = await getCategories();
-        setCategories(dataCategories);
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
-    }
-    fetchCategories();
-  }, []);
   const renderedCategories = useMemo(
     () =>
       categories.map((c, index) => {

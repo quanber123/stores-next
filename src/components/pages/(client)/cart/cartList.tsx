@@ -113,9 +113,9 @@ function CartList() {
   useEffect(() => {
     if (debouncedValue !== null) {
       updatedCart({
-        id: cart.cart[debouncedValue]._id,
+        id: cart.cart[debouncedValue]?._id,
         product: {
-          ...cart.cart[debouncedValue].product,
+          ...cart.cart[debouncedValue]?.product,
           quantity: quantity[debouncedValue],
         },
       });

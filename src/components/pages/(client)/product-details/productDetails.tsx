@@ -48,17 +48,19 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
       (v) => v.size === selectedSizes && v.color === selectedColors
     );
   }, [selectedColors, selectedSizes, details.variants]);
-  const [amount, setAmount] = useState<number>(curVariants?.quantity || 0);
+  const [amount, setAmount] = useState<number>(
+    curVariants?.availableQuantity || 0
+  );
   const [totalQuantity, setTotalQuantity] = useState(1);
   const handleSelectedSizes = useCallback((size: string) => {
     setSelectedSizes(size);
   }, []);
   useEffect(() => {
     setSelectedColors(colors[0]);
-    curVariants?.quantity &&
-      curVariants?.quantity > 0 &&
-      setAmount(curVariants?.quantity);
-  }, [colors, curVariants?.quantity]);
+    curVariants?.availableQuantity &&
+      curVariants?.availableQuantity > 0 &&
+      setAmount(curVariants?.availableQuantity);
+  }, [colors, curVariants?.availableQuantity]);
 
   const renderedSizes = useMemo(() => {
     return sizes.map((s, index) => {

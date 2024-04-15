@@ -26,7 +26,7 @@ const ContactViews = () => {
     const fetchData = async () => {
       try {
         const storesData = await getStores();
-        setStores(storesData);
+        setStores(storesData.stores);
       } catch (error) {
         console.log(error);
       }

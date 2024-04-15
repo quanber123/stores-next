@@ -57,12 +57,12 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
           getCategories(),
         ]);
         setStatusOrders(
-          statusOrdersData.sort(
+          statusOrdersData.status.sort(
             (a: StatusOrder, b: StatusOrder) => a.number - b.number
           )
         );
-        setCategories(categoriesData);
-        setTags(tagsData);
+        setCategories(categoriesData.categories);
+        setTags(tagsData.tags);
       } catch (error) {
         console.log(error);
       }
@@ -83,7 +83,7 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
   }, [isSuccessGetUser, userData, dispatch]);
   useEffect(() => {
     if (isSuccessAddress && dataAddress) {
-      dispatch(setCurDelivery(dataAddress[0]));
+      dispatch(setCurDelivery(dataAddress.address[0]));
     }
   }, [isSuccessAddress, dataAddress]);
   useEffect(() => {

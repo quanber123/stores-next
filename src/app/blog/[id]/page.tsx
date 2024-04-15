@@ -58,7 +58,10 @@ export default function BlogDetails({ params }: { params: { id: string } }) {
         <DynamicBreadcrumbs pathname={pathname} name={blogData.blog.title} />
         <DynamicBlogDetails blog={blogData.blog} />
         {isSuccessComments && (
-          <DynamicComments comment={commentsData} blog={blogData.blog} />
+          <DynamicComments
+            comment={commentsData.comment}
+            blog={blogData.blog}
+          />
         )}
       </div>
     )

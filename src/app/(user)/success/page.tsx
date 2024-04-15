@@ -1,5 +1,5 @@
 'use client';
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import successImg from '@/assets/images/successful.png';
 import { redirect, useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -10,6 +10,7 @@ import Image from 'next/image';
 import withAuth from '@/auth/withAuth';
 function Success() {
   const searchQuery = useSearchParams();
+  const [countDown, setCountDown] = useState(5);
   const router = useRouter();
   const code = searchQuery.get('orderCode');
   const paymentMethod = searchQuery.get('paymentMethod');
@@ -26,8 +27,21 @@ function Success() {
     { skip: !code && !paymentMethod }
   );
   const [updateOrder] = useUpdateOrderUserMutation();
-
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (isSuccessOrder) {
+      const interval = setInterval(() => {
+        setCountDown((prevCount) => (prevCount -= 1));
+      }, 1000);
+      const timeId = setTimeout(() => {
+        router.replace('/');
+      }, 5000);
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeId);
+      };
+    }
+  }, [isSuccessOrder, router]);
+  useEffect(() => {
     if (isSuccessOrder && dataOrder?.data?.status === 'PAID') {
       updateOrder({ orderId: code, body: { status: 'pending', isPaid: true } });
     }
@@ -76,7 +90,7 @@ function Success() {
         className='bg-neutral-700 hover:bg-violet-500 text-white px-8 py-3 text-md rounded-[4px] transition-colors'
         onClick={() => router.push('/')}
       >
-        Go To Home
+        Go To Home ({countDown}s)
       </button>
     </div>
   );

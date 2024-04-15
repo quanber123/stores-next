@@ -8,7 +8,7 @@ function Categories() {
   const { categories } = useContext(FetchDataContext);
   const [categoryHover, setCategoryHover] = useState<number | null>(null);
   const renderedCategories = useMemo(() => {
-    return categories.map((c, index) => {
+    return categories?.map((c, index) => {
       return (
         <article
           className='relative w-full max-w-[280px] flex-shrink-0 h-[180px] border border-gray-200 cursor-pointer overflow-hidden'

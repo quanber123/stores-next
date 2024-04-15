@@ -96,8 +96,8 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
     return stars;
   }, []);
   const renderReviews = useMemo(() => {
-    return dataReviews?.reviews && isSuccessReviews
-      ? dataReviews.reviews.map((r: any) => (
+    return dataReviews?.reviewsData?.reviews && isSuccessReviews
+      ? dataReviews?.reviewsData?.reviews.map((r: any) => (
           <div
             key={r._id}
             className='py-4 flex items-center gap-[20px] text-gray-700 border-b border-gray-200'
@@ -137,7 +137,11 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
             onClick={() => setTab(index)}
           >
             {t === 'reviews'
-              ? `${t} ${dataReviews?.total ? `(${dataReviews?.total})` : ''}`
+              ? `${t} ${
+                  dataReviews?.reviewsData?.total
+                    ? `(${dataReviews?.reviewsData?.total})`
+                    : ''
+                }`
               : t}
           </li>
         ))}
@@ -166,29 +170,30 @@ const MoreInformation: React.FC<Props> = ({ product }) => {
             tab === 2 ? 'active' : ''
           } flex flex-col gap-[10px] py-8`}
         >
-          {isSuccessReviews && dataReviews?.reviews.length !== 0 && (
-            <div className='w-full sm:w-4/5 m-auto flex flex-col gap-[40px] items-start text-violet-500'>
-              <div className='flex items-center gap-[20px]'>
-                <p className='text-4xl font-medium flex gap-[5px]'>
-                  <span>{dataReviews?.avgRate}</span>
-                  <span>/</span>
-                  <span>5</span>
-                </p>
-                <div className='flex items-center h-[2px]'>
-                  {renderStars(dataReviews?.avgRate, 36)}
+          {isSuccessReviews &&
+            dataReviews?.reviewsData?.reviews.length !== 0 && (
+              <div className='w-full sm:w-4/5 m-auto flex flex-col gap-[40px] items-start text-violet-500'>
+                <div className='flex items-center gap-[20px]'>
+                  <p className='text-4xl font-medium flex gap-[5px]'>
+                    <span>{dataReviews?.reviewsData?.avgRate}</span>
+                    <span>/</span>
+                    <span>5</span>
+                  </p>
+                  <div className='flex items-center h-[2px]'>
+                    {renderStars(dataReviews?.reviewsData?.avgRate, 36)}
+                  </div>
                 </div>
+                <div className='w-full flex flex-col gap-[10px]'>
+                  {renderReviews}
+                </div>
+                {dataReviews?.totalPage > 1 && (
+                  <CustomPagination
+                    totalPage={dataReviews?.reviewsData?.totalPage as number}
+                  />
+                )}
               </div>
-              <div className='w-full flex flex-col gap-[10px]'>
-                {renderReviews}
-              </div>
-              {dataReviews?.totalPage > 1 && (
-                <CustomPagination
-                  totalPage={dataReviews?.totalPage as number}
-                />
-              )}
-            </div>
-          )}
-          {isSuccessReviews && !dataReviews?.total && (
+            )}
+          {isSuccessReviews && !dataReviews?.reviewsData?.total && (
             <p className='text-xl font-bold text-gray-700 text-center'>
               No Reviews Yet.
             </p>

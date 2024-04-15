@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { Cart } from '@/types/types';
 import { ModalContext } from '@/context/ModalProvider';
 import { getCurAddress } from '@/lib/redux/slice/userSlice';
-import { redirect } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 import LazyLoadImage from '@/components/(ui)/lazyloadImage';
 import { Icons } from '@/enum/enum';
 import { useCreatePaymentMutation } from '@/lib/redux/query/productQuery';
@@ -20,6 +20,7 @@ type Props = {
 const CheckoutList: React.FC<Props> = ({ orders }) => {
   const { setVisibleModal } = useContext(ModalContext);
   const currAddress = useSelector(getCurAddress);
+  const searchQuery = useSearchParams();
   const [paymentMethod, setPaymentMethod] = useState(
     window.localStorage.getItem('cozastore-payment') || 'cash'
   );
@@ -30,6 +31,8 @@ const CheckoutList: React.FC<Props> = ({ orders }) => {
       data: dataPayment,
       isSuccess: isSuccessPayment,
       isLoading: isLoadingPayment,
+      isError: isErrorPayment,
+      error: errorPayment,
     },
   ] = useCreatePaymentMutation();
   const addressUser = useMemo(
@@ -109,14 +112,31 @@ const CheckoutList: React.FC<Props> = ({ orders }) => {
   }, [paymentMethod, currAddress, addressUser]);
   useEffect(() => {
     if (isSuccessPayment && paymentMethod === 'transfer') {
-      window.open(dataPayment.checkoutUrl, '_self');
+      redirect(dataPayment.order.paymentInfo.checkoutUrl);
     }
     if (isSuccessPayment && paymentMethod === 'cash') {
       redirect(
-        `/success?paymentMethod=cash&status=${dataPayment.paymentInfo.status}&orderCode=${dataPayment.paymentInfo.orderCode}`
+        `/success?paymentMethod=cash&status=${dataPayment.order.paymentInfo.status}&orderCode=${dataPayment.order.paymentInfo.orderCode}`
       );
     }
-  }, [isSuccessPayment, paymentMethod, redirect]);
+    if (isErrorPayment && errorPayment && 'data' in errorPayment) {
+      const errorData = errorPayment.data as { message: string };
+      setVisibleModal({
+        visibleToastModal: {
+          type: 'error',
+          message: errorData.message,
+        },
+      });
+    }
+  }, [
+    isSuccessPayment,
+    isErrorPayment,
+    errorPayment,
+    paymentMethod,
+    redirect,
+    searchQuery,
+    setVisibleModal,
+  ]);
   return (
     <>
       <section className='container bg-neutral-100 my-[20px] px-4 py-8 flex flex-col gap-[20px] text-gray-700'>

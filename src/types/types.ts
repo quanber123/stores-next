@@ -24,6 +24,7 @@ type Details = {
     size: string;
     color: string;
     quantity: number;
+    availableQuantity: number;
     inStock: boolean;
   }[];
   shortDescription: string;

@@ -48,7 +48,7 @@ const Comments: React.FC<Props> = ({ comment, blog }) => {
     if (!comments) {
       return [];
     }
-    return comments?.map((c: any) => {
+    return comments.map((c: any) => {
       return (
         <div key={c.created_at} className='w-full flex items-start gap-[20px]'>
           <LazyLoadImage
@@ -188,7 +188,7 @@ const Comments: React.FC<Props> = ({ comment, blog }) => {
                 onClick={() =>
                   postComment({
                     id: _id,
-                    text: !commentRef.current?.textContent,
+                    text: commentRef.current?.textContent,
                   })
                 }
                 dangerouslySetInnerHTML={{ __html: Icons.paper_plane_icon }}
