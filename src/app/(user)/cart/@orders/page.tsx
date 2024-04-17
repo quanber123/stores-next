@@ -108,7 +108,7 @@ function CartList() {
       setSelectedProduct(cart.cart.map((c) => c));
     }
     setIsSelectedAll((prevState) => !prevState);
-  }, [isSelectedAll, selectedProduct, cart.cart]);
+  }, [isSelectedAll, cart.cart]);
 
   useEffect(() => {
     if (debouncedValue !== null) {

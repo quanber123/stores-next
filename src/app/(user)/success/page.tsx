@@ -30,7 +30,13 @@ function Success() {
   useEffect(() => {
     if (isSuccessOrder) {
       const interval = setInterval(() => {
-        setCountDown((prevCount) => (prevCount -= 1));
+        setCountDown((prevCount) => {
+          if (prevCount === 0) {
+            return 0;
+          } else {
+            return (prevCount -= 1);
+          }
+        });
       }, 1000);
       const timeId = setTimeout(() => {
         router.replace('/');
@@ -49,14 +55,7 @@ function Success() {
       const err = errorOrder.message as string;
       redirect(`/${err}`);
     }
-  }, [
-    isSuccessOrder,
-    dataOrder,
-    isErrorOrder,
-    errorOrder,
-    updateOrder,
-    redirect,
-  ]);
+  }, [isSuccessOrder, dataOrder, isErrorOrder, errorOrder, code, updateOrder]);
   return (
     <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 py-16 rounded-[4px] bg-neutral-100 flex flex-col justify-center items-center gap-[20px]'>
       <div className='w-[180px] h-[180px]'>
