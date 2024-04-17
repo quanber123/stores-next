@@ -1,4 +1,5 @@
 'use client';
+import UserDropdown from '@/components/dropdown/UserDropdown';
 import { DropdownContext } from '@/context/DropdownProvider';
 import { ModalContext } from '@/context/ModalProvider';
 import { Icons } from '@/enum/enum';
@@ -8,7 +9,7 @@ import {
   userInfo,
 } from '@/lib/redux/slice/userSlice';
 import Image from 'next/image';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, {
   Suspense,
   lazy,
@@ -18,12 +19,11 @@ import React, {
   useState,
 } from 'react';
 import { useSelector } from 'react-redux';
-import UserDropdown from '../dropdown/UserDropdown';
 const CartDropdown = lazy(() => import('@/components/dropdown/CartDropdown'));
 const FavoriteDropdown = lazy(
   () => import('@/components/dropdown/FavoriteDropdown')
 );
-const Header = () => {
+const HeaderDefault = () => {
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
   const { setVisibleModal, closeAllModal } = useContext(ModalContext);
   const { setVisibleDropdown, closeDropdown } = useContext(DropdownContext);
@@ -190,4 +190,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderDefault;

@@ -7,6 +7,7 @@ import { ModalProvider } from '@/context/ModalProvider';
 import { FetchDataProvider } from '@/context/FetchDataProvider';
 import { Metadata } from 'next';
 import './globals.css';
+import { DropdownProvider } from '@/context/DropdownProvider';
 const DynamicScroll = dynamic(() => import('@/components/common/scroll'));
 const DynamicModal = dynamic(() => import('@/components/modal/Modal'));
 const roboto = Roboto({
@@ -42,7 +43,7 @@ export default async function RootLayout({
           <StoreProvider>
             <FetchDataProvider>
               <ModalProvider>
-                {header}
+                <DropdownProvider>{header}</DropdownProvider>
                 <main className='min-h-screen flex-1'>{children}</main>
                 {footer}
                 <DynamicScroll />

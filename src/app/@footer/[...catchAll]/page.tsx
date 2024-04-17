@@ -2,7 +2,7 @@
 import { FetchDataContext } from '@/context/FetchDataProvider';
 import { useRouter } from 'next/navigation';
 import { useContext, useMemo } from 'react';
-function Footer() {
+function FooterDefault() {
   const { categories } = useContext(FetchDataContext);
   const router = useRouter();
   const renderedCategories = useMemo(
@@ -56,4 +56,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default FooterDefault;

@@ -94,7 +94,7 @@ function Cancel() {
       </p>
       <button
         className='bg-neutral-700 hover:bg-violet-500 text-white px-8 py-3 text-md rounded-[4px] transition-colors'
-        onClick={() => router.push('/')}
+        onClick={() => router.replace('/')}
       >
         Go To Home ({countDown}s)
       </button>
