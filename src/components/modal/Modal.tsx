@@ -8,7 +8,7 @@ const LoginModal = lazy(() => import('./LoginModal'));
 const RegisterModal = lazy(() => import('./RegisterModal'));
 const ToastModal = lazy(() => import('./ToastModal'));
 const ConfirmModal = lazy(() => import('./ConfirmModal'));
-
+const ReviewsModal = lazy(() => import('./ReviewModal'));
 const Modal = () => {
   const { state } = useContext(ModalContext);
   const user = useSelector(userInfo);
@@ -18,6 +18,7 @@ const Modal = () => {
       {!user && <RegisterModal />}
       {state.visibleToastModal && <ToastModal />}
       {state.visibleConfirmModal && <ConfirmModal />}
+      {state.visibleReviewsModal && <ReviewsModal />}
     </Suspense>
   );
 };

@@ -65,6 +65,7 @@ function Cancel() {
       });
     }
   }, [
+    code,
     status,
     isCancel,
     isSuccessOrder,

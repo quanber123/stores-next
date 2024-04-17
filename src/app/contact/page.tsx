@@ -8,7 +8,9 @@ import { getStores } from '@/api/storeApi';
 import { Icons } from '@/enum/enum';
 import ValidateMessage from '@/components/(ui)/validateMessage';
 import { validateEmail, validateEmptyStr } from '@/lib/utils/validate';
-const ContactViews = () => {
+import React from 'react';
+
+export default function Contact() {
   const { setVisibleModal } = useContext(ModalContext);
   const [stores, setStores] = useState([]);
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -188,6 +190,4 @@ const ContactViews = () => {
       </section>
     </div>
   );
-};
-
-export default ContactViews;
+}

@@ -1,26 +1,38 @@
+'use client';
 import React, {
   useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
 import { useSelector } from 'react-redux';
-import { Cart } from '@/types/types';
 import { ModalContext } from '@/context/ModalProvider';
 import { getCurAddress } from '@/lib/redux/slice/userSlice';
 import { redirect, useSearchParams } from 'next/navigation';
 import LazyLoadImage from '@/components/(ui)/lazyloadImage';
 import { Icons } from '@/enum/enum';
 import { useCreatePaymentMutation } from '@/lib/redux/query/productQuery';
-type Props = {
-  orders: Cart[];
-};
-const CheckoutList: React.FC<Props> = ({ orders }) => {
+export default function Orders() {
   const { setVisibleModal } = useContext(ModalContext);
-  const currAddress = useSelector(getCurAddress);
   const searchQuery = useSearchParams();
+  const [tempOrders, setTempOrders] = useState([]);
+  useLayoutEffect(() => {
+    const stateParam = searchQuery.get('state');
+    if (stateParam) {
+      try {
+        const decodedTempOrder = JSON.parse(atob(stateParam));
+        setTempOrders(decodedTempOrder);
+      } catch (error) {
+        redirect('/not-found');
+      }
+    } else {
+      redirect('/not-found');
+    }
+  }, [searchQuery]);
+  const currAddress = useSelector(getCurAddress);
   const [paymentMethod, setPaymentMethod] = useState(
     window.localStorage.getItem('cozastore-payment') || 'cash'
   );
@@ -43,7 +55,7 @@ const CheckoutList: React.FC<Props> = ({ orders }) => {
     [currAddress]
   );
   const renderedOrders = useMemo(() => {
-    return orders.map((o) => {
+    return tempOrders.map((o: any) => {
       return (
         <tr key={o._id}>
           <td className='p-4'>
@@ -76,25 +88,22 @@ const CheckoutList: React.FC<Props> = ({ orders }) => {
         </tr>
       );
     });
-  }, []);
+  }, [tempOrders]);
   const totalPrice = useMemo(() => {
-    return orders.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue.product.totalPrice;
+    return tempOrders.reduce((accumulator: any, currentValue: any) => {
+      return accumulator + currentValue?.product?.totalPrice;
     }, 0);
-  }, [orders]);
-  const handlePaymentMethod = useCallback(
-    (payment: string) => {
-      setPaymentMethod(payment);
-      window.localStorage.setItem('cozastore-payment', payment);
-    },
-    [orders]
-  );
+  }, [tempOrders]);
+  const handlePaymentMethod = useCallback((payment: string) => {
+    setPaymentMethod(payment);
+    window.localStorage.setItem('cozastore-payment', payment);
+  }, []);
 
   const handlePayment = useCallback(() => {
     if (currAddress) {
       createPayment({
         totalPrice: totalPrice,
-        products: orders,
+        products: tempOrders,
         user_name: currAddress.name,
         phone: currAddress.phone,
         message: message.current?.value,
@@ -109,7 +118,7 @@ const CheckoutList: React.FC<Props> = ({ orders }) => {
         },
       });
     }
-  }, [paymentMethod, currAddress, addressUser]);
+  }, [paymentMethod, currAddress, addressUser, createPayment, setVisibleModal]);
   useEffect(() => {
     if (isSuccessPayment && paymentMethod === 'transfer') {
       redirect(dataPayment.order.paymentInfo.checkoutUrl);
@@ -133,8 +142,8 @@ const CheckoutList: React.FC<Props> = ({ orders }) => {
     isErrorPayment,
     errorPayment,
     paymentMethod,
-    dataPayment?.order?.paymentInfo?.checkoutUrl,
-    dataPayment?.order?.paymentInfo?.status,
+    dataPayment.order?.paymentInfo?.checkoutUr,
+    dataPayment.order?.paymentInfo?.status,
     dataPayment.order?.paymentInfo?.orderCode,
     searchQuery,
     setVisibleModal,
@@ -206,7 +215,7 @@ const CheckoutList: React.FC<Props> = ({ orders }) => {
           />
         </div>
         <div className='md:w-1/2 flex justify-center items-center gap-[40px]'>
-          <p className='text-center'>Total Price ({orders.length}):</p>
+          <p className='text-center'>Total Price ({tempOrders.length}):</p>
           <p className='text-center font-bold'>{totalPrice} VND</p>
         </div>
       </section>
@@ -270,6 +279,4 @@ const CheckoutList: React.FC<Props> = ({ orders }) => {
       </section>
     </>
   );
-};
-
-export default CheckoutList;
+}

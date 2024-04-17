@@ -1,8 +1,13 @@
+import { Metadata } from 'next';
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }
-export default function ProductLayout({
+export const metadata: Metadata = {
+  title: 'SHOP',
+};
+export default async function ProductDetailsLayout({
   children,
-}: RootLayoutProps): JSX.Element {
+}: RootLayoutProps): Promise<JSX.Element> {
   return <>{children}</>;
 }

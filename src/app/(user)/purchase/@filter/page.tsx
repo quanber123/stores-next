@@ -4,7 +4,7 @@ import useQueryString from '@/lib/hooks/useQueryString';
 import { useSearchParams } from 'next/navigation';
 import { useContext, useMemo } from 'react';
 
-const OrdersFilter = () => {
+export default function Filter() {
   const { statusOrders } = useContext(FetchDataContext);
   const [createQueryString, deleteQueryString] = useQueryString();
   const searchQuery = useSearchParams();
@@ -61,6 +61,4 @@ const OrdersFilter = () => {
       {renderedFilters}
     </section>
   );
-};
-
-export default OrdersFilter;
+}

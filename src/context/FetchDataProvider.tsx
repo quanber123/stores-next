@@ -85,7 +85,7 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
     if (isSuccessAddress && dataAddress) {
       dispatch(setCurDelivery(dataAddress.address[0]));
     }
-  }, [isSuccessAddress, dataAddress]);
+  }, [isSuccessAddress, dataAddress, dispatch]);
   useEffect(() => {
     if (isSuccessCart && cartData) {
       dispatch(setAllCarts(cartData));

@@ -16,7 +16,7 @@ const UserDropdown: React.FC<Props> = ({ user }) => {
   const router = useRouter();
   const handleRedirect = useCallback(
     (route: string) => {
-      router.push(`${route}`);
+      router.push(`/${route}`);
       closeDropdown();
     },
     [router, closeDropdown]

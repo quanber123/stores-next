@@ -3,6 +3,7 @@ import { Icons } from '@/enum/enum';
 import { useCreateCartMutation } from '@/lib/redux/query/productQuery';
 import { formatNumberWithDot } from '@/lib/utils/format';
 import { Product } from '@/types/types';
+import { set } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import React, {
   ChangeEvent,
@@ -218,6 +219,7 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
     errorCart,
     router,
     isBuyNow,
+    setVisibleModal,
   ]);
   return (
     <div className='flex flex-col gap-6'>

@@ -98,6 +98,8 @@ export type Order = {
   created_at: string;
   updated_at: string;
   paymentMethod: string;
+  isPaid: boolean;
+  isProcessing: boolean;
   user: string;
   paymentInfo: {
     products: [
@@ -118,7 +120,7 @@ export type Order = {
       }
     ];
     qrCode: string | null;
-    status: string;
+    status: 'pending' | 'processing' | 'delivered' | 'cancel';
     accountName: string | null;
     accountNumber: string | null;
     amount: number;
@@ -128,6 +130,8 @@ export type Order = {
     description: string;
     orderCode: number;
     paymentLinkId: string;
+    totalPrice?: number;
+    totalSalePrice?: number;
   };
 };
 export type Blog = {

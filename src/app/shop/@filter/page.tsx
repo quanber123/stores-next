@@ -1,14 +1,17 @@
 'use client';
 import useQueryString from '@/lib/hooks/useQueryString';
-import { Category, Tag } from '@/types/types';
 import { useSearchParams } from 'next/navigation';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Icons } from '@/enum/enum';
-type Props = {
-  categories: Category[];
-  tags: Tag[];
-};
-const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
+import { FetchDataContext } from '@/context/FetchDataProvider';
+export default function Filter() {
+  const { categories, tags } = useContext(FetchDataContext);
   const searchQuery = useSearchParams();
   const [createQueryString, deleteQueryString] = useQueryString();
   const [dropdown, setDropdown] = useState('');
@@ -220,6 +223,4 @@ const ProductFilter: React.FC<Props> = ({ categories, tags }) => {
       </div>
     </section>
   );
-};
-
-export default ProductFilter;
+}
