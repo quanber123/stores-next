@@ -1,14 +1,11 @@
 'use client';
-import { useMemo, useState } from 'react';
-import { Category, Tag } from '@/types/types';
+import { useContext, useMemo, useState } from 'react';
 import useQueryString from '@/lib/hooks/useQueryString';
 import { Icons } from '@/enum/enum';
 import { useSearchParams } from 'next/navigation';
-type Props = {
-  categories: Category[];
-  tags: Tag[];
-};
-const BlogFilter: React.FC<Props> = ({ categories, tags }) => {
+import { FetchDataContext } from '@/context/FetchDataProvider';
+export default function Filter() {
+  const { categories, tags } = useContext(FetchDataContext);
   const [createQueryString, deleteQueryString] = useQueryString();
   const searchQuery = useSearchParams();
   const [mouseHover, setMouseHover] = useState<string | null>(null);
@@ -112,6 +109,4 @@ const BlogFilter: React.FC<Props> = ({ categories, tags }) => {
       </div>
     </div>
   );
-};
-
-export default BlogFilter;
+}

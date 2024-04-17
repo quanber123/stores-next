@@ -1,6 +1,7 @@
+'use client';
 import blogImg from '@/assets/images/bg-02.jpg.webp';
 import Image from 'next/image';
-function BlogTitle() {
+function Title() {
   return (
     <section className='relative h-[240px] overflow-hidden'>
       <div className='w-full h-full'>
@@ -23,4 +24,4 @@ function BlogTitle() {
   );
 }
 
-export default BlogTitle;
+export default Title;

@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
+
 interface RootLayoutProps {
   children: React.ReactNode;
 }
-// export const metadata: Metadata = {
-//   title: '...',
-//   description: '...',
-// };
-export default async function VerifiedLayout({
+export const metadata: Metadata = {
+  title: 'BLOG',
+};
+export default async function BlogsDetails({
   children,
 }: RootLayoutProps): Promise<JSX.Element> {
   return <>{children}</>;

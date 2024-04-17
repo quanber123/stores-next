@@ -14,10 +14,12 @@ export default async function ShopLayout({
   products,
 }: RootLayoutProps): Promise<JSX.Element> {
   return (
-    <div className='flex flex-col items-center gap-[24px] px-8 py-8'>
+    <>
       {children}
-      {filter}
-      {products}
-    </div>
+      <div className='flex flex-col items-center gap-[24px] px-8 py-8'>
+        {filter}
+        {products}
+      </div>
+    </>
   );
 }
