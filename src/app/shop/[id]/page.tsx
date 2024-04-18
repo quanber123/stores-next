@@ -2,7 +2,7 @@
 import { useGetProductsByIdQuery } from '@/lib/redux/query/productQuery';
 import { redirect, usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 const DynamicBreadcrumbs = dynamic(
   () => import('@/components/(ui)/breadcrumbs'),
   {
@@ -14,15 +14,15 @@ const DynamicBreadcrumbs = dynamic(
     ssr: false,
   }
 );
-const DynamicListImages = dynamic(
-  () => import('@/components/pages/(client)/product-details/listImages'),
+const DynamicImages = dynamic(
+  () => import('@/app/shop/[id]/_components/images'),
   {
     loading: () => <div className='skeleton h-[580px]'></div>,
     ssr: false,
   }
 );
 const DynamicProductDetails = dynamic(
-  () => import('@/components/pages/(client)/product-details/productDetails'),
+  () => import('@/app/shop/[id]/_components/product'),
   {
     loading: () => (
       <div className='h-[580px] flex flex-col gap-6'>
@@ -36,15 +36,15 @@ const DynamicProductDetails = dynamic(
     ssr: false,
   }
 );
-const DynamicMoreInformation = dynamic(
-  () => import('@/components/pages/(client)/product-details/moreInformation'),
+const DynamicInformation = dynamic(
+  () => import('@/app/shop/[id]/_components/information'),
   {
     loading: () => <div className='h-[200px] w-full skeleton'></div>,
     ssr: false,
   }
 );
 const DynamicRelatedProducts = dynamic(
-  () => import('@/components/pages/(client)/product-details/relatedProducts'),
+  () => import('@/app/shop/[id]/_components/related'),
   {
     loading: () => (
       <>
@@ -75,11 +75,11 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
           name={productData.product.name}
         />
         <section className='w-full px-4 py-8 rounded grid grid-cols-1 lg:grid-cols-2 gap-12 border border-gray-200 shadow-lg'>
-          <DynamicListImages product={productData.product} />
+          <DynamicImages product={productData.product} />
           <DynamicProductDetails product={productData.product} />
         </section>
         <section className='w-full px-4 py-8 rounded flex flex-col gap-8 border border-gray-200 shadow-lg'>
-          <DynamicMoreInformation product={productData.product} />
+          <DynamicInformation product={productData.product} />
         </section>
         <section className='flex flex-col gap-8'>
           <DynamicRelatedProducts products={productData.relatedProducts} />
