@@ -25,7 +25,7 @@ export default function Blogs() {
   const renderedBlogs = useMemo(() => {
     return (
       isSuccessBlogsData &&
-      blogsData.blogs?.map((b: Blog) => {
+      blogsData?.blogs?.map((b: Blog) => {
         return <PreviewBlog key={b._id} type='blog-page' blog={b} />;
       })
     );

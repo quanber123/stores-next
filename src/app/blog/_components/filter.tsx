@@ -13,8 +13,8 @@ export default function Filter() {
   const renderedCategory = useMemo(() => {
     const type = 'category';
     return (
-      categories.length > 0 &&
-      categories.map((c) => {
+      categories?.length > 0 &&
+      categories?.map((c) => {
         return (
           <button
             key={c._id}
@@ -42,8 +42,8 @@ export default function Filter() {
   const renderedTags = useMemo(() => {
     const type = 'tag';
     return (
-      tags.length > 0 &&
-      tags.map((t) => {
+      tags?.length > 0 &&
+      tags?.map((t) => {
         return (
           <button
             key={t._id}

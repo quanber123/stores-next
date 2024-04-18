@@ -61,7 +61,6 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
   const {
     data: productData,
     isSuccess: isSuccessProduct,
-    isLoading: isLoadingProduct,
     isError: isErrorProduct,
   } = useGetProductsByIdQuery(id);
   if (isErrorProduct) {
