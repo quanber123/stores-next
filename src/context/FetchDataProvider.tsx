@@ -61,14 +61,16 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
             (a: StatusOrder, b: StatusOrder) => a.number - b.number
           )
         );
-        setCategories(categoriesData.categories);
-        setTags(tagsData.tags);
+        setCategories(categoriesData?.categories);
+        setTags(tagsData?.tags);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
   }, []);
+  console.table(categories);
+  console.table(tags);
   useEffect(() => {
     const token = searchQuery.get('token');
     if (token) {
