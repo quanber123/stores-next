@@ -18,7 +18,7 @@ const DynamicBreadcrumbs = dynamic(
   }
 );
 const DynamicBlogDetails = dynamic(
-  () => import('@/components/pages/(client)/blog-details/blogDetails'),
+  () => import('@/app/blog/[id]/_components/blog'),
   {
     loading: () => (
       <div className='flex flex-col gap-12'>
@@ -31,7 +31,7 @@ const DynamicBlogDetails = dynamic(
   }
 );
 const DynamicComments = dynamic(
-  () => import('@/components/pages/(client)/blog-details/comments'),
+  () => import('@/app/blog/[id]/_components/comments'),
   {
     ssr: false,
   }
@@ -46,11 +46,9 @@ export default function BlogDetails({ params }: { params: { id: string } }) {
   } = useGetBlogByIdQuery(id);
   const { data: commentsData, isSuccess: isSuccessComments } =
     useGetCommentBlogQuery(id);
-  useLayoutEffect(() => {
-    if (isErrorBlog) {
-      redirect(`/not-found-blog-${id}`);
-    }
-  }, [isErrorBlog, id]);
+  if (isErrorBlog) {
+    redirect(`/not-found-blog-${id}`);
+  }
   return (
     isSuccessBlog &&
     blogData && (
