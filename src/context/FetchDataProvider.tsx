@@ -82,8 +82,8 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
     }
   }, [isSuccessGetUser, userData, dispatch]);
   useEffect(() => {
-    if (isSuccessAddress && dataAddress && dataAddress.address[0]) {
-      dispatch(setCurDelivery(dataAddress?.address[0]));
+    if (isSuccessAddress && dataAddress && dataAddress.address?.[0]) {
+      dispatch(setCurDelivery(dataAddress.address[0]));
     }
   }, [isSuccessAddress, dataAddress, dispatch]);
   useEffect(() => {
