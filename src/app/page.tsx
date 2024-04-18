@@ -35,15 +35,6 @@ const DynamicBlogs = dynamic(() => import('@/app/_components/blog'), {
   ),
   ssr: false,
 });
-// export async function generateMetadata(): Promise<Metadata> {
-//   return {
-//     title: '',
-//     description: '',
-//     openGraph: {
-//       images: [],
-//     },
-//   };
-// }
 export default function Home() {
   return (
     <div className='flex flex-col items-center gap-16'>
