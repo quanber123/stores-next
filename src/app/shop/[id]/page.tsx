@@ -1,6 +1,6 @@
 'use client';
 import { useGetProductsByIdQuery } from '@/lib/redux/query/productQuery';
-import { redirect, usePathname } from 'next/navigation';
+import { notFound, usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import React from 'react';
 const DynamicBreadcrumbs = dynamic(
@@ -61,10 +61,11 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
   const {
     data: productData,
     isSuccess: isSuccessProduct,
+    isLoading: isLoadingProduct,
     isError: isErrorProduct,
   } = useGetProductsByIdQuery(id);
   if (isErrorProduct) {
-    redirect(`/not-found-product-${id}`);
+    notFound();
   }
   return (
     isSuccessProduct &&

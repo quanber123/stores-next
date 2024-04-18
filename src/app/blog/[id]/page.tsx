@@ -4,8 +4,8 @@ import {
   useGetCommentBlogQuery,
 } from '@/lib/redux/query/blogQuery';
 import dynamic from 'next/dynamic';
-import { redirect, usePathname } from 'next/navigation';
-import React, { useLayoutEffect } from 'react';
+import { notFound, usePathname } from 'next/navigation';
+import React from 'react';
 const DynamicBreadcrumbs = dynamic(
   () => import('@/components/(ui)/breadcrumbs'),
   {
@@ -47,7 +47,7 @@ export default function BlogDetails({ params }: { params: { id: string } }) {
   const { data: commentsData, isSuccess: isSuccessComments } =
     useGetCommentBlogQuery(id);
   if (isErrorBlog) {
-    redirect(`/not-found-blog-${id}`);
+    notFound();
   }
   return (
     isSuccessBlog &&

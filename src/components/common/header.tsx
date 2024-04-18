@@ -23,7 +23,7 @@ const CartDropdown = lazy(() => import('@/components/dropdown/CartDropdown'));
 const FavoriteDropdown = lazy(
   () => import('@/components/dropdown/FavoriteDropdown')
 );
-const HeaderDefault = () => {
+const Header = () => {
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
   const { setVisibleModal, closeAllModal } = useContext(ModalContext);
   const { setVisibleDropdown, closeDropdown } = useContext(DropdownContext);
@@ -190,4 +190,4 @@ const HeaderDefault = () => {
   );
 };
 
-export default HeaderDefault;
+export default Header;

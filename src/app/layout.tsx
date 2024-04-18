@@ -6,8 +6,26 @@ import { Roboto } from 'next/font/google';
 import { ModalProvider } from '@/context/ModalProvider';
 import { FetchDataProvider } from '@/context/FetchDataProvider';
 import { Metadata } from 'next';
-import './globals.css';
 import { DropdownProvider } from '@/context/DropdownProvider';
+import './globals.css';
+const DynamicHeader = dynamic(() => import('@/components/common/header'), {
+  loading: () => (
+    <div
+      style={{ boxShadow: '0 0px 3px 0px rgba(0, 0, 0, 0.2)' }}
+      className='fixed top-0 left-0 w-full h-[64px] z-[100] flex items-center'
+    >
+      <div className='container m-auto px-4 flex justify-between items-center gap-20'>
+        <div className='skeleton w-[150px] h-[32px]'></div>
+        <div className='skeleton w-[150px] h-[38px]'></div>
+      </div>
+    </div>
+  ),
+  ssr: false,
+});
+const DynamicFooter = dynamic(() => import('@/components/common/footer'), {
+  loading: () => <div className='skeleton mt-24 w-full h-[320px]'></div>,
+  ssr: false,
+});
 const DynamicScroll = dynamic(() => import('@/components/common/scroll'));
 const DynamicModal = dynamic(() => import('@/components/modal/Modal'));
 const roboto = Roboto({
@@ -16,8 +34,6 @@ const roboto = Roboto({
 });
 interface RootLayoutProps {
   children: React.ReactNode;
-  header: React.ReactNode;
-  footer: React.ReactNode;
 }
 export const metadata: Metadata = {
   title: {
@@ -27,8 +43,6 @@ export const metadata: Metadata = {
 };
 export default async function RootLayout({
   children,
-  header,
-  footer,
 }: RootLayoutProps): Promise<JSX.Element> {
   return (
     <html lang='vi'>
@@ -43,11 +57,13 @@ export default async function RootLayout({
           <StoreProvider>
             <FetchDataProvider>
               <ModalProvider>
-                <DropdownProvider>{header}</DropdownProvider>
+                <DropdownProvider>
+                  <DynamicHeader />
+                </DropdownProvider>
                 <main className='min-h-screen flex-1'>{children}</main>
-                {footer}
                 <DynamicScroll />
                 <DynamicModal />
+                <DynamicFooter />
               </ModalProvider>
             </FetchDataProvider>
           </StoreProvider>

@@ -4,9 +4,9 @@ import { DropdownContext } from '@/context/DropdownProvider';
 import { User } from '@/types/types';
 import { removeUser } from '@/lib/redux/slice/userSlice';
 import { Icons } from '@/enum/enum';
-import './Dropdown.css';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import './Dropdown.css';
 type Props = {
   user: User;
 };
