@@ -57,7 +57,7 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
           getCategories(),
         ]);
         setStatusOrders(
-          statusOrdersData.status.sort(
+          statusOrdersData?.status?.sort(
             (a: StatusOrder, b: StatusOrder) => a.number - b.number
           )
         );
@@ -83,7 +83,7 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
   }, [isSuccessGetUser, userData, dispatch]);
   useEffect(() => {
     if (isSuccessAddress && dataAddress) {
-      dispatch(setCurDelivery(dataAddress.address[0]));
+      dispatch(setCurDelivery(dataAddress?.address[0]));
     }
   }, [isSuccessAddress, dataAddress, dispatch]);
   useEffect(() => {
