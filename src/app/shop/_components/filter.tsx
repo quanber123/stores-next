@@ -84,7 +84,7 @@ export default function Filter() {
         type: 'sort',
       },
     ];
-    return sortButtons.map((b) => {
+    return sortButtons?.map((b) => {
       return (
         <li className='w-max' key={b.value}>
           <button

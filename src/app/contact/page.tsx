@@ -82,7 +82,7 @@ export default function Contact() {
         icon: Icons.email_icon,
       },
     ];
-    return data.map((d) => {
+    return data?.map((d) => {
       const curType = d.type;
       return (
         <div key={d.name} className='flex flex-col gap-[20px] text-neutral-600'>

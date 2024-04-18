@@ -7,7 +7,7 @@ function Footer() {
   const router = useRouter();
   const renderedCategories = useMemo(
     () =>
-      categories.map((c, index) => {
+      categories?.map((c, index) => {
         return (
           <li key={index}>
             <button
@@ -24,7 +24,7 @@ function Footer() {
 
   const renderHelps = useMemo(() => {
     const helps = ['Track Order', 'Returns', 'Shipping', 'FAQs'];
-    return helps.map((h, index) => {
+    return helps?.map((h, index) => {
       return (
         <li key={index}>
           <button className='text-sm'>{h}</button>
