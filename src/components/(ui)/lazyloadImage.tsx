@@ -14,7 +14,6 @@ function LazyLoadImage(props: LazyLoadImageProps) {
   const [_, setImageLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const [imageSrc, setImageSrc] = useState<string>('');
-
   useEffect(() => {
     const observerSupported = 'IntersectionObserver' in window;
     const imgElement = imgRef.current;

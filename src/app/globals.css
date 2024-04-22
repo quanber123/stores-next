@@ -62,55 +62,34 @@ input::-webkit-outer-spin-button {
   border-right: 16px solid transparent;
   border-bottom: 18px solid #666666;
 }
-.banner > img {
+.banner > picture > img {
   width: 100%;
   height: 100%;
   background-position: left top !important;
   background-size: cover !important;
   background-repeat: no-repeat;
   opacity: 0;
-  transform: translateY(-100%);
+  transform: translateY(200%);
   transition: all 1s ease-in-out;
   scale: 1;
   z-index: -1;
 }
-.banner.prev-slide > img {
-  opacity: 1;
-  transform: translateY(200%);
-  z-index: 1;
-}
-.banner.cur-slide > img {
+.banner.cur-slide > picture > img {
   opacity: 1;
   transform: translateY(-50%) scale(1.25);
   z-index: 2;
 }
 
-.banner.next-slide > img {
-  opacity: 1;
-  transform: translateY(-200%);
-  z-index: 3;
-}
 .banner > div {
   transform: translateY(-100%);
   opacity: 0;
   transition: all 0.5s ease-in-out;
-}
-.banner.prev-slide > div {
-  opacity: 0;
-  transform: translateY(-200%);
-  z-index: 1;
 }
 .banner.cur-slide > div {
   opacity: 1;
   transform: translateY(-50%);
   transition-delay: 1s;
   z-index: 2;
-}
-
-.banner.next-slide > div {
-  opacity: 0;
-  transform: translateY(200%);
-  z-index: 3;
 }
 
 .bars::before {

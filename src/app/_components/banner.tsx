@@ -2,6 +2,7 @@
 import { getBanners } from '@/api/bannerApi';
 import LazyLoadImage from '@/components/(ui)/lazyloadImage';
 import { Banner } from '@/types/types';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -37,8 +38,6 @@ export default function Banners() {
         <article
           className={`banner absolute top-0 left-0 w-full h-full flex items-center ${
             currArticle === index && 'cur-slide'
-          } ${index === currArticle - 1 && 'prev-slide'} ${
-            index === currArticle + 1 && 'next-slide'
           }`}
           key={b._id}
         >
