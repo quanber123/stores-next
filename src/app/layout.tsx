@@ -1,4 +1,5 @@
 import React from 'react';
+import Script from 'next/script';
 import dynamic from 'next/dynamic';
 import UiProvider from '@/context/UiProvider';
 import StoreProvider from '@/context/StoreProvider';
@@ -62,11 +63,24 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({
   children,
 }: RootLayoutProps): Promise<JSX.Element> {
+  console.log(process.env.NEXT_GAID);
   return (
     <html lang='vi'>
-      <head></head>
+      <head>
+        <Script
+          async
+          src='https://www.googletagmanager.com/gtag/js?id=G-VZB8R6D98C'
+        ></Script>
+        <Script id='google-analytics'>
+          {` window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VZB8R6D98C');`}
+        </Script>
+      </head>
       <body className={roboto.className}>
-        <GoogleAnalytics gaId={process.env.NEXT_GAID ?? ''} />
+        {/* <GoogleAnalytics gaId={process.env.NEXT_GAID as string} /> */}
         <UiProvider>
           <StoreProvider>
             <FetchDataProvider>
