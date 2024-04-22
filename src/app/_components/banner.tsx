@@ -47,7 +47,7 @@ export default function Banners() {
             height={640}
             src={b.image}
             alt={b.content}
-            priority='auto'
+            priority='high'
           />
           <div
             className={`absolute w-full top-1/2 md:left-[15%] flex flex-col justify-center md:justify-start items-center md:items-start gap-[12px] md:gap-[24px]`}
