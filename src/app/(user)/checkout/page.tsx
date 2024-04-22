@@ -39,7 +39,7 @@ export default function Orders() {
     } else {
       notFound();
     }
-  }, [searchQuery.get('state')]);
+  }, [searchQuery]);
   const curAddress = useSelector(getCurAddress);
   const [paymentMethod, setPaymentMethod] = useState(
     window.localStorage.getItem('cozastore-payment') || 'cash'
@@ -131,6 +131,7 @@ export default function Orders() {
       });
     }
   }, [
+    totalPrice,
     tempOrders,
     paymentMethod,
     curAddress,
@@ -162,7 +163,6 @@ export default function Orders() {
     errorPayment,
     dataPayment,
     setVisibleModal,
-    redirect,
   ]);
   return (
     <div className='container m-auto py-8'>
