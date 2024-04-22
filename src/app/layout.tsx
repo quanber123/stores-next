@@ -8,6 +8,7 @@ import { FetchDataProvider } from '@/context/FetchDataProvider';
 import { Metadata } from 'next';
 import { DropdownProvider } from '@/context/DropdownProvider';
 import { getSeo } from '@/api/seo';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   loading: () => (
@@ -63,13 +64,9 @@ export default async function RootLayout({
 }: RootLayoutProps): Promise<JSX.Element> {
   return (
     <html lang='vi'>
-      <head>
-        {/* <link
-          rel='icon'
-          href={`${process.env.NEXT_PUBLIC_BACKEND_URL}public/images/logo-04.png-fotor-2023121102555.png`}
-        /> */}
-      </head>
+      <head></head>
       <body className={roboto.className}>
+        <GoogleAnalytics gaId={process.env.NEXT_GAID ?? ''} />
         <UiProvider>
           <StoreProvider>
             <FetchDataProvider>
