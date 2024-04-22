@@ -88,6 +88,7 @@ export default function Orders() {
           {statusOrders?.map((s) => {
             return (
               <option
+                key={s.name}
                 className='px-4 py-2 capitalize cursor-pointer'
                 value={s.name}
               >
