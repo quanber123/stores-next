@@ -44,10 +44,11 @@ export default function Banners() {
         >
           <Image
             className='absolute top-1/2 left-0 object-cover'
-            width={2000}
+            width={1440}
             height={640}
             src={b.image}
             alt={b.content}
+            fetchPriority='high'
             priority
           />
           <div
