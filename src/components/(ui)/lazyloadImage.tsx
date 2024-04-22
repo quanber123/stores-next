@@ -50,7 +50,9 @@ function LazyLoadImage(props: LazyLoadImageProps) {
     <picture>
       <img
         ref={imgRef}
-        className={`${props.className} w-full h-[${props.height}px] object-cover`}
+        className={`${props.className ? props.className : ''} w-full h-[${
+          props.height
+        }px] object-cover`}
         width={props.width}
         height={props.height}
         src={imageSrc}

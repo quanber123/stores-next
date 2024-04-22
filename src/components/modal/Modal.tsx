@@ -19,6 +19,7 @@ const Modal = () => {
       {state.visibleToastModal && <ToastModal />}
       {state.visibleConfirmModal && <ConfirmModal />}
       {state.visibleReviewsModal && <ReviewsModal />}
+      {state.visibleConfirmModal && <ConfirmModal />}
     </Suspense>
   );
 };

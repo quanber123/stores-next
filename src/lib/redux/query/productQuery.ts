@@ -21,6 +21,7 @@ export const productApi = createApi({
     'favoriteProduct',
     'reviews',
     'orders',
+    'orderDetails',
   ],
   endpoints: (builder) => {
     return {
@@ -134,7 +135,7 @@ export const productApi = createApi({
           method: 'POST',
           body: reviews,
         }),
-        invalidatesTags: ['orders', 'reviews'],
+        invalidatesTags: ['orders', 'reviews', 'orderDetails'],
       }),
       getAllOrdersUser: builder.query({
         query: ({ query }) => ({
@@ -143,11 +144,12 @@ export const productApi = createApi({
         }),
         providesTags: (result) => providesList(result, 'orders'),
       }),
-      getOrderUserById: builder.query({
-        query: ({ id, paymentMethod }) => ({
-          url: `user_orders/${id}?payment=${paymentMethod}`,
+      getOderDetails: builder.query({
+        query: (id) => ({
+          url: `user_orders/${id}`,
           method: 'GET',
         }),
+        providesTags: (result) => providesList(result, 'orderDetails'),
       }),
       updateOrderUser: builder.mutation({
         query: ({ orderId, body }) => ({
@@ -155,7 +157,7 @@ export const productApi = createApi({
           method: 'PUT',
           body: { ...body },
         }),
-        invalidatesTags: ['orders'],
+        invalidatesTags: ['orders', 'orderDetails'],
       }),
     };
   },
@@ -176,6 +178,6 @@ export const {
   useGetReviewsQuery,
   useReviewsProductMutation,
   useGetAllOrdersUserQuery,
-  useGetOrderUserByIdQuery,
+  useGetOderDetailsQuery,
   useUpdateOrderUserMutation,
 } = productApi;

@@ -4,7 +4,7 @@ import cancelImg from '@/assets/images/cancel.png';
 import withAuth from '@/auth/withAuth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
-  useGetOrderUserByIdQuery,
+  useGetAllOrdersUserQuery,
   useUpdateOrderUserMutation,
 } from '@/lib/redux/query/productQuery';
 import Image from 'next/image';
@@ -14,7 +14,6 @@ function Cancel() {
   const router = useRouter();
   const [countDown, setCountDown] = useState(5);
   const searchQuery = useSearchParams();
-  const paymentMethod = searchQuery.get('paymentMethod');
   const code = searchQuery.get('orderCode');
   const status = searchQuery.get('status');
   const isCancel = searchQuery.get('cancel');
@@ -23,19 +22,23 @@ function Cancel() {
     isSuccess: isSuccessOrder,
     isError: isErrorOrder,
     error: errorOrder,
-  } = useGetOrderUserByIdQuery(
+  } = useGetAllOrdersUserQuery(
     {
-      id: code,
-      paymentMethod: paymentMethod,
+      code,
     },
     { skip: !code }
   );
-  const [updateOrder, { isSuccess: isSuccessUpdateOrder }] =
-    useUpdateOrderUserMutation();
+  const [updateOrder] = useUpdateOrderUserMutation();
   useEffect(() => {
-    if (isSuccessUpdateOrder) {
+    if (isSuccessOrder) {
       const interval = setInterval(() => {
-        setCountDown((prevCount) => (prevCount -= 1));
+        setCountDown((prevCount) => {
+          if (prevCount === 0) {
+            return 0;
+          } else {
+            return (prevCount -= 1);
+          }
+        });
       }, 1000);
       const timeId = setTimeout(() => {
         router.replace('/');
@@ -45,9 +48,9 @@ function Cancel() {
         clearTimeout(timeId);
       };
     }
-  }, [isSuccessUpdateOrder, router]);
+  }, [isSuccessOrder, router]);
   useEffect(() => {
-    if (isSuccessOrder && dataOrder.data.status === 'CANCELLED') {
+    if (isSuccessOrder && dataOrder.data?.status === 'CANCELLED') {
       updateOrder({
         orderId: code,
         body: {

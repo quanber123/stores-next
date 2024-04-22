@@ -28,7 +28,7 @@ export enum Icons {
   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
 </svg>
 `,
-  right_icon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+  right_icon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
   <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 </svg>
 `,
@@ -67,7 +67,7 @@ export enum Icons {
   arrow_top_icon = `<svg fill="#000000" stroke="currentColor" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
   <path fill-rule="evenodd" d="M12,12.4142136 L6.70710678,17.7071068 L5.29289322,16.2928932 L12,9.58578644 L18.7071068,16.2928932 L17.2928932,17.7071068 L12,12.4142136 Z M6.70710678,12.7071068 L5.29289322,11.2928932 L12,4.58578644 L18.7071068,11.2928932 L17.2928932,12.7071068 L12,7.41421356 L6.70710678,12.7071068 Z"/>
 </svg>`,
-  clip_board_icon = `<svg width="18px" height="18px" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
+  clip_board_icon = `<svg width="24px" height="24px" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M15.5 4H18C19.1046 4 20 4.89543 20 6V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V6C4 4.89543 4.89543 4 6 4H8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M8.62127 3.51493C8.84385 2.62459 9.64382 2 10.5616 2H13.4384C14.3562 2 15.1561 2.62459 15.3787 3.51493L16 6H8L8.62127 3.51493Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M9 12L15 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -106,7 +106,7 @@ export enum Icons {
     fill="#000000"
   />
 </svg>`,
-  view_icon = `<svg width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#000000" fill="none"><path d="M53.79,33.1a.51.51,0,0,0,0-.4C52.83,30.89,45.29,17.17,32,16.84S11,30.61,9.92,32.65a.48.48,0,0,0,0,.48C11.1,35.06,19.35,48.05,29.68,49,41.07,50,50.31,42,53.79,33.1Z"/><circle cx="31.7" cy="32.76" r="6.91"/></svg>`,
+  view_icon = `<svg width="24px" height="24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="currentColor" fill="none"><path d="M53.79,33.1a.51.51,0,0,0,0-.4C52.83,30.89,45.29,17.17,32,16.84S11,30.61,9.92,32.65a.48.48,0,0,0,0,.48C11.1,35.06,19.35,48.05,29.68,49,41.07,50,50.31,42,53.79,33.1Z"/><circle cx="31.7" cy="32.76" r="6.91"/></svg>`,
   quotes_icon = `<svg width="250px" height="200px" viewBox="0 -3 16 16" id="meteor-icon-kit__solid-quote" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M16 2V7C16 8.6569 14.6569 10 13 10H12C11.4477 10 11 9.5523 11 9C11 8.4477 11.4477 8 12 8H13C13.5523 8 14 7.5523 14 7H11C9.8954 7 9 6.1046 9 5V2C9 0.89543 9.8954 0 11 0H14C15.1046 0 16 0.89543 16 2zM7 2V7C7 8.6569 5.65685 10 4 10H3C2.44772 10 2 9.5523 2 9C2 8.4477 2.44772 8 3 8H4C4.55228 8 5 7.5523 5 7H2C0.89543 7 0 6.1046 0 5V2C0 0.89543 0.89543 0 2 0H5C6.1046 0 7 0.89543 7 2z"/></svg>`,
   comment_icon = `<svg fill="#000000" width="24px" height="24px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
 <title>comment</title>
@@ -119,4 +119,8 @@ export enum Icons {
     <path id="Path_97" data-name="Path 97" d="M1211.722,1378.673l16.4,11.712,37.479-30.92Z" fill="#ffffff" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
   </g>
 </svg>`,
+  home_icon = `<svg fill="#000000" stroke="currentColor" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20,10.7359622 L20,18.5 C20,19.8807119 18.8807119,21 17.5,21 L14.5,21 C14.2238576,21 14,20.7761424 14,20.5 L14,14.5 C14,14.2238576 13.7761424,14 13.5,14 L10.5,14 C10.2238576,14 10,14.2238576 10,14.5 L10,20.5 C10,20.7761424 9.77614237,21 9.5,21 L6.5,21 C5.11928813,21 4,19.8807119 4,18.5 L4,10.7359622 L3.81785363,10.8859651 C3.60469098,11.0615108 3.28958059,11.0310163 3.11403488,10.8178536 C2.93848917,10.604691 2.96898373,10.2895806 3.18214637,10.1140349 L11.6821464,3.11403488 C11.8667743,2.96198837 12.1332257,2.96198837 12.3178536,3.11403488 L20.8178536,10.1140349 C21.0310163,10.2895806 21.0615108,10.604691 20.8859651,10.8178536 C20.7104194,11.0310163 20.395309,11.0615108 20.1821464,10.8859651 L20,10.7359622 Z M19.0066996,9.91795013 L12,4.14772693 L4.9933004,9.91795013 C4.99770753,9.94464611 5,9.97205534 5,10 L5,18.5 C5,19.3284271 5.67157288,20 6.5,20 L9,20 L9,14.5 C9,13.6715729 9.67157288,13 10.5,13 L13.5,13 C14.3284271,13 15,13.6715729 15,14.5 L15,20 L17.5,20 C18.3284271,20 19,19.3284271 19,18.5 L19,10 C19,9.97205534 19.0022925,9.94464611 19.0066996,9.91795013 L19.0066996,9.91795013 Z"/>
+</svg>`,
+  user_icon = `<svg width="18px" height="18px" stroke="currentColor" viewBox="0 0 1024 1024" class="icon" xmlns="http://www.w3.org/2000/svg"><path fill="#000000" d="M512 512a192 192 0 100-384 192 192 0 000 384zm0 64a256 256 0 110-512 256 256 0 010 512zm320 320v-96a96 96 0 00-96-96H288a96 96 0 00-96 96v96a32 32 0 11-64 0v-96a160 160 0 01160-160h448a160 160 0 01160 160v96a32 32 0 11-64 0z"/></svg>`,
 }

@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import successImg from '@/assets/images/successful.png';
 import { redirect, useRouter, useSearchParams } from 'next/navigation';
 import {
-  useGetOrderUserByIdQuery,
+  useGetOderDetailsQuery,
   useUpdateOrderUserMutation,
 } from '@/lib/redux/query/productQuery';
 import Image from 'next/image';
@@ -19,13 +19,7 @@ function Success() {
     isSuccess: isSuccessOrder,
     isError: isErrorOrder,
     error: errorOrder,
-  } = useGetOrderUserByIdQuery(
-    {
-      id: code,
-      paymentMethod: paymentMethod,
-    },
-    { skip: !code && !paymentMethod }
-  );
+  } = useGetOderDetailsQuery(code, { skip: !code });
   const [updateOrder] = useUpdateOrderUserMutation();
   useEffect(() => {
     if (isSuccessOrder) {

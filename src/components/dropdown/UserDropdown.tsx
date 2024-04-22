@@ -4,7 +4,6 @@ import { DropdownContext } from '@/context/DropdownProvider';
 import { User } from '@/types/types';
 import { removeUser } from '@/lib/redux/slice/userSlice';
 import { Icons } from '@/enum/enum';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import './Dropdown.css';
 type Props = {
@@ -32,44 +31,15 @@ const UserDropdown: React.FC<Props> = ({ user }) => {
     <div
       className={`user-dropdown ${state.visibleUserDropdown ? 'active' : ''}`}
     >
-      <div className='mx-[26px] my-[16px] flex items-center gap-[20px]'>
-        <Image
-          width={42}
-          height={42}
-          className='w-[42px] h-[42px] rounded-full'
-          src={user.image}
-          alt={user.name}
-          loading='lazy'
-        />
-        <div>
-          <h3 className='font-bold text-base'>{user.name}</h3>
-          {user.email !== null && (
-            <p
-              className='max-w-[150px] w-max text-gray-700 text-ellipsis whitespace-nowrap overflow-hidden'
-              title={user.email}
-            >
-              {user.email}
-            </p>
-          )}
-        </div>
-      </div>
-      <div className='mx-[26px] my-[16px] flex flex-col gap-[20px] text-gray-700 font-bold'>
+      <div className='text-sm px-4 py-2 flex flex-col gap-2 text-gray-700 font-bold'>
         <button
           className='flex items-center gap-[15px]'
-          onClick={() => handleRedirect('purchase')}
+          onClick={() => handleRedirect('account/dashboard')}
         >
-          <span
-            dangerouslySetInnerHTML={{ __html: Icons.clip_board_icon }}
-          ></span>
-          <span>My Purchase</span>
+          <span dangerouslySetInnerHTML={{ __html: Icons.user_icon }}></span>
+          <span>My Account</span>
         </button>
-        <button
-          className='flex items-center gap-[15px]'
-          onClick={() => handleRedirect('settings')}
-        >
-          <span dangerouslySetInnerHTML={{ __html: Icons.gear_icon }}></span>
-          <span>Settings</span>
-        </button>
+        <span className='w-full h-[2px] bg-gray-200'></span>
         <button className='flex items-center gap-[15px]' onClick={handleLogout}>
           <span
             dangerouslySetInnerHTML={{ __html: Icons.arrow_right_bracket }}

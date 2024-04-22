@@ -31,6 +31,7 @@ const ReviewsModal = () => {
     () => state.visibleReviewsModal,
     [state.visibleReviewsModal]
   );
+  console.log(product);
   const handleStarClick = (selectedRate: number) => {
     setRate(selectedRate);
   };

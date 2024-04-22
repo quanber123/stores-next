@@ -25,11 +25,11 @@ input::-webkit-outer-spin-button {
 /* width */
 ::-webkit-scrollbar {
   width: 4px;
-  height: 8px;
+  height: 4px;
 }
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #666666;
+  background: #fff;
   border-radius: 2px;
 }
 

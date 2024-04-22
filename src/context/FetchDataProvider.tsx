@@ -69,8 +69,6 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
     };
     fetchData();
   }, []);
-  console.table(categories);
-  console.table(tags);
   useEffect(() => {
     const token = searchQuery.get('token');
     if (token) {

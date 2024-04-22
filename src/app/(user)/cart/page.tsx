@@ -18,7 +18,7 @@ const DynamicOrders = dynamic(() => import('./_components/orders'), {
 });
 function Cart() {
   return (
-    <div className='container m-auto px-4'>
+    <div className='container m-auto px-4 py-8 flex flex-col gap-8'>
       <DynamicTitle />
       <DynamicOrders />
     </div>
