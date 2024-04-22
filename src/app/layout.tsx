@@ -9,7 +9,7 @@ import { FetchDataProvider } from '@/context/FetchDataProvider';
 import { Metadata } from 'next';
 import { DropdownProvider } from '@/context/DropdownProvider';
 import { getSeo } from '@/api/seo';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   loading: () => (
@@ -63,24 +63,21 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({
   children,
 }: RootLayoutProps): Promise<JSX.Element> {
-  console.log(process.env.NEXT_GAID);
   return (
     <html lang='vi'>
       <head>
         <Script
           async
-          src='https://www.googletagmanager.com/gtag/js?id=G-VZB8R6D98C'
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_GOOGLE_ANALYTICS}`}
         ></Script>
         <Script id='google-analytics'>
           {` window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments)}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VZB8R6D98C');`}
+            function gtag(){dataLayer.push(arguments)}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_GOOGLE_ANALYTICS}');`}
         </Script>
       </head>
       <body className={roboto.className}>
-        {/* <GoogleAnalytics gaId={process.env.NEXT_GAID as string} /> */}
         <UiProvider>
           <StoreProvider>
             <FetchDataProvider>
@@ -96,6 +93,7 @@ export default async function RootLayout({
             </FetchDataProvider>
           </StoreProvider>
         </UiProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
