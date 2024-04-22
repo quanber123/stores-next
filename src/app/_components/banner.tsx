@@ -1,7 +1,7 @@
 'use client';
 import { getBanners } from '@/api/bannerApi';
+import LazyLoadImage from '@/components/(ui)/lazyloadImage';
 import { Banner } from '@/types/types';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -42,14 +42,13 @@ export default function Banners() {
           }`}
           key={b._id}
         >
-          <Image
+          <LazyLoadImage
             className='absolute top-1/2 left-0 object-cover'
             width={1440}
             height={640}
             src={b.image}
             alt={b.content}
-            fetchPriority='high'
-            priority
+            priority='high'
           />
           <div
             className={`absolute w-full top-1/2 md:left-[15%] flex flex-col justify-center md:justify-start items-center md:items-start gap-[12px] md:gap-[24px]`}

@@ -7,6 +7,7 @@ type LazyLoadImageProps = {
   alt: string;
   className?: string;
   style?: React.CSSProperties;
+  priority?: 'high' | 'low' | 'auto';
 };
 
 function LazyLoadImage(props: LazyLoadImageProps) {
@@ -57,7 +58,7 @@ function LazyLoadImage(props: LazyLoadImageProps) {
         height={props.height}
         src={imageSrc}
         alt={props.alt}
-        loading='lazy'
+        fetchPriority={props.priority ? props.priority : 'low'}
         onLoad={handleImageLoad}
       />
     </picture>
