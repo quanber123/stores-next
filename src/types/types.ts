@@ -47,15 +47,14 @@ export type Product = {
   name: string;
   code: string;
   price: number;
-  sale: {
-    active: boolean;
-    name: string;
-    rate: number;
-    startDate: string;
-    endDate: string;
-    tag: string;
+  coupon: {
+    expired?: boolean;
+    name?: string;
+    discount?: number;
+    startDate?: string;
+    endDate?: string;
   };
-  salePrice: number;
+  saleAmount: number;
   finalPrice: number;
   type: string;
   details: Details;

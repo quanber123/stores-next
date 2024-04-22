@@ -3,7 +3,6 @@ import { Icons } from '@/enum/enum';
 import { useCreateCartMutation } from '@/lib/redux/query/productQuery';
 import { formatNumberWithDot } from '@/lib/utils/format';
 import { Product } from '@/types/types';
-import { set } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import React, {
   ChangeEvent,
@@ -18,7 +17,8 @@ type Props = {
 };
 const ProductDetails: React.FC<Props> = ({ product }) => {
   const { setVisibleModal } = useContext(ModalContext);
-  const { _id, name, price, sale, salePrice, details, images } = product;
+  const { _id, name, price, saleAmount, finalPrice, details, images, coupon } =
+    product;
   const router = useRouter();
   const [isBuyNow, setIsBuyNow] = useState(false);
   const [
@@ -145,8 +145,8 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         size: selectedSizes,
         quantity: totalQuantity,
         price: price,
-        sale: sale,
-        salePrice: salePrice,
+        sale: coupon?.discount,
+        salePrice: saleAmount,
       },
     });
   }, [
@@ -158,8 +158,8 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
     selectedColors,
     selectedSizes,
     price,
-    sale,
-    salePrice,
+    coupon,
+    saleAmount,
     images,
   ]);
   const handleBuyNow = useCallback(() => {
@@ -173,8 +173,8 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         size: selectedSizes,
         quantity: totalQuantity,
         price: price,
-        sale: sale,
-        salePrice: salePrice,
+        sale: coupon?.discount,
+        salePrice: saleAmount,
       },
     });
     setIsBuyNow(true);
@@ -187,8 +187,8 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
     selectedColors,
     selectedSizes,
     price,
-    sale,
-    salePrice,
+    saleAmount,
+    coupon,
     images,
   ]);
   useEffect(() => {
@@ -230,19 +230,23 @@ const ProductDetails: React.FC<Props> = ({ product }) => {
         </p>
       </div>
       <p className='flex items-center gap-[20px] font-bold text-xl md:text-2xl lg:text-4xl'>
+        {coupon?.discount && coupon.discount > 0 && (
+          <span
+            className={`${
+              coupon?.discount && coupon?.discount ? 'block' : 'hidden'
+            }`}
+          >
+            {formatNumberWithDot(finalPrice)} VND
+          </span>
+        )}
         <span
           className={`${
-            sale?.rate && sale?.active && 'text-red-600 line-through'
+            coupon?.discount &&
+            !coupon?.expired &&
+            'text-base font-bold text-red-600 line-through'
           }`}
         >
           {formatNumberWithDot(price)} VND
-        </span>
-        <span
-          className={`${
-            sale?.rate && sale?.active ? 'block text-sm font-bold' : 'hidden'
-          }`}
-        >
-          {salePrice && formatNumberWithDot(salePrice)} VND
         </span>
       </p>
       <p className='text-darkGray'>{details.shortDescription}</p>

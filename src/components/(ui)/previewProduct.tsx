@@ -17,7 +17,7 @@ type Props = {
   style?: React.CSSProperties;
 };
 const PreviewProduct: React.FC<Props> = ({ product, style }) => {
-  const { _id, images, name, price, sale, salePrice } = product;
+  const { _id, images, name, price, finalPrice, coupon } = product;
   const { setVisibleModal } = useContext(ModalContext);
   const user = useSelector(userInfo);
   const { data: dataUserFavorite, isSuccess: isSuccessUserFavorite } =
@@ -54,7 +54,7 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
   );
   return (
     <article style={style} className='flex flex-col gap-4'>
-      <div className='w-full overflow-hidden'>
+      <div className='relative w-full overflow-hidden'>
         <LazyLoadImage
           width={680}
           height={320}
@@ -62,9 +62,9 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
           alt={name}
           className='hover:scale-110 transition-all duration-200 cursor-pointer'
         />
-        {sale?.rate && sale?.active && (
-          <p className='absolute top-0 right-0 px-2 py-1 z-50 bg-purple text-white'>
-            -{sale?.rate}%
+        {coupon?.discount && !coupon?.expired && (
+          <p className='absolute top-0 right-0 px-4 py-1 z-10 bg-violet-500 text-white'>
+            -{coupon?.discount}%
           </p>
         )}
       </div>
@@ -90,22 +90,28 @@ const PreviewProduct: React.FC<Props> = ({ product, style }) => {
             ></button>
           )}
         </div>
-        <p className='flex items-center gap-[20px]'>
-          <span
-            className={`${
-              sale?.rate && sale?.active && 'text-red-600 line-through'
-            }`}
-          >
-            {formatNumberWithDot(price)} VND
-          </span>
-          <span
-            className={`${
-              sale?.rate && sale?.active ? 'block text-sm font-bold' : 'hidden'
-            }`}
-          >
-            {salePrice && formatNumberWithDot(salePrice)} VND
-          </span>
-        </p>
+        <div className='mt-3'>
+          <p className='flex justify-between items-center gap-[20px]'>
+            <span
+              className={`${
+                coupon?.discount! && !coupon?.expired
+                  ? 'block font-bold'
+                  : 'hidden'
+              }`}
+            >
+              {finalPrice && formatNumberWithDot(finalPrice)} VND
+            </span>
+            <span
+              className={`${
+                coupon?.discount &&
+                !coupon?.expired &&
+                'text-sm text-red-600 line-through'
+              }`}
+            >
+              {formatNumberWithDot(price)} VND
+            </span>
+          </p>
+        </div>
       </div>
     </article>
   );

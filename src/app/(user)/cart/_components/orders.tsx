@@ -238,17 +238,14 @@ function CartList() {
           </td>
           <td className='p-4 capitalize'>{c.product.color}</td>
           <td className='p-4 uppercase'>{c.product.size}</td>
-          <td className='p-4'>
-            <span
-              className={`${c.product.salePrice > 0 ? 'line-through' : ''}`}
-            >
-              {formatNumberWithDot(c.product.price)} VND
-            </span>
-            {c.product.salePrice > 0 && (
-              <span className='font-bold'>
-                {formatNumberWithDot(c.product.salePrice)} VND
-              </span>
-            )}
+          <td className='p-4 text-center'>
+            {formatNumberWithDot(c.product.price)} VND
+          </td>
+          <td className='p-4 text-center'>
+            {c.product.salePrice > 0
+              ? formatNumberWithDot(c.product.salePrice)
+              : 0}{' '}
+            VND
           </td>
           <td className='p-4'>
             <div className='m-auto w-max flex justify-center items-center border border-lightGray'>
@@ -321,7 +318,8 @@ function CartList() {
                 <td className='p-4'>Product</td>
                 <td className='p-4'>Color</td>
                 <td className='p-4'>Size</td>
-                <td className='p-4'>Price</td>
+                <td className='p-4 text-center'>Price</td>
+                <td className='p-4 text-center'>Sale</td>
                 <td className='p-4 text-center'>Quantity</td>
                 <td className='p-4'>Total</td>
                 <td className='p-4'>Action</td>

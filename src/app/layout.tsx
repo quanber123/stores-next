@@ -7,6 +7,7 @@ import { ModalProvider } from '@/context/ModalProvider';
 import { FetchDataProvider } from '@/context/FetchDataProvider';
 import { Metadata } from 'next';
 import { DropdownProvider } from '@/context/DropdownProvider';
+import { getSeo } from '@/api/seo';
 import './globals.css';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   loading: () => (
@@ -35,22 +36,38 @@ const roboto = Roboto({
 interface RootLayoutProps {
   children: React.ReactNode;
 }
-export const metadata: Metadata = {
-  title: {
-    template: '%s | COZASTORE',
-    default: 'COZASTORE',
-  },
+type Props = {
+  title: string;
+  description: string;
+  setIndex: string;
+  icon: string;
+  image: string;
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const repo: Props = await getSeo('home');
+  return {
+    title: {
+      template: `%s | ${repo.title}`,
+      default: repo.title,
+    },
+    description: repo.description,
+    openGraph: {
+      images: [repo.image],
+    },
+    icons: repo.icon,
+  };
+}
 export default async function RootLayout({
   children,
 }: RootLayoutProps): Promise<JSX.Element> {
   return (
     <html lang='vi'>
       <head>
-        <link
+        {/* <link
           rel='icon'
           href={`${process.env.NEXT_PUBLIC_BACKEND_URL}public/images/logo-04.png-fotor-2023121102555.png`}
-        />
+        /> */}
       </head>
       <body className={roboto.className}>
         <UiProvider>
