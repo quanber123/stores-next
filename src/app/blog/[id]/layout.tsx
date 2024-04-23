@@ -14,7 +14,7 @@ type Params = {
 export async function generateMetadata(
   { params }: Params,
   parent: ResolvingMetadata
-): Promise<Metadata> {
+): Promise<Metadata | ResolvingMetadata> {
   const id = params.id;
   const repo: Seo = await getSeoDetailsPage(id, 'blog');
   const prevTitle = (await parent).title || 'Blog';
