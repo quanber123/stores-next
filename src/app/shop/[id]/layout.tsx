@@ -1,6 +1,6 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import { getSeoDetailsPage } from '@/api/seo';
-import type { Metadata, ResolvingMetadata } from 'next';
-interface RootLayoutProps {
+interface ProductDetailsLayoutProps {
   children: React.ReactNode;
 }
 type Seo = {
@@ -37,6 +37,6 @@ export async function generateMetadata(
 }
 export default async function ProductDetailsLayout({
   children,
-}: RootLayoutProps): Promise<JSX.Element> {
+}: ProductDetailsLayoutProps): Promise<JSX.Element> {
   return <>{children}</>;
 }

@@ -1,7 +1,6 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import { getSeo } from '@/api/seo';
-import type { Metadata, ResolvingMetadata } from 'next';
-
-interface RootLayoutProps {
+interface BlogLayoutProps {
   children: React.ReactNode;
 }
 type Props = {
@@ -15,23 +14,23 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const repo: Props = await getSeo('blog');
-  const prevTitle = (await parent).title || 'Blog';
-  const prevDes = (await parent).description || undefined;
-  const previousImages = (await parent).openGraph?.images || [];
-  const prevIcons = (await parent).icons;
+  const prevTitle = (await parent)?.title || 'Blog';
+  const prevDes = (await parent)?.description || undefined;
+  const previousImages = (await parent)?.openGraph?.images || [];
+  const prevIcons = (await parent)?.icons;
   return {
-    title: repo.title ? repo.title : prevTitle,
-    description: repo.description ? repo.description : null,
+    title: repo?.title ? repo.title : prevTitle,
+    description: repo?.description ? repo.description : null,
     openGraph: {
-      title: repo.title ? repo.title : prevTitle,
-      images: repo.logo ? [repo.logo, ...previousImages] : [...previousImages],
-      description: repo.description ? repo.description : prevDes,
+      title: repo?.title ? repo.title : prevTitle,
+      images: repo?.logo ? [repo.logo, ...previousImages] : [...previousImages],
+      description: repo?.description ? repo.description : prevDes,
     },
-    icons: repo.icon ? repo.icon : prevIcons,
+    icons: repo?.icon ? repo.icon : prevIcons,
   };
 }
 export default async function BlogLayout({
   children,
-}: RootLayoutProps): Promise<JSX.Element> {
+}: BlogLayoutProps): Promise<JSX.Element> {
   return <>{children}</>;
 }

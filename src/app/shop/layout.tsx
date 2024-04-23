@@ -1,7 +1,7 @@
+import { Metadata, ResolvingMetadata } from 'next';
 import { getSeo } from '@/api/seo';
-import type { Metadata, ResolvingMetadata } from 'next';
 
-interface RootLayoutProps {
+interface ShopLayoutProps {
   children: React.ReactNode;
 }
 type Props = {
@@ -20,18 +20,18 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
   const prevIcons = (await parent).icons;
   return {
-    title: repo.title ? repo.title : prevTitle,
-    description: repo.description ? repo.description : null,
+    title: repo?.title ? repo.title : prevTitle,
+    description: repo?.description ? repo.description : null,
     openGraph: {
-      title: repo.title ? repo.title : prevTitle,
-      images: repo.logo ? [repo.logo, ...previousImages] : [...previousImages],
-      description: repo.description ? repo.description : prevDes,
+      title: repo?.title ? repo.title : prevTitle,
+      images: repo?.logo ? [repo.logo, ...previousImages] : [...previousImages],
+      description: repo?.description ? repo.description : prevDes,
     },
-    icons: repo.icon ? repo.icon : prevIcons,
+    icons: repo?.icon ? repo.icon : prevIcons,
   };
 }
 export default async function ShopLayout({
   children,
-}: RootLayoutProps): Promise<JSX.Element> {
+}: ShopLayoutProps): Promise<JSX.Element> {
   return <>{children}</>;
 }
