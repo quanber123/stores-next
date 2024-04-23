@@ -43,7 +43,7 @@ type Props = {
   description: string;
   setIndex: string;
   icon: string;
-  image: string;
+  logo: string;
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -52,17 +52,24 @@ export async function generateMetadata(): Promise<Metadata> {
     title: {
       template: `%s | ${repo.title}`,
       default: repo.title,
+      absolute: repo.title,
     },
     description: repo.description,
     openGraph: {
-      images: [repo.image],
+      title: repo.title,
+      images: [repo.logo],
+      description: repo.description,
     },
     icons: repo.icon,
+    other: {
+      logo: repo.logo,
+    },
   };
 }
 export default async function RootLayout({
   children,
 }: RootLayoutProps): Promise<JSX.Element> {
+  const metadata = await generateMetadata();
   return (
     <html lang='vi'>
       <head>
@@ -83,7 +90,7 @@ export default async function RootLayout({
             <FetchDataProvider>
               <ModalProvider>
                 <DropdownProvider>
-                  <DynamicHeader />
+                  <DynamicHeader logo={metadata.other?.logo as string} />
                 </DropdownProvider>
                 <main className='min-h-screen flex-1'>{children}</main>
                 <DynamicScroll />

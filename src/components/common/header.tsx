@@ -23,7 +23,7 @@ const CartDropdown = lazy(() => import('@/components/dropdown/CartDropdown'));
 const FavoriteDropdown = lazy(
   () => import('@/components/dropdown/FavoriteDropdown')
 );
-const Header = () => {
+const Header = ({ logo }: { logo: string }) => {
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
   const { setVisibleModal, closeAllModal } = useContext(ModalContext);
   const { setVisibleDropdown, closeDropdown } = useContext(DropdownContext);
@@ -79,9 +79,9 @@ const Header = () => {
           className='object-cover cursor-pointer'
           width={150}
           height={20}
-          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}public/images/logo-01.png.webp`}
+          src={logo}
           alt='logo'
-          priority
+          fetchPriority='high'
           onClick={() => routerRedirect('/')}
         />
         {/* desktop display */}
