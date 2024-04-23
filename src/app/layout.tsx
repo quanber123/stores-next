@@ -92,7 +92,7 @@ export default async function RootLayout({
                 <DropdownProvider>
                   <DynamicHeader logo={metadata.other?.logo as string} />
                 </DropdownProvider>
-                <main className='min-h-screen flex-1'>{children}</main>
+                <main className='pt-16 min-h-screen flex-1'>{children}</main>
                 <DynamicScroll />
                 <DynamicModal />
                 <DynamicFooter />
