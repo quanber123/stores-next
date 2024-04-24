@@ -17,14 +17,14 @@ import {
 } from '@/lib/utils/validate';
 import { setToken, setUser } from '@/lib/redux/slice/userSlice';
 import { Icons } from '@/enum/enum';
-import { getLogoUrl } from '@/lib/redux/slice/pageSlice';
 import Image from 'next/image';
 import ValidateMessage from '../(ui)/validateMessage';
+import { getWebInfo } from '@/lib/redux/slice/pageSlice';
 
 function RegisterModal() {
   const { state, setVisibleModal, closeAllModal } = useContext(ModalContext);
-  const logoUrl = useSelector(getLogoUrl);
   const dispatch = useDispatch();
+  const webInfo = useSelector(getWebInfo);
   const [modalRef, clickOutside] = useClickOutside('visibleRegisterModal');
   const [form, setForm] = useState({
     name: '',
@@ -116,7 +116,7 @@ function RegisterModal() {
           width={150}
           height={20}
           className='object-contain'
-          src={logoUrl}
+          src={webInfo?.logo as string}
           alt='logo'
         />
         <div

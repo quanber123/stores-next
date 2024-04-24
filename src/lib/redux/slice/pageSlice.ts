@@ -1,21 +1,25 @@
-import { StatusOrder } from '@/types/types';
 import { createSlice } from '@reduxjs/toolkit';
 type State = {
-  statusOrder: StatusOrder[] | [];
+  web_info: {
+    icon: string;
+    logo: string;
+    shopName: string;
+    vatNumber: number;
+    postCode: number;
+  } | null;
 };
-const initialState: State = {
-  statusOrder: [],
+const initialState = {
+  web_info: null,
 };
 export const pageSlice = createSlice({
   name: 'pageSlice',
   initialState: initialState,
   reducers: {
-    setStatusOrder: (state, action) => {
-      state.statusOrder = action.payload;
+    setWebInfo: (state, action) => {
+      state.web_info = action.payload;
     },
   },
 });
-export const getAllStatusOrder = (state: { page: State }) =>
-  state.page.statusOrder;
-export const { setStatusOrder } = pageSlice.actions;
+export const getWebInfo = (state: { page: State }) => state.page.web_info;
+export const { setWebInfo } = pageSlice.actions;
 export default pageSlice.reducer;

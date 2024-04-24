@@ -74,7 +74,7 @@ function Verified() {
   if (user === null) {
     return redirect('/not-found-verified-page');
   }
-  if (user.isVerified) {
+  if (user?.isVerified) {
     return redirect('/');
   }
   return (

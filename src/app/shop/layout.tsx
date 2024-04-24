@@ -1,4 +1,4 @@
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from 'next';
 import { getSeo } from '@/api/seo';
 
 interface ShopLayoutProps {

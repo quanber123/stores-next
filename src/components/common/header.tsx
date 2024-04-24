@@ -3,6 +3,7 @@ import UserDropdown from '@/components/dropdown/UserDropdown';
 import { DropdownContext } from '@/context/DropdownProvider';
 import { ModalContext } from '@/context/ModalProvider';
 import { Icons } from '@/enum/enum';
+import { getWebInfo } from '@/lib/redux/slice/pageSlice';
 import {
   getAllCarts,
   getAllFavorites,
@@ -19,11 +20,13 @@ import React, {
   useState,
 } from 'react';
 import { useSelector } from 'react-redux';
+import LazyLoadImage from '../(ui)/lazyloadImage';
 const CartDropdown = lazy(() => import('@/components/dropdown/CartDropdown'));
 const FavoriteDropdown = lazy(
   () => import('@/components/dropdown/FavoriteDropdown')
 );
-const Header = ({ logo }: { logo: string }) => {
+const Header = () => {
+  const webInfo = useSelector(getWebInfo);
   const [dropdownRoutes, setDropdownRoutes] = useState(false); // open dropdown in mobile responsive
   const { setVisibleModal, closeAllModal } = useContext(ModalContext);
   const { setVisibleDropdown, closeDropdown } = useContext(DropdownContext);
@@ -75,15 +78,16 @@ const Header = ({ logo }: { logo: string }) => {
       className='fixed top-0 left-0 w-full h-[64px] z-[100] bg-white flex items-center'
     >
       <nav className='container m-auto px-4 flex items-center gap-20'>
-        <Image
-          className='object-cover cursor-pointer'
-          width={150}
-          height={20}
-          src={logo}
-          alt='logo'
-          fetchPriority='high'
-          onClick={() => routerRedirect('/')}
-        />
+        <button onClick={() => routerRedirect('/')}>
+          <LazyLoadImage
+            className='object-cover cursor-pointer'
+            width={150}
+            height={20}
+            src={webInfo?.logo as string}
+            alt='logo'
+            priority='high'
+          />
+        </button>
         {/* desktop display */}
         <section className='hidden md:block'>
           <ul className='p-[16px] h-max flex items-center gap-[20px] font-bold'>

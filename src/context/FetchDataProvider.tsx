@@ -23,6 +23,8 @@ import {
   useGetAddressUserQuery,
   useGetUserQuery,
 } from '@/lib/redux/query/userQuery';
+import { getWebInfo } from '@/api/webInfoApi';
+import { setWebInfo } from '@/lib/redux/slice/pageSlice';
 export const FetchDataContext = createContext({
   statusOrders: [] as StatusOrder[],
   categories: [] as Category[],
@@ -51,11 +53,13 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [statusOrdersData, tagsData, categoriesData] = await Promise.all([
-          getStatusOrder(),
-          getTags(),
-          getCategories(),
-        ]);
+        const [statusOrdersData, tagsData, categoriesData, webData] =
+          await Promise.all([
+            getStatusOrder(),
+            getTags(),
+            getCategories(),
+            getWebInfo(),
+          ]);
         setStatusOrders(
           statusOrdersData?.status?.sort(
             (a: StatusOrder, b: StatusOrder) => a.number - b.number
@@ -63,6 +67,7 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
         );
         setCategories(categoriesData?.categories);
         setTags(tagsData?.tags);
+        dispatch(setWebInfo(webData));
       } catch (error) {
         console.log(error);
       }

@@ -11,6 +11,7 @@ import { DropdownProvider } from '@/context/DropdownProvider';
 import { getSeo } from '@/api/seo';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
+import { getWebInfo } from '@/api/webInfoApi';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   loading: () => (
     <div
@@ -38,38 +39,40 @@ const roboto = Roboto({
 interface RootLayoutProps {
   children: React.ReactNode;
 }
-type Props = {
+type SeoProps = {
   title: string;
   description: string;
   setIndex: string;
   icon: string;
   logo: string;
 };
-
+type WebInfo = {
+  icon: string;
+  logo: string;
+  shopName: string;
+  vatNumber: number;
+  postCode: number;
+};
 export async function generateMetadata(): Promise<Metadata> {
-  const repo: Props = await getSeo('home');
+  const repo: SeoProps = await getSeo('home');
+  const info: WebInfo = await getWebInfo();
   return {
     title: {
-      template: `%s | ${repo.title}`,
-      default: repo.title,
-      absolute: repo.title,
+      template: `%s | ${info.shopName}`,
+      default: info.shopName,
     },
     description: repo.description,
     openGraph: {
       title: repo.title,
-      images: [repo.logo],
+      images: [info.logo],
       description: repo.description,
     },
-    icons: repo.icon,
-    other: {
-      logo: repo.logo,
-    },
+    icons: info.icon,
   };
 }
 export default async function RootLayout({
   children,
 }: RootLayoutProps): Promise<JSX.Element> {
-  const metadata = await generateMetadata();
   return (
     <html lang='vi'>
       <head>
@@ -90,7 +93,7 @@ export default async function RootLayout({
             <FetchDataProvider>
               <ModalProvider>
                 <DropdownProvider>
-                  <DynamicHeader logo={metadata.other?.logo as string} />
+                  <DynamicHeader />
                 </DropdownProvider>
                 <main className='pt-16 min-h-screen flex-1'>{children}</main>
                 <DynamicScroll />

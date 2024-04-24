@@ -12,15 +12,15 @@ import { Icons } from '@/enum/enum';
 import useClickOutside from '@/lib/hooks/useClickOutside';
 import { validateEmail } from '@/lib/utils/validate';
 import { useUserLoginMutation } from '@/lib/redux/query/userQuery';
-import { getLogoUrl } from '@/lib/redux/slice/pageSlice';
 import Image from 'next/image';
 import { redirect, usePathname } from 'next/navigation';
 import ValidateMessage from '../(ui)/validateMessage';
 import { setToken, userInfo } from '@/lib/redux/slice/userSlice';
+import { getWebInfo } from '@/lib/redux/slice/pageSlice';
 function LoginModal() {
   const pathname = usePathname();
   const user = useSelector(userInfo);
-  const logoUrl = useSelector(getLogoUrl);
+  const webInfo = useSelector(getWebInfo);
   const { state, setVisibleModal, closeAllModal } = useContext(ModalContext);
   const dispatch = useDispatch();
   const [modalRef, clickOutside] = useClickOutside('visibleLoginModal');
@@ -122,7 +122,7 @@ function LoginModal() {
           className='object-contain'
           width={150}
           height={20}
-          src={logoUrl}
+          src={webInfo?.logo as string}
           alt='logo'
         />
         <div className='w-full flex flex-col gap-8'>
