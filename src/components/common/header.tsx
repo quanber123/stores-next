@@ -78,12 +78,13 @@ const Header = () => {
       className='fixed top-0 left-0 w-full h-[64px] z-[100] bg-white flex items-center'
     >
       <nav className='container m-auto px-4 flex items-center gap-20'>
-        <button onClick={() => routerRedirect('/')}>
+        <button className='w-max h-full' onClick={() => routerRedirect('/')}>
           <LazyLoadImage
-            className='object-cover cursor-pointer'
+            className='w-full h-auto object-cover'
             width={150}
             height={20}
             src={webInfo?.logo as string}
+            // src='https://theme.hstatic.net/1000277297/1001091004/14/logo.png?v=415'
             alt='logo'
             priority='high'
           />
