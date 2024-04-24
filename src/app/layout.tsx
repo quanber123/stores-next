@@ -58,16 +58,16 @@ export async function generateMetadata(): Promise<Metadata> {
   const info: WebInfo = await getWebInfo();
   return {
     title: {
-      template: `%s | ${info.shopName}`,
-      default: info.shopName,
+      template: `%s | ${info?.shopName}`,
+      default: info?.shopName,
     },
-    description: repo.description,
+    description: repo?.description,
     openGraph: {
-      title: repo.title,
-      images: [info.logo],
-      description: repo.description,
+      title: repo?.title,
+      images: [info?.logo],
+      description: repo?.description,
     },
-    icons: info.icon,
+    icons: info?.icon,
   };
 }
 export default async function RootLayout({
