@@ -7,8 +7,6 @@ type Props = {
   title: string;
   description: string;
   setIndex: string;
-  icon: string;
-  logo: string;
 };
 export async function generateMetadata(): Promise<Metadata> {
   const repo: Props = await getSeo('blog');
@@ -21,10 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: repo?.description,
     openGraph: {
       title: repo?.title,
-      images: repo.logo,
       description: repo?.description,
     },
-    icons: repo?.icon,
   };
 }
 export default async function BlogLayout({

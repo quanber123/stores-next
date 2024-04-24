@@ -8,8 +8,6 @@ type Props = {
   title: string;
   description: string;
   setIndex: string;
-  icon: string;
-  logo: string;
 };
 export async function generateMetadata(): Promise<Metadata> {
   const repo: Props = await getSeo('shop');
@@ -18,10 +16,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: repo?.description,
     openGraph: {
       title: repo?.title,
-      images: repo?.logo,
       description: repo?.description,
     },
-    icons: repo?.icon,
   };
 }
 export default async function ShopLayout({
