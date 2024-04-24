@@ -10,8 +10,8 @@ import { Metadata } from 'next';
 import { DropdownProvider } from '@/context/DropdownProvider';
 import { getSeo } from '@/api/seo';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import './globals.css';
 import { getWebInfo } from '@/api/webInfoApi';
+import './globals.css';
 const DynamicHeader = dynamic(() => import('@/components/common/header'), {
   loading: () => (
     <div

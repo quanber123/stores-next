@@ -1,11 +1,12 @@
 export async function getCategories() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}api/categories`,
-    { cache: 'no-cache' }
-  );
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/categories`,
+      { cache: 'no-cache' }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
   }
-  const data = await res.json();
-  return data;
 }
