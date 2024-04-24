@@ -73,7 +73,7 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     const token = searchQuery.get('token');
     if (token) {
