@@ -158,7 +158,7 @@ function RegisterModal() {
               }
               iconClassName={`${
                 validateEmptyStr(form.name) ? 'bg-red-500' : 'bg-green-500'
-              }  text-white p-1 flex justify-center items-center rounded-full`}
+              }  text-white p-1 flex justify-center items-center rounded-full  w-[16px] h-[16px]`}
             />
           )}
         </div>
@@ -201,7 +201,7 @@ function RegisterModal() {
               }
               iconClassName={`${
                 !validateEmail(form.email) ? 'bg-red-500' : 'bg-green-500'
-              }  text-white p-1 flex justify-center items-center rounded-full`}
+              }  text-white p-1 flex justify-center items-center rounded-full  w-[16px] h-[16px]`}
             />
           )}
         </div>
@@ -252,7 +252,7 @@ function RegisterModal() {
               }
               iconClassName={`${
                 !validatePassword(form.password) ? 'bg-red-500' : 'bg-green-500'
-              }  text-white p-1 flex justify-center items-center rounded-full`}
+              }  text-white p-1 flex justify-center items-center rounded-full  w-[16px] h-[16px]`}
             />
           )}
         </div>

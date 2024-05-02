@@ -22,7 +22,7 @@ import Image from 'next/image';
 import { formatNumberWithDot } from '@/lib/utils/format';
 import { useDebounce } from '@/lib/hooks/useDebounce';
 function CartList() {
-  const { setVisibleModal } = useContext(ModalContext);
+  const { setVisibleModal, closeAllModal } = useContext(ModalContext);
   const cart = useSelector(getAllCarts);
   const router = useRouter();
   const [quantity, setQuantity] = useState<number[]>([]);
@@ -31,10 +31,14 @@ function CartList() {
   useEffect(() => {
     setQuantity(cart.cart.map((c) => c.product.quantity));
   }, [cart.cart]);
-  const [deleteCartById, { isLoading: isLoadingDeleteCart }] =
-    useDeleteCartByIdMutation();
-  const [deleteManyCart, { isLoading: isLoadingDeleteManyCart }] =
-    useDeleteManyCartsByIdMutation();
+  const [
+    deleteCartById,
+    { isLoading: isLoadingDeleteCart, isSuccess: isSuccessDeleteCart },
+  ] = useDeleteCartByIdMutation();
+  const [
+    deleteManyCart,
+    { isLoading: isLoadingDeleteManyCart, isSuccess: isSuccessDeleteManyCart },
+  ] = useDeleteManyCartsByIdMutation();
   const [
     updatedCart,
     {
@@ -203,6 +207,11 @@ function CartList() {
       });
     }
   }, [router, setVisibleModal, selectedProduct]);
+  useEffect(() => {
+    if (isLoadingDeleteCart || isSuccessDeleteManyCart) {
+      closeAllModal();
+    }
+  }, [isSuccessDeleteCart, isSuccessDeleteManyCart]);
   const renderedCart = useMemo(() => {
     return cart.cart.map((c, index) => {
       return (

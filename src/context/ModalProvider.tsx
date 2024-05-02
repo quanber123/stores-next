@@ -1,10 +1,6 @@
 'use client';
 import { Address } from '@/types/types';
 import { createContext, useCallback, useReducer } from 'react';
-type AlertModalState = {
-  status: string;
-  message: string;
-};
 type ConfirmModalState = {
   message: string;
   function: () => void;
@@ -12,7 +8,6 @@ type ConfirmModalState = {
 type InitialState = {
   visibleLoginModal: boolean;
   visibleRegisterModal: boolean;
-  visibleAlertModal?: AlertModalState;
   visibleConfirmModal: ConfirmModalState;
   visibleAddressModal: boolean;
   visibleAddAddressModal: boolean;

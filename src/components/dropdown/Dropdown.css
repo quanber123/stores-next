@@ -4,7 +4,7 @@
 .user-dropdown {
   position: absolute;
   background-color: #fff;
-  padding: 12px 0;
+  padding: 0;
   top: 150%;
   right: 0;
   max-width: 400px;
@@ -32,9 +32,12 @@
   padding-bottom: 0;
 }
 .cart-dropdown.active,
-.favorite-dropdown.active,
-.notifications-dropdown.active {
+.favorite-dropdown.active {
   height: 90vh;
+  opacity: 1;
+}
+.notifications-dropdown.active {
+  height: 60vh;
   opacity: 1;
 }
 .user-dropdown.active {

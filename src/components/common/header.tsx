@@ -21,9 +21,13 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import LazyLoadImage from '../(ui)/lazyloadImage';
+import { FetchDataContext } from '@/context/FetchDataProvider';
 const CartDropdown = lazy(() => import('@/components/dropdown/CartDropdown'));
 const FavoriteDropdown = lazy(
   () => import('@/components/dropdown/FavoriteDropdown')
+);
+const NotificationsDropdown = lazy(
+  () => import('@/components/dropdown/NotificationDropdown')
 );
 const Header = () => {
   const webInfo = useSelector(getWebInfo);
@@ -33,6 +37,7 @@ const Header = () => {
   const user = useSelector(userInfo);
   const cartData = useSelector(getAllCarts);
   const favoriteData = useSelector(getAllFavorites);
+  const { notifications } = useContext(FetchDataContext);
   const router = useRouter();
   const pathname = usePathname();
   const routerRedirect = useCallback(
@@ -157,14 +162,24 @@ const Header = () => {
               <button
                 className='hover:text-violet-500 transition-colors'
                 aria-label='notify-btn'
+                onClick={() =>
+                  setVisibleDropdown('visibleNotificationsDropdown')
+                }
               >
                 <span
                   dangerouslySetInnerHTML={{ __html: Icons.bell_icon }}
                 ></span>
-                <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
-                  1
-                </span>
+                {notifications?.notRead > 0 && (
+                  <span className='absolute -top-3 -right-2 text-[12px] bg-violet-500 text-gray-100 px-1'>
+                    {notifications?.notRead}
+                  </span>
+                )}
               </button>
+              {
+                <Suspense>
+                  <NotificationsDropdown notifications={notifications} />
+                </Suspense>
+              }
             </div>
             <div className='relative'>
               <Image
@@ -175,7 +190,7 @@ const Header = () => {
                 alt={user.name}
                 onClick={() => setVisibleDropdown('visibleUserDropdown')}
               />
-              <UserDropdown user={user} />
+              <UserDropdown />
             </div>
           </section>
         )}

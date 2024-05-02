@@ -21,6 +21,7 @@ import {
 import { useSearchParams } from 'next/navigation';
 import {
   useGetAddressUserQuery,
+  useGetNotificationsQuery,
   useGetUserQuery,
 } from '@/lib/redux/query/userQuery';
 import { getWebInfo } from '@/api/webInfoApi';
@@ -29,27 +30,35 @@ export const FetchDataContext = createContext({
   statusOrders: [] as StatusOrder[],
   categories: [] as Category[],
   tags: [] as Tag[],
+  notifications: {} as any,
 });
 export const FetchDataProvider = ({ children }: { children: any }) => {
   const dispatch = useDispatch();
   const [statusOrders, setStatusOrders] = useState<StatusOrder[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
+  const [notifications, setNotifications] = useState();
   const searchQuery = useSearchParams();
   const accessToken = useSelector(token);
   const user = useSelector(userInfo);
-  const { data: userData, isSuccess: isSuccessGetUser } = useGetUserQuery(
-    null,
-    { skip: !accessToken }
-  );
+  const {
+    data: userData,
+    isLoading: isLoadingUser,
+    isSuccess: isSuccessGetUser,
+  } = useGetUserQuery(null, { skip: !accessToken });
   const { data: dataAddress, isSuccess: isSuccessAddress } =
-    useGetAddressUserQuery(null, { skip: !user });
+    useGetAddressUserQuery(null, { skip: !user?.id || isLoadingUser });
   const { data: cartData, isSuccess: isSuccessCart } = useGetAllCartsQuery(
     null,
-    { skip: !user?.id }
+    { skip: !user?.id || isLoadingUser }
   );
   const { data: favoriteData, isSuccess: isSuccessFavorite } =
-    useGetAllFavoritesQuery(null, { skip: !user?.id });
+    useGetAllFavoritesQuery(null, { skip: !user?.id || isLoadingUser });
+  const { data: notificationsData, isSuccess: isSuccessNotifications } =
+    useGetNotificationsQuery(null, {
+      pollingInterval: 60000,
+      skip: !user?.id || isLoadingUser,
+    });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -98,9 +107,22 @@ export const FetchDataProvider = ({ children }: { children: any }) => {
     if (isSuccessFavorite && favoriteData) {
       dispatch(setAllFavorites(favoriteData));
     }
-  }, [isSuccessCart, cartData, isSuccessFavorite, favoriteData, dispatch]);
+    if (isSuccessNotifications && notificationsData) {
+      setNotifications(notificationsData);
+    }
+  }, [
+    isSuccessCart,
+    cartData,
+    isSuccessFavorite,
+    favoriteData,
+    isSuccessNotifications,
+    notificationsData,
+    dispatch,
+  ]);
   return (
-    <FetchDataContext.Provider value={{ statusOrders, categories, tags }}>
+    <FetchDataContext.Provider
+      value={{ statusOrders, categories, tags, notifications }}
+    >
       {children}
     </FetchDataContext.Provider>
   );

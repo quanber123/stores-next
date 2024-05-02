@@ -1,15 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { useCallback, useContext } from 'react';
 import { DropdownContext } from '@/context/DropdownProvider';
-import { User } from '@/types/types';
 import { removeUser } from '@/lib/redux/slice/userSlice';
 import { Icons } from '@/enum/enum';
 import { useRouter } from 'next/navigation';
+import { getAuthToken } from '@/lib/utils/getAuthToken';
 import './Dropdown.css';
-type Props = {
-  user: User;
-};
-const UserDropdown: React.FC<Props> = ({ user }) => {
+const UserDropdown = () => {
   const { state, closeDropdown } = useContext(DropdownContext);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -20,13 +17,25 @@ const UserDropdown: React.FC<Props> = ({ user }) => {
     },
     [router, closeDropdown]
   );
-  const handleLogout = useCallback(() => {
-    dispatch(removeUser());
-    window.open(
+  const fetchData = useCallback(async () => {
+    const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}api/auth/logout`,
-      '_self'
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }
     );
-  }, [dispatch]);
+    const data = await res.json();
+    if (data?.success) {
+      router.replace('/');
+      dispatch(removeUser());
+    }
+  }, [dispatch, router]);
+  const handleLogout = useCallback(() => {
+    fetchData();
+  }, []);
   return (
     <div
       className={`user-dropdown ${state.visibleUserDropdown ? 'active' : ''}`}

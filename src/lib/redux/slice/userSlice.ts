@@ -57,6 +57,7 @@ export const userSlice = createSlice({
     },
     removeUser: (state) => {
       window.localStorage.removeItem('coza-store-token');
+      state.user = null;
       state.curDelivery = {} as Address;
       state.cart = {
         cart: [],

@@ -6,18 +6,31 @@ import coverImg from '@/assets/images/cover-img.jpg';
 import { usePathname, useRouter } from 'next/navigation';
 import { Icons } from '@/enum/enum';
 import { useCallback, useMemo } from 'react';
+import { getAuthToken } from '@/lib/utils/getAuthToken';
 function SubNav() {
   const user = useSelector(userInfo);
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
-  const handleLogout = useCallback(() => {
-    dispatch(removeUser());
-    window.open(
+  const fetchData = useCallback(async () => {
+    const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}api/auth/logout`,
-      '_self'
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${getAuthToken()}`,
+        },
+      }
     );
-  }, [dispatch]);
+    const data = await res.json();
+    if (data?.success) {
+      router.replace('/');
+      dispatch(removeUser());
+    }
+  }, [dispatch, router]);
+  const handleLogout = useCallback(() => {
+    fetchData();
+  }, []);
   const renderedRoutes = useMemo(() => {
     const routes = [
       { link: 'dashboard', name: 'Dashboard', icon: Icons.home_icon },

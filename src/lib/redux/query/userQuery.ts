@@ -13,7 +13,7 @@ export const userApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['users', 'settings', 'address'],
+  tagTypes: ['users', 'notifications', 'address'],
   endpoints: (builder) => {
     return {
       getUser: builder.query({
@@ -75,24 +75,29 @@ export const userApi = createApi({
         }),
         invalidatesTags: [{ type: 'users', id: 'LIST' }],
       }),
-      getSettings: builder.query({
-        query: (id) => ({
-          url: `settings/${id}`,
+      getNotifications: builder.query({
+        query: (search) => ({
+          url: search ? `notifications?${search}` : 'notifications',
           method: 'GET',
         }),
-        providesTags: (result) => providesList(result, 'settings'),
+        providesTags: (result) => providesList(result, 'notifications'),
       }),
-      updatedSettings: builder.mutation({
-        query: ({ id, enabled, idNotify }) => ({
-          url: 'settings',
+      updateNotifications: builder.mutation({
+        query: ({ id, read }) => ({
+          url: `notifications/${id}`,
           method: 'PUT',
           body: {
-            id: id,
-            enabled: enabled,
-            idNotify: idNotify,
+            read: read,
           },
         }),
-        invalidatesTags: [{ type: 'settings', id: 'LIST' }],
+        invalidatesTags: ['notifications'],
+      }),
+      deleteNotifications: builder.mutation({
+        query: (id) => ({
+          url: `notifications/${id}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: ['notifications'],
       }),
       getAddressUser: builder.query({
         query: () => ({
@@ -143,8 +148,9 @@ export const {
   useResendEmailMutation,
   useUpdateProfileMutation,
   useUpdateAvatarMutation,
-  useGetSettingsQuery,
-  useUpdatedSettingsMutation,
+  useGetNotificationsQuery,
+  useUpdateNotificationsMutation,
+  useDeleteNotificationsMutation,
   useGetAddressUserQuery,
   useCreateAddressMutation,
   useUpdateAddressMutation,

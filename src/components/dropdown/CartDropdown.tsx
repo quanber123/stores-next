@@ -64,7 +64,9 @@ function CartDropdown({ carts }: { carts: Cart[] }) {
     <div
       className={`cart-dropdown ${state.visibleCartDropdown ? 'active' : ''}`}
     >
-      <h3 className='pl-[16px] text-lg text-gray-700 font-bold'>Your Cart</h3>
+      <h3 className='mt-3 pl-[16px] text-lg text-gray-700 font-bold'>
+        Your Cart
+      </h3>
       <div className='flex-1 pl-[16px] pr-[32px] flex flex-col gap-[20px] overflow-auto'>
         {carts.length ? (
           renderedCart
