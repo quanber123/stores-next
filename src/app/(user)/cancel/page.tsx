@@ -4,7 +4,7 @@ import cancelImg from '@/assets/images/cancel.png';
 import withAuth from '@/auth/withAuth';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
-  useGetAllOrdersUserQuery,
+  useGetOderDetailsQuery,
   useUpdateOrderUserMutation,
 } from '@/lib/redux/query/productQuery';
 import Image from 'next/image';
@@ -22,7 +22,7 @@ function Cancel() {
     isSuccess: isSuccessOrder,
     isError: isErrorOrder,
     error: errorOrder,
-  } = useGetAllOrdersUserQuery(
+  } = useGetOderDetailsQuery(
     {
       code,
     },
